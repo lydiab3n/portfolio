@@ -1,0 +1,453 @@
+import type { CaseStudy } from "./content";
+
+const FIG = "https://www.figma.com/proto/QqMLKWPJKWYx8Jpt5kvuM0/la-suite-num%C3%A9rique?node-id=691-1270&t=aAb8TCJ121RfSdmI-1";
+const FAB_SITE = "https://the-art-of-fabricating-tangible-interfaces-2026.gitlab.dsi.universite-paris-saclay.fr/lydia/";
+
+export const moreCases: CaseStudy[] = [
+  /* ------------------------------------------------------------------ MAGIC MAP */
+  {
+    id: "magic-map",
+    title: "Magic Map",
+    kind: "Interactive system · Collaborative paper map",
+    blurb: "A modular, foldable paper map for planning a Paris trip together and adapting it when plans change.",
+    facts: [
+      ["Team", "Lydia Benosmane, Sidonie Minodier, Victoria Myot, Ayda Yurtoglu"],
+      ["My role", "Contributed across research, system and interaction design, prototyping, testing, redesign, diagrams and storyboard"],
+      ["Timeline", "November–December 2025"],
+      ["Methods", "8 story interviews · personas · system diagrams · paper and video prototyping · generative walkthrough"],
+      ["Context", "Design of Interactive Systems · M1 HCI, Paris-Saclay University"],
+    ],
+    brief:
+      "We designed for international students aged 18–26 visiting Paris, often with friends. Eight story interviews surfaced two recurring problems: aligning a group’s interests and needs while planning, and adapting the itinerary when a disruption changes the plan.",
+    poster: {
+      src: "magicmap/poster.jpg",
+      alt: "The complete Magic Map poster: problem, user profile, concept, personas, breakdowns, improvements, design diagram and a five-frame storyboard",
+      caption: "The Magic Map poster, complete. Tap to enlarge.",
+    },
+    steps: [
+      {
+        title: "Problem and users",
+        copy: "Eight story interviews surfaced two recurring breakdowns: it is hard to align a group’s interests and needs while planning, and hard to adapt the itinerary when a disruption changes the plan.",
+        bullets: [
+          "We designed for international students aged 18–26 visiting Paris, often with friends.",
+          "The target group is comfortable with travel apps and wants to find activities that fit its interests, budget and time.",
+        ],
+        slots: [],
+      },
+      {
+        title: "Three personas",
+        copy: "We used three personas to explore different needs, including Cam, an extreme user whose busy schedule can pull her away from the group.",
+        bullets: [
+          "Alf, 20, student: wants to see as much as possible, afraid of missing out, and uses social media to find places.",
+          "Béa, 21, French student: the decision-maker and navigator of the group. She knows Paris and the roads they will need to follow.",
+          "Cam, 21, student and research assistant (the extreme persona): always busy with work, unpredictable, and often has to be separated from her friends during the trip.",
+        ],
+        slots: [],
+        media: [{ src: "magicmap/slide-03.jpg", alt: "Slide presenting the personas Alf, Béa and Cam", caption: "Alf, Béa and Cam", wide: true }],
+      },
+      {
+        title: "First iteration: a modular paper system",
+        copy: "Rather than make another app, we explored how a familiar paper map could support shared planning through folding, touch and a connected pen.",
+        bullets: [
+          "Folding the left side opened interest lists; folding the right revealed the itinerary timeline.",
+          "Places could be added to lists or moved from the map into an itinerary.",
+          "Maps could connect into one shared surface or split into smaller linked maps.",
+          "The first version also explored a 3D itinerary view and group voting.",
+        ],
+        slots: [],
+      },
+      {
+        title: "First video prototype and walkthrough",
+        copy: "We presented the first video prototype to another student group and ran a generative walkthrough. The feedback showed where the interactions and the video explanation were hard to follow.",
+        bullets: [
+          "It was unclear how to transfer a place from TikTok, add it to a list, or plan a stop that was not already marked on the map.",
+          "Folding could hide information; navigation mode and sequential group approval were confusing or slow.",
+          "The keyboard interaction and disappearing markers were not visible enough in the video.",
+        ],
+        slots: [],
+        videos: [{ src: "magicmap/paper-prototype-first.mp4", caption: "First video prototype" }],
+      },
+      {
+        title: "Second iteration: clearer interactions",
+        copy: "We simplified the system in response to the walkthrough and designed for a group whose plans and connectivity can change.",
+        bullets: [
+          "Folding now opens a menu of functions and tabs, and the map resizes to fit.",
+          "Double-tapping the pen switches between automatic routing and a user-drawn route.",
+          "Itineraries can branch when a group needs to split; disruptions can trigger an alternate route.",
+          "Itineraries can be saved for offline navigation.",
+          "We removed the confusing 3D view and redundant voting system.",
+        ],
+        slots: [],
+        media: [{ src: "magicmap/slide-07.jpg", alt: "Slide listing the improvements made to Magic Map", caption: "Design changes after the walkthrough", wide: true }],
+      },
+      {
+        title: "Revised storyboard and paper prototype tests",
+        copy: "The storyboard follows Alf, Béa and Cam from planning their Paris visit to splitting the map and using a saved itinerary on the metro. We tested the first paper prototype, then tested it again after making changes.",
+        slots: [],
+        media: [
+          { src: "magicmap/nb-40.jpg", alt: "Photo of sticky notes with handwritten ideas on a storyboard template", caption: "Workshop: ideas on sticky notes" },
+          { src: "magicmap/nb-41.jpg", alt: "Photo of sticky notes with sketched interaction flows", caption: "Workshop: sketching the flows" },
+          { src: "magicmap/nb-59.jpg", alt: "Cards describing the role-play personas: Matcha Lover, Fancy Resto, Museum Enthusiast and The Vegan", caption: "Role-playing cards: each traveller has a goal" },
+          { src: "magicmap/nb-68.jpg", alt: "Storyboard frames next to the step-by-step description of an interaction", caption: "Storyboard frames and the interaction that goes with each" },
+        ],
+      },
+      {
+        title: "Final video prototype",
+        copy: "The second video prototype brings the redesigned interactions together: collaborative planning, branching itineraries and adapting the trip on the move.",
+        slots: [],
+        videos: [{ src: "magicmap/paper-prototype-revised.mp4", caption: "Second video prototype" }],
+      },
+    ],
+    decisions: [
+      ["A physical map, not another app", "Travellers already juggle several travel apps. A foldable map gives a shared surface that everyone can see and touch at the same time, and that still works when wifi doesn’t."],
+      ["Fold to switch between together and apart", "The same object supports shared planning when open and individual focus when folded, which is exactly the tension Cam’s persona exposed."],
+      ["Design for disruption", "Itineraries can be split and rerouted, and the scenarios include strikes and closures, because plans that never change aren’t how trips go."],
+    ],
+    outcome: [],
+    future: [
+      "Filtering locations based on categories.",
+      "Handling an overwhelming number of saved locations.",
+      "Map orientation.",
+      "Budget planning.",
+    ],
+    reflection: [
+      "Designing for a group is different from designing for one person: every feature has to work for the person leading, the person following and the person who has to leave early. Role-playing with concrete goals exposed problems that the sketches alone did not show.",
+    ],
+    hero: "Magic Map foldable map",
+  },
+
+  /* ------------------------------------------------------------------ JAVARISTA */
+  {
+    id: "javarista",
+    title: "Javarista",
+    kind: "Serious game · Java learning",
+    blurb: "A cozy coffee-making game that teaches Java logic through recipes, code blocks and playful experimentation.",
+    facts: [
+      ["Team", "Lydia Benosmane, Sidonie Minodier, Victoria Myot"],
+      ["My role", "Contributed across the project, with a focus on Unity game design, interface and code interactions, and visuals"],
+      ["Timeline", "November–December 2025"],
+      ["Methods", "Literature review · system design · Unity prototyping · usability study · think-aloud · workload questionnaire"],
+      ["Tools", "Unity · C#"],
+      ["Context", "Design of Interactive Systems · M1 HCI, Paris-Saclay University"],
+    ],
+    brief:
+      "Javarista is a serious game for learners who understand some computing concepts but have little or no Java experience. It teaches programming logic through a familiar barista task: prepare drinks by interacting with ingredients, actions and visual code blocks.",
+    links: [
+      { label: "Read the final report", hint: "Project research, design and usability study", href: "https://drive.google.com/file/d/1nIr8xcP-1RntoxgFBSpP-Od0-3PvWSeK/view?usp=sharing" },
+    ],
+    heroMedia: [
+      {
+        src: "javarista/game-layout.png",
+        alt: "Javarista game screen with code blocks and coffee-making scene",
+        caption: "The Javarista game interface",
+        wide: true,
+      },
+      {
+        src: "javarista/game-overview.png",
+        alt: "Initial sketch of the Javarista interface, with code canvas beside the coffee-making scene",
+        caption: "Initial interface sketch",
+        wide: true,
+      },
+    ],
+    steps: [
+      {
+        title: "A game-shaped way to learn Java",
+        copy: "We designed a relaxing 2D coffee-making game focused on the logic of Java rather than introductory types such as int or string. A code panel and a game panel make the relationship between instructions and their effects visible.",
+        bullets: [
+          "Players assemble pre-written code blocks into a Main function and run a recipe.",
+          "The game panel animates the drink preparation; incorrect logic produces visible failure feedback.",
+          "The barista metaphor connects ingredients, actions and repetition to programming concepts.",
+        ],
+        slots: [],
+        media: [{ src: "javarista/game-layout.png", alt: "Javarista prototype interface with code blocks and a coffee-making scene", caption: "The prototype combines a code workspace with the game scene", wide: true }],
+        externalVideos: [{ src: "https://www.youtube-nocookie.com/embed/hZGf8CLuChA", caption: "Javarista game overview" }],
+      },
+      {
+        title: "Level 1: scene to code",
+        copy: "Players make an iced coffee by directly interacting with the scene. Each ingredient they add creates a corresponding line of code, introducing methods and loops through repeated actions.",
+        slots: [],
+        media: [{ src: "javarista/level-one.png", alt: "Storyboard of the scene-to-code level, where adding ingredients generates code blocks", caption: "Level 1: actions in the scene generate code", wide: true }],
+        externalVideos: [{ src: "https://www.youtube-nocookie.com/embed/ZGMCn9l_ynQ", caption: "Level 1 gameplay prototype" }],
+      },
+      {
+        title: "Level 2: code to scene",
+        copy: "Players use draggable, snapping code blocks to follow a recipe and produce a drink. The reversed direction asks them to apply the logic introduced in the first level; hints highlight the next step when they are stuck.",
+        slots: [],
+        media: [
+          { src: "javarista/level-two.png", alt: "Storyboard of the code-to-scene level, using visual Java blocks to prepare a drink", caption: "Level 2: code controls the drink preparation", wide: true },
+          { src: "javarista/level-three-concept.png", alt: "Unimplemented concept for a level where players write Java methods", caption: "A later level was planned around writing methods from scratch", wide: true },
+        ],
+        externalVideos: [{ src: "https://www.youtube-nocookie.com/embed/ZDY-Jwn6Jb4", caption: "Level 2 gameplay prototype" }],
+      },
+      {
+        title: "Usability study",
+        copy: "We evaluated the two playable levels with 11 participants in their twenties who had a background or basic knowledge in computer science. Think-aloud sessions, observed errors and completion times were paired with a NASA-TLX-like workload questionnaire and follow-up interviews.",
+        slots: [],
+        media: [{ src: "javarista/workload-results.png", alt: "Bar chart comparing task-load scores with and without hints across six workload dimensions", caption: "Average task-load ratings with and without hints", wide: true }],
+      },
+    ],
+    decisions: [
+      ["Teach logic through a familiar metaphor", "Making a drink gives abstract programming ideas a concrete setting, while keeping the game focused on methods, functions and repetition."],
+      ["Try both directions between action and code", "The first level turns scene interactions into code; the second asks players to build code that changes the scene."],
+      ["Use feedback and hints to keep learners moving", "Recipe animations reveal what code does, while hints support players who are stuck without removing the challenge."],
+    ],
+    outcome: [],
+    evaluation: [
+      "7 of 11 participants preferred the code-to-scene level; the average rating for the logic between the game and code panels was 4.7/5.",
+      "10 of 11 found the instructions clear, and 4 of the 6 participants who tried hints found them useful.",
+      "All 11 participants said they enjoyed the game.",
+      "5 of 11 participants considered the prototype effective for learning; most participants already had intermediate or higher Java proficiency.",
+      "Level 1 took 61 seconds on average. Level 2 completion times varied widely, so the hint/no-hint averages were not conclusive.",
+    ],
+    evaluationNote: "This was a small usability study with 11 participants, not a controlled learning-outcomes study. The participants’ existing Java experience limits what we can conclude about effectiveness for beginners.",
+    future: [
+      "Add a tutorial and more Java concepts, including classes, conditionals, loops and objects.",
+      "Reduce drag-and-drop friction with undo and a mixed code-and-scene interaction.",
+      "Improve code-block readability and clipping, and add real-time feedback, sound and animation.",
+      "Complete planned features such as multiple orders and performance ratings.",
+    ],
+    reflection: [
+      "I contributed across the project, with a particular focus on Unity game design, interface and code-block interactions, and visuals. The study reinforced how important it is to test whether players understand not only the interface, but also the learning connection the design is meant to create.",
+    ],
+    hero: "Javarista Java-learning game",
+  },
+
+  /* ------------------------------------------------------------------ BOOKERFLY */
+  {
+    id: "bookerfly",
+    title: "Bookerfly",
+    kind: "Design project · Social reading",
+    blurb: "A community-based reading platform where group reads, annotations and snippets happen inside the book, without leaving the page.",
+    facts: [
+      ["Team", "Lydia Benosmane, Sidonie Minodier, Victoria Myot, Alizée Xia"],
+      ["Timeframe", "2026, in two stages: a pictorial, then a full paper"],
+      ["Tools", "Paper prototyping · HTML, CSS and JavaScript prototype · NASA-TLX · think-aloud"],
+      ["Context", "Design projects · M1 HCI, Paris-Saclay University"],
+    ],
+    links: [
+      { label: "Paper: Bookerfly, a Community-Based, Collaborative Reading System", hint: "PDF · 8 pages · design process and usability evaluation", href: "bookerfly/bookerfly-paper.pdf" },
+      { label: "Pictorial: Bookerfly, a Community-Driven and Collaborative Reading System", hint: "PDF · 5 pages · concept, scenario and first paper-prototype study", href: "bookerfly/bookerfly-pictorial.pdf" },
+    ],
+    brief:
+      "Reading has become a more popular leisure activity among students since the pandemic, and digital platforms such as Apple Books, Wattpad, Webtoon or Goodreads keep growing. Yet if readers want to discuss a passage or share a quote, they usually have to leave the book for an external messaging app, which breaks immersion. Bookerfly keeps the community inside the reading space, for students and young people on PC and tablets.",
+    heroMedia: { src: "bookerfly/slide-12.jpg", alt: "From paper prototypes to the high-fidelity interface of Bookerfly", caption: "From paper prototypes to implementation", wide: true },
+    steps: [
+      {
+        title: "Listening to readers",
+        copy: "We ran eight story interviews with frequent digital readers, six university students and two young adults, who read daily on phone, tablet and laptop. Two issues stood out.",
+        bullets: [
+          "Readers enjoy engaging with others, but to do so they have to leave the reading space, which breaks immersion.",
+          "Readers lack ways to interact with the story in its context. Often all they have are bookmarks and highlights.",
+        ],
+        slots: [],
+      },
+      {
+        title: "Reading the literature",
+        copy: "We read across three areas to ground the design.",
+        bullets: [
+          "Community: reading is a socially situated practice. Social influence shapes what we pick, how we read and how we interpret, and a sense of social presence improves satisfaction and engagement.",
+          "E-book usability: eye strain, poor navigation and restrictive use compared with paper. Real-world consistency, legible text, easy bookmarks and flexible annotations matter.",
+          "Digital annotations: the need for public and private levels, annotations that are visually distinct from the text, and that interrupt reading as little as possible. Too many annotations can overload the reader.",
+        ],
+        slots: [],
+      },
+      {
+        title: "Choosing the core features",
+        copy: "We brainstormed with the 10+10 technique around two dimensions, interaction with the content and interaction with other readers. To settle on features we ran a Delphi procedure: each of us listed 5 to 10 features, another group of experts consolidated them into 11 statements, and we each ranked them. Three came out on top: group reads, annotations and snippets.",
+        slots: [],
+        media: [
+          { src: "bookerfly/slide-21.jpg", alt: "The design space for Bookerfly: internal sharing, community and visibility, reading statistics, annotatable objects", caption: "Design space, part 1" },
+          { src: "bookerfly/slide-22.jpg", alt: "The design space for Bookerfly: device type, homepage layout and scrolling method", caption: "Design space, part 2" },
+        ],
+      },
+      {
+        title: "The features",
+        bullets: [
+          "Annotations: highlight, draw or write directly on the page, as on a paper book. A double tap clears the interface and opens a pen menu with a pen, a highlighter and an eraser. Other readers’ annotations can be shown or hidden with a toggle.",
+          "Snippets: select a passage, tap the scissors icon, then save it to your collection or send it to a chat. A snippet is a hyperlink back to its place in the book. If the receiver hasn’t reached that point yet, it appears as a spoiler they can choose to reveal.",
+          "Group reads: read, annotate and discuss the same book asynchronously. A chat slides in from the side of the page so discussion never covers the text.",
+          "Reading statistics: reading speed and weekly, monthly or yearly activity, shown publicly or kept private, with group statistics for group reads.",
+        ],
+        slots: [],
+        media: [
+          { src: "bookerfly/pict-03.jpg", alt: "Page of the pictorial showing Anne’s reading scenario with six interface screens", caption: "The scenario, from the pictorial: Anne reads, snips a passage and shares it with her group", wide: true },
+        ],
+      },
+      {
+        title: "Paper, then code",
+        copy: "We sketched every feature on paper first, drawing on the layouts of Apple Books and Wattpad so the home page would feel familiar. Our first study used paper prototypes with three participants, two prototype conditions and the Wizard of Oz technique. We then built a multi-page web prototype in HTML, CSS and JavaScript with Library, Reader, Chats, Snippets and Profile views, a mock data file standing in for a backend and localStorage so actions persisted.",
+        slots: [],
+        media: [
+          { src: "bookerfly/slide-09.jpg", alt: "Early sketches of Bookerfly", caption: "Early sketches", wide: true },
+          { src: "bookerfly/slide-11.jpg", alt: "Paper prototypes next to the final interface", caption: "Paper prototype and implementation" },
+          { src: "bookerfly/paper-05.jpg", alt: "Page of the paper showing the sketches and the move from paper prototype to implementation", caption: "Sketches to implementation, from the paper" },
+        ],
+      },
+      {
+        title: "Testing with eight readers",
+        copy: "Eight students (four women, four men, all in their early twenties, reading about five hours a week digitally) tested the prototype on a tablet and a laptop. Our hypothesis: participants can discover and use the core features without help and in reasonable time. They opened a group read, found the embedded chat, flipped pages, annotated with drawings and highlights, showed and hid other users’ annotations, shared a snippet to the group chat, and then explored freely for up to ten minutes. We collected think-aloud recordings, click logs, observation notes, a NASA-TLX questionnaire and open-ended feedback.",
+        slots: [],
+        media: [
+          { src: "bookerfly/slide-15.jpg", alt: "Box plots of the NASA-TLX results", caption: "NASA-TLX results" },
+          { src: "bookerfly/slide-16.jpg", alt: "Slide with discoverability results and favourite and least favourite features", caption: "Discoverability and favourite features" },
+        ],
+      },
+    ],
+    decisions: [
+      ["Keep the community inside the book", "Group chat is a panel on the page edge and snippets go straight to a chat, so readers never have to leave the story to talk about it."],
+      ["Annotations that can step aside", "Drawings can be toggled off by other readers. One participant said this meant they didn’t feel bad covering up words."],
+      ["Spoiler-aware sharing", "A snippet from a part of the book you haven’t reached is hidden until you choose to reveal it."],
+    ],
+    outcome: [],
+    evaluation: [
+      "Mental demand averaged 3.5 out of 7, neutral. Time demand was slightly higher, at 3.88, probably because participants were observed throughout. Frustration and workload were low.",
+      "The interface was easy to navigate. Five of eight found the features easy to discover, while three found snippets and annotations hard to find.",
+      "Favourite features: snippets (3), freehand annotations (2), activity statistics (2) and the snippet spoiler warning (1).",
+      "Five of eight thought group reads lived in the group chats, even though the tab was named Groups.",
+      "“I would actually love to have that in real life.” Every participant said they liked Bookerfly.",
+    ],
+    evaluationNote:
+      "Participants were recruited on our own campus, which may bias the feedback.",
+    future: [
+      "A help button reachable from every screen, with a short tutorial for new users.",
+      "Make features more discoverable: selecting text also opens annotation mode and highlights the text.",
+      "A scissors icon for snippets, a Snippets Collection instead of a gallery, and no more image snippets.",
+      "Bigger, more explicit icons and buttons, with a clearer highlighter icon.",
+      "Typed annotations on both tablet and laptop, undo, and explorable user profiles.",
+    ],
+    reflection: [
+      "Bookerfly showed me how far a feature can be right and still be hard to find. Participants loved snippets and annotations once they found them, so most of our improvements are about onboarding and clarity, not new functions.",
+    ],
+    hero: "Bookerfly interface",
+  },
+
+  /* ------------------------------------------------------------------ 3D PRINTING */
+  {
+    id: "khamsa",
+    title: "Yedd ouahda ma tsafek",
+    kind: "3D printing · Tangible interface",
+    blurb: "A board of 3D-printed Khamsas that joins Algerian embroidery with a protective symbol. “One hand can’t applaud.”",
+    facts: [
+      ["Title", "يد واحدة ما تصفق · Yedd ouahda ma tsafek · One hand can’t applaud"],
+      ["Timeframe", "10 March to 23 April 2026"],
+      ["Tools", "Autodesk Fusion with hand-drawn Bézier curves · PrusaSlicer · FDM 3D printing"],
+      ["Context", "The Art of Fabricating Tangible Interfaces 2026 · Paris-Saclay University"],
+    ],
+    links: [{ label: "Fabrication journal", hint: "Weekly documentation of the whole process", href: FAB_SITE }],
+    brief:
+      "I wanted to mix my culture with creative expression. I combined Algerian embroidery, specifically from Algiers, with Al Khamsa, the Hand of Fatima, a symbol used across North Africa as a protective emblem against negative energy and the evil eye. The result is a mosaic of printed hands joined into one board: each piece alone is a symbol, together they form a whole.",
+    heroMedia: { src: "fab/expo-1.jpg", alt: "The complete piece, a board of black and gold Khamsas, standing on an easel at the tangible interface show", caption: "The complete piece at the Tangible Interface Show, 23 April 2026" },
+    steps: [
+      {
+        title: "Week 1: finding the design",
+        copy: "I had already used Fusion and PrusaSlicer in a CAD class the term before, so this week was about the idea. I found inspiration on Pinterest, then drew every spiral by hand with Bézier curves in Fusion, until the sketch reached about 5,000 points and slowed Fusion down a lot. For the first test I printed half the design cut out and half extruded, to decide between a carved-out and a relief version.",
+        slots: [],
+        media: [
+          { src: "fab/inspo.jpg", alt: "Embroidery inspiration board", caption: "Inspiration" },
+          { src: "fab/start.jpg", alt: "The first lines of the Khamsa drawn in Fusion", caption: "Drawing begins" },
+          { src: "fab/progress.jpg", alt: "The Khamsa spirals in progress in Fusion", caption: "Spiral by spiral" },
+          { src: "fab/w1-final.jpg", alt: "The finished Khamsa drawing in Fusion", caption: "The first full design" },
+          { src: "fab/sliced.jpg", alt: "The design in the slicer", caption: "Sliced for the first test" },
+        ],
+      },
+      {
+        title: "Week 2: carved or raised, and how to connect",
+        copy: "The print took a very long time. I chose the carved-out version because it looked better. Some parts of the pattern weren’t connected and the print fell apart easily, so I removed every unconnected piece. I linked the Khamsas in a mosaic, noticed a shape in the middle and designed that as a piece too. For connectors I first tried a slit with a tab, then puzzle pieces, but a paper-thin print made puzzle pieces a bad idea.",
+        slots: [],
+        media: [
+          { src: "fab/printed-1.jpg", alt: "A purple Khamsa on the print bed", caption: "First print" },
+          { src: "fab/printed-destroyed.jpg", alt: "A purple Khamsa that has come apart", caption: "Unconnected parts fell apart" },
+          { src: "fab/connections-fullcircle.jpg", alt: "Several Khamsas joined in a circle in Fusion", caption: "Joining the Khamsas" },
+          { src: "fab/connectors-first-try.jpg", alt: "A first connector design in Fusion", caption: "First connector" },
+          { src: "fab/puzzle-pieces.jpg", alt: "Puzzle-piece connector design in Fusion", caption: "Puzzle pieces, abandoned" },
+        ],
+      },
+      {
+        title: "Week 3: less detail, better print",
+        copy: "I learned that each print had to be no bigger than 5 cm², so the details would not even be visible, and the detailed one was taking far too long. I dialled the detail down a lot, picked new inspiration, and again drew by hand in Fusion rather than importing an SVG. The print failed many times. I tested layer heights of 0.07 and 0.10 and chose 0.07 because it gave the finest detail.",
+        slots: [],
+        media: [
+          { src: "fab/second-inspo.jpg", alt: "A Khamsa necklace used as second inspiration", caption: "New inspiration" },
+          { src: "fab/final-vertices.jpg", alt: "Final design with its vertices in Fusion", caption: "The final design, point by point" },
+          { src: "fab/failed-print.jpg", alt: "A failed print on the bed", caption: "One of many failed prints" },
+          { src: "fab/07vs10.jpg", alt: "Two prints at 0.07 and 0.10 layer height", caption: "0.07 against 0.10" },
+          { src: "fab/new-print-white.jpg", alt: "A white print held up outdoors", caption: "Final settings and size" },
+          { src: "fab/disposition-1.jpg", alt: "Printed pieces arranged on a cutting mat", caption: "First arrangement" },
+        ],
+      },
+      {
+        title: "Week 4: failed prints and connectors",
+        copy: "A week of failed prints. I focused on connectors. The first ones weren’t pretty, and the next ideas were too three-dimensional, so I dropped them.",
+        slots: [],
+        media: [
+          { src: "fab/fail.jpg", alt: "A failed print in the printer", caption: "Another failure" },
+          { src: "fab/connectormaybe.jpg", alt: "A connector that might work", caption: "A maybe" },
+          { src: "fab/connectorno.jpg", alt: "A connector design that was rejected", caption: "A no" },
+        ],
+      },
+      {
+        title: "Week 5: new layout and mass printing",
+        copy: "Mostly mass printing the finished design, and deciding on a new arrangement of the pieces.",
+        slots: [],
+        media: [{ src: "fab/disposition-2.jpg", alt: "Red printed pieces arranged on the print bed", caption: "A new disposition" }],
+      },
+      {
+        title: "Week 6: connectors at last",
+        copy: "Mass printing looked good and I was halfway through covering my cardboard base, but I still had no connectors I liked. I designed many by hand, either keeping the arabesque theme or using moon and star shapes, which stand for my religion and for the flag of Algeria. They weren’t sturdy enough, the stars on the tips kept breaking, and so I turned them into arrows. Then I could assemble, with Marya’s help.",
+        slots: [],
+        media: [
+          { src: "fab/goldfail.jpg", alt: "Gold prints that failed", caption: "Gold attempt, failed" },
+          { src: "fab/halfway.jpg", alt: "Black pieces laid out on cardboard", caption: "Halfway through covering the board" },
+          { src: "fab/connectors-attempts.jpg", alt: "Several connector designs in Fusion", caption: "Connector attempts" },
+          { src: "fab/star-break.jpg", alt: "A broken star on a connector tip", caption: "The stars kept breaking" },
+          { src: "fab/final-connectors.jpg", alt: "The final arrow connectors", caption: "The final connectors" },
+          { src: "fab/maryaqueen.jpg", alt: "A friend assembling pieces at a table", caption: "Assembling, with Marya" },
+        ],
+      },
+    ],
+    decisions: [
+      ["Carved out, not raised", "The carved version showed the embroidery much better than the relief."],
+      ["Hand-drawn curves, not an SVG", "Every spiral and connector was drawn by hand with Bézier curves, even when it cost time. The drawing is part of the work."],
+      ["Transparent connectors", "I chose transparent connectors on purpose, to keep the visual harmony of the pieces."],
+    ],
+    outcome: [
+      { title: "The board", copy: "Black and gold Khamsas joined into a single mosaic.", slot: "Final board", media: { src: "fab/final.jpg", alt: "The finished board of black and gold Khamsas", caption: "The final board" } },
+    ],
+    reflection: [
+      "The tangible interface show took place on 23 April 2026. The piece’s name is a proverb: one hand can’t applaud. A single Khamsa is one hand, and only together do the pieces make something you can look at and touch.",
+      "Most of the work was failing: failed prints, failed connectors and broken stars. The lesson was to simplify, and to test at the real size, 5 cm², before drawing the details.",
+    ],
+    hero: "Khamsa mosaic",
+  },
+
+  /* ------------------------------------------------------------------ LA SUITE NUMERIQUE */
+  {
+    id: "suite-numerique",
+    title: "La Suite numérique",
+    kind: "Designathon · Public digital tools",
+    blurb: "Two sub-projects, Cagette and Suitespace, from the designathon led by Wendy Mackay, Michel Beaudouin-Lafon and Janin Koch around the French government’s digital suite.",
+    facts: [
+      ["Format", "Designathon led by Wendy Mackay, Michel Beaudouin-Lafon and Janin Koch"],
+      ["Subject", "La Suite numérique, the French government’s digital suite"],
+      ["Sub-projects", "Cagette · Suitespace"],
+      ["Prototype", "Figma"],
+    ],
+    links: [{ label: "Open the Figma prototype", hint: "Interactive prototype for La Suite numérique", href: FIG }],
+    brief:
+      "The designathon, led by Wendy Mackay, asked teams to rethink part of La Suite numérique, the French government’s digital tools. The work covered two sub-projects, Cagette and Suitespace, both designed and prototyped in Figma.",
+    steps: [
+      {
+        title: "Two sub-projects, one prototype",
+        copy: "Cagette and Suitespace are the two directions we explored. The clickable prototype shows both in action.",
+        bullets: ["Cagette", "Suitespace"],
+        slots: [],
+        note: "A detailed write-up of both sub-projects is coming. For now, open the Figma prototype above to see them.",
+      },
+    ],
+    decisions: [],
+    outcome: [],
+    reflection: [],
+    embed: { src: "https://embed.figma.com/proto/QqMLKWPJKWYx8Jpt5kvuM0/la-suite-num%C3%A9rique?node-id=691-1270&embed-host=share", caption: "The Figma prototype, live" },
+    hero: "La Suite numérique prototype",
+  },
+];
