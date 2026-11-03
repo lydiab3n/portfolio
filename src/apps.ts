@@ -472,49 +472,17 @@ function renderPhotos(body: HTMLElement, ctx: Ctx) {
 /* ---------- CV ---------- */
 const CV_URL = "cv.pdf";
 
-function renderCV(body: HTMLElement, ctx: Ctx) {
+function renderCV(body: HTMLElement) {
   body.innerHTML = `
   <div class="cvapp">
-    <div class="cv-top"><div><h1 class="display">${t("Curriculum vitae", "Curriculum vitae")}</h1><p class="role" id="cv-name">Lydia Benosmane · ${esc(hero.role)}</p></div><div class="cv-actions" hidden>
-      <a class="btn ghost" id="cv-open" target="_blank" rel="noreferrer">${t("Open in new tab", "Ouvrir dans un onglet")}</a><a class="btn" id="cv-dl" download="Lydia-Benosmane-CV.pdf">${t("Download", "Télécharger")}</a><button class="btn ghost" id="cv-swap">${t("Replace", "Remplacer")}</button></div></div>
+    <div class="cv-top"><div><h1 class="display">${t("Curriculum vitae", "Curriculum vitae")}</h1><p class="role" id="cv-name">Lydia Benosmane · ${esc(hero.role)}</p></div><div class="cv-actions">
+      <a class="btn ghost" id="cv-open" target="_blank" rel="noreferrer">${t("Open in new tab", "Ouvrir dans un onglet")}</a><a class="btn" id="cv-dl" download="Lydia-Benosmane-CV.pdf">${t("Download", "Télécharger")}</a></div></div>
     <div class="cv-stage" id="cv-stage"></div>
-    <input type="file" id="cv-file" accept="application/pdf" hidden />
   </div>`;
   const stage = body.querySelector<HTMLElement>("#cv-stage")!;
-  const actions = body.querySelector<HTMLElement>(".cv-actions")!;
-  const file = body.querySelector<HTMLInputElement>("#cv-file")!;
-  const show = (url: string) => {
-    stage.innerHTML = `<iframe title="Lydia Benosmane CV" src="${url}#toolbar=0&navpanes=0&view=FitH"></iframe>`;
-    (body.querySelector("#cv-open") as HTMLAnchorElement).href = url;
-    (body.querySelector("#cv-dl") as HTMLAnchorElement).href = url;
-    actions.hidden = false;
-  };
-  const drop = () => {
-    actions.hidden = true;
-    stage.innerHTML = `<label class="drop" for="cv-file" tabindex="0"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M14 6h15l9 9v25a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/><path d="M29 6v9h9M24 34V22m-5 5 5-5 5 5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><b>${t("Attach your CV", "Joignez votre CV")}</b><span>${t("Drop a PDF here, or click to choose a file", "Déposez un PDF ici, ou cliquez pour choisir un fichier")}</span><small>${t("To publish it with the site, save the file as", "Pour le publier avec le site, enregistrez le fichier sous")} <code>public/cv.pdf</code></small></label>`;
-  };
-  const take = (f?: File) => {
-    if (!f || f.type !== "application/pdf") return;
-    ctx.sfx.send();
-    show(URL.createObjectURL(f));
-  };
-  file.addEventListener("change", () => take(file.files?.[0]));
-  body.querySelector("#cv-swap")!.addEventListener("click", () => file.click());
-  stage.addEventListener("dragover", (e) => {
-    e.preventDefault();
-    stage.classList.add("over");
-  });
-  stage.addEventListener("dragleave", () => stage.classList.remove("over"));
-  stage.addEventListener("drop", (e) => {
-    e.preventDefault();
-    stage.classList.remove("over");
-    take(e.dataTransfer?.files[0]);
-  });
-  stage.addEventListener("keydown", (e) => e.key === "Enter" && file.click());
-  drop();
-  fetch(CV_URL, { method: "HEAD" })
-    .then((r) => r.ok && (r.headers.get("content-type") ?? "").includes("pdf") && show(CV_URL))
-    .catch(() => {});
+  stage.innerHTML = `<iframe title="Lydia Benosmane CV" src="${CV_URL}#toolbar=0&navpanes=0&view=FitH"></iframe>`;
+  (body.querySelector("#cv-open") as HTMLAnchorElement).href = CV_URL;
+  (body.querySelector("#cv-dl") as HTMLAnchorElement).href = CV_URL;
 }
 
 /* ---------- Mail ---------- */
@@ -542,8 +510,7 @@ function renderMail(body: HTMLElement, ctx: Ctx) {
 }
 
 
-/* ---------- Music and Videos: embeds you can point at your own playlist or video ---------- */
-/* Replace these two links with yours, or paste a link inside the app (it is remembered in this browser). */
+/* ---------- Music and Videos ---------- */
 const DEFAULT_PLAYLIST = "https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M";
 const DEFAULT_VIDEO = "https://www.youtube.com/watch?v=jfKfPfyJRdk";
 
@@ -560,45 +527,17 @@ const toYouTube = (u: string): string | null => {
 };
 
 function renderEmbed(kind: "music" | "video") {
-  return (body: HTMLElement, ctx: Ctx) => {
+  return (body: HTMLElement) => {
     const music = kind === "music";
-    const key = "embed-" + kind;
-    const parse = music ? (url: string) => toSpotify(url, document.body.classList.contains("dark")) : toYouTube;
-    const saved = (() => {
-      try {
-        return localStorage.getItem(key);
-      } catch {
-        return null;
-      }
-    })();
-    const src = parse(saved ?? "") ?? parse(music ? DEFAULT_PLAYLIST : DEFAULT_VIDEO)!;
+    const src = music
+      ? toSpotify(DEFAULT_PLAYLIST, document.body.classList.contains("dark"))!
+      : toYouTube(DEFAULT_VIDEO)!;
     body.innerHTML = `
     <div class="scroll emb">
       <div class="emb-heading">${music ? '<img class="emb-icon" src="music-note.png" alt="" />' : ""}<h1 class="display">${music ? t("Music", "Musique") : t("Videos", "Vidéos")}</h1></div>
       <p class="lede">${music ? t("What I have on repeat.", "Ce que j’écoute en boucle.") : t("Things I watched, made or just liked.", "Ce que j’ai regardé, fait ou simplement aimé.")}</p>
       <div class="emb-frame ${music ? "sp" : "yt"}"><iframe src="${src}" title="${music ? "Spotify" : "YouTube"}" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe></div>
-      <form class="emb-form"><input type="url" required aria-label="${music ? t("Spotify link", "Lien Spotify") : t("YouTube link", "Lien YouTube")}" placeholder="${music ? t("Paste a Spotify playlist, album or track link", "Collez un lien de playlist, d’album ou de titre Spotify") : t("Paste a YouTube video or playlist link", "Collez un lien de vidéo ou de playlist YouTube")}" /><button type="submit">${t("Use this", "Utiliser")}</button></form>
-      <p class="emb-note" role="status" aria-live="polite"></p>
     </div>`;
-    const f = body.querySelector<HTMLFormElement>(".emb-form")!;
-    const note = body.querySelector<HTMLElement>(".emb-note")!;
-    f.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const v = f.querySelector<HTMLInputElement>("input")!.value.trim();
-      const next = parse(v);
-      if (!next) {
-        note.textContent = music ? t("That does not look like a Spotify link. Copy it from Share, then Copy link.", "Ce n’est pas un lien Spotify. Copiez-le depuis Partager, puis Copier le lien.") : t("That does not look like a YouTube link.", "Ce n’est pas un lien YouTube.");
-        return;
-      }
-      body.querySelector<HTMLIFrameElement>("iframe")!.src = next;
-      try {
-        localStorage.setItem(key, v);
-      } catch {
-        /* storage unavailable */
-      }
-      note.textContent = t("Updated.", "Mis à jour.");
-      ctx.sfx.tick();
-    });
   };
 }
 
