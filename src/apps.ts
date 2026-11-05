@@ -1,6 +1,9 @@
-import { about, albums, cases, contact, education, hero, roles, skills, type Album, type CaseStudy, type DataTable, type ExternalVideoMedia, type Media, type VideoMedia } from "./content";
+import { cases, contact, education, hero, roles, skills, type CaseStudy, type DataTable, type ExternalVideoMedia, type Media, type VideoMedia } from "./content";
 import type { Sfx } from "./sound";
 import { t } from "./i18n";
+import { renderAbout } from "./about";
+import { renderPhotos } from "./photobook";
+import { extraApps, extraIcon } from "./extra-apps";
 
 export interface Ctx {
   sfx: Sfx;
@@ -48,7 +51,7 @@ export function icon(id: string): string {
     case "videos":
       return sq(`<rect x="19" y="29" width="62" height="42" rx="12" fill="var(--icon-paper)"/><path d="M44 40v20l18-10z" fill="var(--icon-accent)"/>`, ["var(--icon-accent-light)", "var(--icon-accent-deep)"], id);
     default:
-      return "";
+      return extraIcon(id);
   }
 }
 
@@ -58,27 +61,6 @@ const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
 const slot = (label: string, cls = "") => `<div class="slot ${cls}"><span>${esc(label)}</span></div>`;
 
 /* ---------- About ---------- */
-function renderAbout(body: HTMLElement) {
-  body.innerHTML = `
-  <div class="scroll about">
-    <header class="profile">
-      <div class="avatar" style="background-image:url(${PORTRAIT})" role="img" aria-label="${esc(about.photoAlt)}"></div>
-      <div>
-        <h1 class="display">Lydia Benosmane</h1>
-        <p class="role">${esc(hero.role)} · ${esc(hero.place)}</p>
-        <p class="status"><i></i>${esc(hero.status)}</p>
-      </div>
-    </header>
-    <p class="lede">${esc(hero.tagline)}</p>
-    <div class="prose">${about.paragraphs.map((p) => `<p>${p}</p>`).join("")}</div>
-    <div class="chips">${about.tags.map((x) => `<span>${esc(x)}</span>`).join("")}</div>
-    <h2 class="group-h">${t("Favourites", "Favoris")}</h2>
-    <ul class="rows">${about.favourites.map(([k, v]) => `<li><span>${esc(k)}</span><b>${esc(v)}</b></li>`).join("")}</ul>
-    <h2 class="group-h">${t("What I do", "Ce que je fais")}</h2>
-    <ul class="rows">${skills.map((s) => `<li><span>${esc(s)}</span></li>`).join("")}</ul>
-  </div>`;
-}
-
 /* ---------- Work ---------- */
 const clean = (v: string) =>
   v.split(" · ").filter((x) => !/TODO/i.test(x)).join(" · ");
@@ -262,221 +244,14 @@ function renderExperience(body: HTMLElement, ctx: Ctx) {
   show(0);
 }
 
-/* ---------- Photos: piles of pictures. Open a pile to flip through it as a cover-flow ---------- */
-function renderPhotos(body: HTMLElement, ctx: Ctx) {
-  const ttl = body.closest<HTMLElement>(".win")?.querySelector<HTMLElement>(".ttl") ?? null;
-  const appName = ttl?.textContent ?? "Photos";
-  const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const spread: [number, number, number][] = [
-    [-2, 0, 0],
-    [6, 10, -6],
-    [-8, -12, -10],
-    [11, 6, -14],
-  ];
-
-  const piles = albums
-    .map((a) => {
-      const cards = a.photos
-        .slice(0, 4)
-        .map((p, i) => `<img class="pc" src="${p.src}" alt="" draggable="false" style="--r:${spread[i][0]}deg;--x:${spread[i][1]}px;--y:${spread[i][2]}px;z-index:${4 - i}" />`)
-        .join("");
-      return `<button class="pile" data-id="${a.id}" aria-label="${t("Open", "Ouvrir")} ${esc(a.title)}, ${a.photos.length} ${t("photos", "photos")}"><span class="stack">${cards}</span><b>${esc(a.title)}</b><small>${a.photos.length} ${t("photos", "photos")}</small></button>`;
-    })
-    .join("");
-
-  body.innerHTML = `
-  <div class="scroll pl">
-    <h1 class="display">${t("Photos", "Photos")}</h1>
-    <p class="lede">${t("Piles of pictures. Pick one up and flip through it.", "Des piles de photos. Prenez-en une et feuilletez-la.")}</p>
-    <div class="piles">${piles}</div>
-  </div>
-  <div class="cf-view" hidden tabindex="-1" role="dialog" aria-label="${t("Photo pile", "Pile de photos")}">
-    <button class="cf-back" type="button"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M7.5 2 3.5 6l4 4"/></svg>${t("Piles", "Piles")}</button>
-    <div class="cf-stage"></div>
-    <p class="cf-cap" aria-live="polite"></p>
-  </div>`;
-
-  const list = body.querySelector<HTMLElement>(".pl")!;
-  const view = body.querySelector<HTMLElement>(".cf-view")!;
-  const stage = view.querySelector<HTMLElement>(".cf-stage")!;
-  const cap = view.querySelector<HTMLElement>(".cf-cap")!;
-  let cur: Album | null = null;
-  let els: HTMLElement[] = [];
-  let pos = 0;
-  let target = 0;
-  let raf = 0;
-  let lastPile: HTMLElement | null = null;
-
-  const paint = () => {
-    const k = Math.min(1, (stage.clientWidth || 820) / 860, (stage.clientHeight || 520) / 480);
-    els.forEach((el, i) => {
-      const o = i - pos;
-      const a = Math.abs(o);
-      const s = Math.sign(o);
-      const x = s * (Math.min(a, 1) * 168 + Math.max(a - 1, 0) * 112) * k;
-      const z = -Math.min(a, 1) * 130 - Math.max(a - 1, 0) * 24;
-      const rot = -s * Math.min(a, 1) * 56;
-      el.style.transform = `translate(-50%,-50%) translateX(${x}px) translateZ(${z}px) rotateY(${rot}deg) scale(${k})`;
-      el.style.zIndex = String(200 - Math.round(a * 10));
-      el.style.opacity = String(Math.max(0, 1 - Math.max(a - 3, 0) / 1.4));
-      el.style.pointerEvents = a > 4 ? "none" : "auto";
-    });
-  };
-  const caption = () => {
-    if (!cur) return;
-    const i = Math.round(target);
-    cap.textContent = `${i + 1} / ${cur.photos.length}  ·  ${cur.photos[i].caption}`;
-  };
-  const tick = () => {
-    pos += (target - pos) * 0.13;
-    if (Math.abs(target - pos) < 0.002) {
-      pos = target;
-      raf = 0;
-    } else raf = requestAnimationFrame(tick);
-    paint();
-  };
-  const to = (n: number) => {
-    if (!cur) return;
-    const next = Math.max(0, Math.min(cur.photos.length - 1, Math.round(n)));
-    if (next !== Math.round(target)) ctx.sfx.page();
-    target = next;
-    caption();
-    if (calm) {
-      pos = target;
-      paint();
-    } else if (!raf) raf = requestAnimationFrame(tick);
-  };
-
-  const open = (a: Album, from?: HTMLElement, start = 0) => {
-    cur = a;
-    lastPile = from ?? null;
-    stage.innerHTML = a.photos
-      .map((p, i) => `<figure class="cf-i" data-i="${i}"><img src="${p.src}" alt="${esc(p.caption)}" draggable="false" /></figure>`)
-      .join("");
-    els = Array.from(stage.querySelectorAll<HTMLElement>(".cf-i"));
-    target = Math.max(0, Math.min(a.photos.length - 1, start));
-    pos = calm ? target : target - Math.min(3, a.photos.length - 1) * 0.9;
-    list.hidden = true;
-    view.hidden = false;
-    paint();
-    caption();
-    if (ttl) ttl.textContent = a.title.toLowerCase().replace(/[^a-z0-9]+/g, "") + ".photos";
-    view.focus({ preventScroll: true });
-    ctx.sfx.page();
-    if (!calm && !raf) raf = requestAnimationFrame(tick);
-  };
-  const close = () => {
-    cancelAnimationFrame(raf);
-    raf = 0;
-    view.hidden = true;
-    list.hidden = false;
-    stage.innerHTML = "";
-    cur = null;
-    if (ttl) ttl.textContent = appName;
-    ctx.sfx.tick();
-    lastPile?.focus({ preventScroll: true });
-  };
-
-  body.querySelectorAll<HTMLElement>(".pile").forEach((b) => {
-    const a = albums.find((x) => x.id === b.dataset.id)!;
-    b.addEventListener("pointerenter", () => ctx.sfx.tick());
-    b.addEventListener("click", () => {
-      b.classList.add("lifted");
-      setTimeout(() => {
-        b.classList.remove("lifted");
-        open(a, b);
-      }, 220);
-    });
-  });
-  view.querySelector(".cf-back")!.addEventListener("click", close);
-  view.addEventListener("goto", ((e: CustomEvent<number>) => {
-    if (!cur) return;
-    target = pos = Math.max(0, Math.min(cur.photos.length - 1, e.detail));
-    paint();
-    caption();
-  }) as EventListener);
-
-  view.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowRight" || e.key === "ArrowDown" || e.key === "PageDown") {
-      e.preventDefault();
-      to(target + 1);
-    } else if (e.key === "ArrowLeft" || e.key === "ArrowUp" || e.key === "PageUp") {
-      e.preventDefault();
-      to(target - 1);
-    } else if (e.key === "Home") to(0);
-    else if (e.key === "End") to(1e6);
-    else if (e.key === "Escape") {
-      e.stopPropagation();
-      close();
-    }
-  });
-
-  let wheelAt = 0;
-  view.addEventListener(
-    "wheel",
-    (e) => {
-      e.preventDefault();
-      const d = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
-      if (Math.abs(d) < 6 || performance.now() < wheelAt) return;
-      wheelAt = performance.now() + 110;
-      to(target + (d > 0 ? 1 : -1));
-    },
-    { passive: false }
-  );
-
-  /* drag to scrub, tap a photo to bring it forward */
-  let down = false;
-  let x0 = 0;
-  let p0 = 0;
-  let moved = 0;
-  stage.addEventListener("pointerdown", (e) => {
-    down = true;
-    x0 = e.clientX;
-    p0 = pos;
-    moved = 0;
-    stage.setPointerCapture(e.pointerId);
-  });
-  stage.addEventListener("pointermove", (e) => {
-    if (!down || !cur) return;
-    const dx = e.clientX - x0;
-    moved = Math.max(moved, Math.abs(dx));
-    if (moved < 5) return;
-    stage.classList.add("drag");
-    cancelAnimationFrame(raf);
-    raf = 0;
-    pos = Math.max(0, Math.min(cur.photos.length - 1, p0 - dx / 110));
-    target = pos;
-    paint();
-    const i = Math.round(pos);
-    cap.textContent = `${i + 1} / ${cur.photos.length}  ·  ${cur.photos[i].caption}`;
-  });
-  const release = (e: PointerEvent) => {
-    if (!down) return;
-    down = false;
-    stage.classList.remove("drag");
-    if (moved < 5) {
-      const fig = (document.elementFromPoint(e.clientX, e.clientY) as HTMLElement | null)?.closest<HTMLElement>(".cf-i");
-      if (fig) to(Number(fig.dataset.i));
-    } else {
-      const i = Math.round(pos);
-      target = pos;
-      to(i);
-      if (!raf && !calm) raf = requestAnimationFrame(tick);
-    }
-  };
-  stage.addEventListener("pointerup", release);
-  stage.addEventListener("pointercancel", release);
-  addEventListener("resize", () => cur && paint());
-}
-
 /* ---------- CV ---------- */
-const CV_URL = "cv.pdf";
+const CV_URL = t("cv-en.pdf", "cv-fr.pdf");
 
 function renderCV(body: HTMLElement) {
   body.innerHTML = `
   <div class="cvapp">
     <div class="cv-top"><div><h1 class="display">${t("Curriculum vitae", "Curriculum vitae")}</h1><p class="role" id="cv-name">Lydia Benosmane · ${esc(hero.role)}</p></div><div class="cv-actions">
-      <a class="btn ghost" id="cv-open" target="_blank" rel="noreferrer">${t("Open in new tab", "Ouvrir dans un onglet")}</a><a class="btn" id="cv-dl" download="Lydia-Benosmane-CV.pdf">${t("Download", "Télécharger")}</a></div></div>
+      <a class="btn ghost" id="cv-open" target="_blank" rel="noreferrer">${t("Open in new tab", "Ouvrir dans un onglet")}</a><a class="btn" id="cv-dl" download="${t("Lydia-Benosmane-CV-EN.pdf", "Lydia-Benosmane-CV-FR.pdf")}">${t("Download", "Télécharger")}</a></div></div>
     <div class="cv-stage" id="cv-stage"></div>
   </div>`;
   const stage = body.querySelector<HTMLElement>("#cv-stage")!;
@@ -541,13 +316,15 @@ function renderEmbed(kind: "music" | "video") {
   };
 }
 
-export const APPS: AppDef[] = [
+const BASE_APPS: AppDef[] = [
   { id: "about", name: t("About Lydia", "À propos de Lydia"), w: 800, h: 640, keywords: "about me lydia bio profile hello propos présentation bonjour", render: renderAbout },
   { id: "work", name: t("Work", "Projets"), w: 1060, h: 740, split: 232, keywords: "work projects case studies lineup zen rooms portfolio projets travaux études de cas", render: renderWork, onArg: (b, a) => b.querySelector<HTMLElement>(`.side-i[data-case="${a}"]`)?.click() },
   { id: "experience", name: t("Experience", "Parcours"), w: 820, h: 560, split: 232, keywords: "experience roles skills cv resume jobs parcours formation compétences", render: renderExperience },
   { id: "cv", name: "CV", w: 860, h: 700, keywords: "cv resume curriculum vitae download pdf télécharger", render: renderCV },
-  { id: "photos", name: t("Photos", "Photos"), w: 1040, h: 720, keywords: "photos albums drawing illustration photography collage book images galerie", render: renderPhotos },
+  { id: "photos", name: t("Photos", "Photos"), w: 1040, h: 720, keywords: "photos book album cats sea beach algiers photography images galerie livre chats mer plage", render: renderPhotos },
   { id: "music", name: t("Music", "Musique"), w: 560, h: 660, keywords: "music spotify playlist songs listen musique écouter", render: renderEmbed("music") },
-  { id: "videos", name: t("Videos", "Vidéos"), w: 780, h: 600, keywords: "videos youtube watch film vidéos regarder", render: renderEmbed("video") },
   { id: "mail", name: t("Contact", "Contact"), w: 640, h: 520, keywords: "mail contact email hire hello linkedin instagram message courriel écrire", render: renderMail },
 ];
+
+/* Messages, Maps, Safari and Calendar sit before Contact in the Dock */
+export const APPS: AppDef[] = [...BASE_APPS.slice(0, -1), ...extraApps(), BASE_APPS[BASE_APPS.length - 1]];

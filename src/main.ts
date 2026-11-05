@@ -4,6 +4,7 @@ import { cases, hero } from "./content";
 import { Sfx } from "./sound";
 import { lang, switchLang, t } from "./i18n";
 import { Wallpaper } from "./wallpaper";
+import { mountPeek, mountWidgets, peekFor, type Peek } from "./desk";
 import { APPS, avatar, folderSvg, icon, type AppDef } from "./apps";
 
 const sfx = new Sfx();
@@ -23,8 +24,9 @@ root.innerHTML = `
 <div id="desktop">
   <header id="menubar">
     <div class="mb-l">
-      <button class="mb-btn logo" id="mb-logo" aria-label="Lydia Benosmane, ${t("about", "à propos")}"><svg class="straw" viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="bite"><rect width="24" height="24" fill="#fff"/><circle cx="21.2" cy="11.6" r="3.3" fill="#000"/><circle cx="20.2" cy="16.2" r="2.2" fill="#000"/></mask></defs><g mask="url(#bite)"><path d="M12 22C6.4 19.6 3 15 3.8 10.4 4.4 7.4 7.3 6.5 9.5 7.2c1 .3 1.8.7 2.5 1.1.7-.4 1.5-.8 2.5-1.1 2.2-.7 5.1.2 5.7 3.2.8 4.6-2.6 9.2-8.2 11.6z" fill="#ff3d6e"/><path d="M12 22c-5.6-2.4-9-7-8.2-11.6C4.4 7.4 7.3 6.5 9.5 7.2" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="1.2" stroke-linecap="round"/><g fill="#ffe3a3"><ellipse cx="8.6" cy="11.4" rx=".7" ry="1" transform="rotate(-18 8.6 11.4)"/><ellipse cx="12" cy="12.4" rx=".7" ry="1"/><ellipse cx="15.4" cy="11.4" rx=".7" ry="1" transform="rotate(18 15.4 11.4)"/><ellipse cx="9.8" cy="15.6" rx=".7" ry="1" transform="rotate(-12 9.8 15.6)"/><ellipse cx="14.2" cy="15.6" rx=".7" ry="1" transform="rotate(12 14.2 15.6)"/><ellipse cx="12" cy="18.6" rx=".65" ry=".95"/></g></g><path d="M12 8.4 9.1 5.6l.7 2.3-2.7-1 2.3 2-2.4 1.1 3.1-.2zM12 8.4l2.9-2.8-.7 2.3 2.7-1-2.3 2 2.4 1.1-3.1-.2z" fill="#37a653"/><path d="M12 8.4V4.2" stroke="#37a653" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+      <button class="mb-btn logo" id="mb-logo" aria-label="Lydia Benosmane, ${t("about", "à propos")}"><svg class="straw" viewBox="0 0 24 24" aria-hidden="true"><defs><path id="lv" d="M12 8.6C10.7 6.7 8.7 6 6.6 6.8 7.8 8.2 9.6 9 12 8.6ZM12 8.6c1.3-1.9 3.3-2.6 5.4-1.8-1.2 1.4-3 2.2-5.4 1.8ZM11.3 8.2c-.2-2.3.2-4.2 1.4-5.6.3 1.9.3 3.8.1 5.6Z"/><mask id="bite" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24" fill="#000"><rect width="24" height="24" fill="#fff"/><use href="#lv" stroke="#000" stroke-width="1.7" stroke-linejoin="round"/><circle cx="22.3" cy="12.2" r="3.5"/><circle cx="21.2" cy="17.7" r="2.5"/><g transform="rotate(0)"><ellipse cx="8.4" cy="12.4" rx=".55" ry=".85"/><ellipse cx="12" cy="12.2" rx=".55" ry=".85"/><ellipse cx="15.4" cy="12.4" rx=".55" ry=".85"/><ellipse cx="10.2" cy="15.8" rx=".55" ry=".85"/><ellipse cx="13.8" cy="15.8" rx=".55" ry=".85"/><ellipse cx="12" cy="19" rx=".55" ry=".85"/></g></mask></defs><path mask="url(#bite)" fill="currentColor" d="M12 8.3C14 6.8 18.4 6.7 20 9.8c1.2 2.4-.2 6.5-3.8 10-1.6 1.5-3 2.5-4.2 2.9-1.2-.4-2.6-1.4-4.2-2.9C4.2 16.3 2.8 12.2 4 9.8c1.6-3.1 6-3 8-1.5Z"/><use href="#lv" fill="currentColor"/></svg></button>
       <b id="mb-app">Lydia’s World</b>
+      <em class="credit" role="tooltip">${t("Designed and coded with my imagination, mixed with Claude ✦", "Conçu et codé avec mon imagination, mélangée à Claude ✦")}</em>
       <nav class="mb-nav" aria-label="Apps">
         <button data-open="about">${t("About", "À propos")}</button><button data-open="work">${t("Work", "Projets")}</button><button data-open="experience">${t("Experience", "Parcours")}</button><button data-open="cv">CV</button><button data-open="mail">Contact</button>
       </nav>
@@ -53,6 +55,7 @@ root.innerHTML = `
   <button id="sticky-hi" type="button">${t("Say hello", "Dire bonjour")}</button>
 </aside>
   <div id="folders"></div>
+  <section id="widgets" aria-label="${t("Selected work", "Projets à la une")}"></section>
   <div id="wins"></div>
 
   <nav id="dock" aria-label="Dock"></nav>
@@ -267,7 +270,10 @@ function toggleMax(w: Win) {
 }
 
 /* ================= Dock ================= */
-dock.innerHTML = APPS.map((a) => `<button class="dk" data-app="${a.id}" aria-label="${a.name}"><span class="ic">${icon(a.id)}</span><span class="tip">${a.name}</span><i class="dot"></i></button>`).join("");
+dock.innerHTML = APPS.map((a) => `<button class="dk" data-app="${a.id}" aria-label="${a.name}"><span class="ic">${icon(a.id)}</span><span class="tip">${a.name}</span><i class="dot"></i></button>`).join("")
+/* Extra project: the explorable 3D room, a small app at the end of the Dock that opens in its own tab */
+const roomIcon = `<svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="g-room" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4a3540"/><stop offset="1" stop-color="#1b1417"/></linearGradient></defs><rect width="100" height="100" rx="23" fill="url(#g-room)"/><path d="M22 36l28-14 28 14v36L50 86 22 72z" fill="#6b4a52"/><path d="M22 36l28 14v36L22 72z" fill="#8a5d5a"/><path d="M78 36L50 50v36l28-14z" fill="#f0943e"/><path d="M50 50L22 36l28-14 28 14z" fill="#ffd9a8"/><circle cx="64" cy="60" r="4" fill="#fff3d6"/><rect width="100" height="100" rx="23" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="1.5"/></svg>`;
+dock.insertAdjacentHTML("beforeend", `<button class="dk" data-app="room" aria-label="Explore my room (3D)"><span class="ic">${roomIcon}</span><span class="tip">${t("My room (3D)", "Ma chambre (3D)")}</span><i class="dot"></i></button>`);
 const dks = [...dock.querySelectorAll<HTMLElement>(".dk")];
 const cur = dks.map(() => 1);
 let mx: number | null = null;
@@ -314,6 +320,11 @@ dks.forEach((d) => {
   d.style.setProperty("--sz", base() + "px");
   d.addEventListener("click", () => {
     const id = d.dataset.app!;
+    if (id === "room") {
+      bounce(id);
+      window.open("room.html", "_blank", "noopener");
+      return;
+    }
     const w = wins.get(id);
     if (w && !w.min && active === w) {
       minimize(w);
@@ -343,26 +354,30 @@ function syncDock() {
 
 /* ================= Desktop: scattered icons, greeting, sticky note ================= */
 const fileSvg = `<svg viewBox="0 0 64 80" aria-hidden="true"><path d="M8 4h32l16 16v52a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4z" fill="var(--icon-paper)"/><path d="M40 4v12a4 4 0 0 0 4 4h12z" fill="var(--icon-fold)"/><path d="M14 40h36M14 49h36M14 58h24" stroke="var(--icon-line)" stroke-width="3" stroke-linecap="round" opacity="var(--icon-line-opacity)"/></svg>`;
-interface DeskIcon { label: string; x: number; y: number; file?: boolean; go: () => void }
+interface DeskIcon { label: string; x: number; y: number; file?: boolean; fk?: string; peek?: Peek; go: () => void }
+/* each folder wears a texture that matches its category (light and dark versions) */
+const folderKey: Record<string, string> = { lineup: "product", "magic-map": "product", bookerfly: "product", "suite-numerique": "civic", "zen-rooms": "immersive", javarista: "games", khamsa: "tangible" };
+const texFolder = (k: string) => `<img class="fi-l" src="folders/light-${k}.png" alt="" draggable="false" /><img class="fi-d" src="folders/dark-${k}.png" alt="" draggable="false" />`;
 const caseSpot: Record<string, [number, number]> = {
-  lineup: [78, 12],
-  "zen-rooms": [89, 25],
-  "magic-map": [81, 38],
-  bookerfly: [90, 50],
-  khamsa: [80, 62],
-  "suite-numerique": [89, 74],
+  lineup: [79, 27],
+  "zen-rooms": [89, 34],
+  "magic-map": [79, 41],
+  javarista: [89, 48],
+  bookerfly: [79, 55],
+  khamsa: [89, 62],
+  "suite-numerique": [79, 69],
 };
 const deskIcons: DeskIcon[] = [
-  { label: "About me", x: 15, y: 54, go: () => openApp("about") },
-  { label: "Resume.pdf", x: 6, y: 38, file: true, go: () => openApp("cv") },
-  { label: "Albums", x: 24, y: 70, go: () => openApp("photos") },
+  { label: "About me", x: 15, y: 54, fk: "about", peek: { title: t("About me", "À propos de moi"), kind: t("Folder", "Dossier"), blurb: t("Who I am, where I come from, my two cats, and what I’m looking for next.", "Qui je suis, d’où je viens, mes deux chats, et ce que je cherche."), cta: t("Double-click to open", "Double-clic pour ouvrir") }, go: () => openApp("about") },
+  { label: "Resume.pdf", x: 6, y: 38, file: true, peek: { title: "Resume.pdf", kind: t("Document", "Document"), blurb: t("Education, experience and skills, ready to read or download.", "Formation, expérience et compétences, à lire ou à télécharger."), cta: t("Double-click to open", "Double-clic pour ouvrir") }, go: () => openApp("cv") },
+  { label: "Albums", x: 6, y: 62, fk: "albums", peek: { title: t("Photos", "Photos"), kind: t("Photo book", "Livre photo"), blurb: t("A little book to swipe through: my cats Ferrari and Lamborghini, the sea, Algiers.", "Un petit livre à feuilleter : mes chats Ferrari et Lamborghini, la mer, Alger."), cta: t("Double-click to open", "Double-clic pour ouvrir") }, go: () => openApp("photos") },
   ...cases.map((c, i) => {
     const [x, y] = caseSpot[c.id] ?? [78, 14 + i * 12];
-    return { label: c.title.replace(" — VR", ""), x, y, go: () => openApp("work", c.id) };
+    return { label: c.title.replace(" — VR", ""), x, y, fk: folderKey[c.id] ?? "product", peek: peekFor(c), go: () => openApp("work", c.id) };
   }),
 ];
 $("#folders").innerHTML = deskIcons
-  .map((c, i) => `<button class="fld${c.file ? " file" : ""}" data-i="${i}" style="left:${c.x}%;top:${c.y}%"><span class="fi">${c.file ? fileSvg : folderSvg}</span><span class="fl">${c.label}</span></button>`)
+  .map((c, i) => `<button class="fld${c.file ? " file" : ""}" data-i="${i}" style="left:min(${c.x}%, calc(100% - 100px));top:${c.y}%"><span class="fi">${c.file ? fileSvg : c.fk ? texFolder(c.fk) : folderSvg}</span><span class="fl">${c.label}</span></button>`)
   .join("");
 const letters = (w: string) => [...w].map((ch) => `<span class="lt">${ch === " " ? "&nbsp;" : ch}</span>`).join("");
 $("#greet").innerHTML = `<p>${t("welcome to", "bienvenue sur")}</p><h1 aria-label="${t("Lydia’s portfolio", "Le portfolio de Lydia")}"><span class="wd" aria-hidden="true">${letters(t("Lydia’s", "portfolio"))}</span> <span class="wd" aria-hidden="true">${letters(t("portfolio", "de Lydia"))}</span><span class="lt dot" aria-hidden="true">.</span></h1><small>${hero.role}, ${hero.place}</small>`;
@@ -432,6 +447,10 @@ document.querySelectorAll<HTMLButtonElement>(".lang button").forEach((b) =>
 );
 $("#sticky-hi").addEventListener("click", () => openApp("mail"));
 
+/* widgets */
+mountWidgets($("#widgets"), cases, openApp, () => sfx.tick());
+const peek = mountPeek(desktop);
+
 let dragged = false;
 document.querySelectorAll<HTMLElement>(".fld").forEach((f) => {
   const it = deskIcons[Number(f.dataset.i)];
@@ -443,6 +462,15 @@ document.querySelectorAll<HTMLElement>(".fld").forEach((f) => {
     if (matchMedia("(pointer: coarse)").matches) it.go();
   });
   f.addEventListener("dblclick", () => !dragged && it.go());
+  if (it.peek) {
+    const p = it.peek;
+    const showIt = () => !dragged && !down && peek.show(f, p, it.go);
+    f.addEventListener("pointerenter", (e) => e.pointerType === "mouse" && showIt());
+    f.addEventListener("pointerleave", () => peek.hide());
+    f.addEventListener("pointerdown", () => peek.hide());
+    f.addEventListener("focus", showIt);
+    f.addEventListener("blur", () => peek.hide());
+  }
   f.addEventListener("keydown", (e) => e.key === "Enter" && it.go());
   let sx = 0, sy = 0, ox = 0, oy = 0, down = false;
   f.addEventListener("pointerdown", (e) => {
@@ -484,8 +512,11 @@ $("#mb-logo").addEventListener("click", () => openApp("about"));
 const clock = () => {
   const d = new Date();
   $("#mb-clock").textContent = d.toLocaleDateString(LOC, { weekday: "short", day: "numeric", month: "short" }) + "  " + d.toLocaleTimeString(LOC, { hour: "2-digit", minute: "2-digit" });
-  $("#lk-time").textContent = d.toLocaleTimeString(LOC, { hour: "2-digit", minute: "2-digit" });
-  $("#lk-date").textContent = d.toLocaleDateString(LOC, { weekday: "long", day: "numeric", month: "long" });
+  const lt = document.getElementById("lk-time");
+  const ld = document.getElementById("lk-date");
+  if (!lt || !ld) return;
+  lt.textContent = d.toLocaleTimeString(LOC, { hour: "2-digit", minute: "2-digit" });
+  ld.textContent = d.toLocaleDateString(LOC, { weekday: "long", day: "numeric", month: "long" });
 };
 clock();
 setInterval(clock, 10000);
@@ -659,16 +690,6 @@ function enterDesktop(quiet = false) {
   want.forEach((id, i) => setTimeout(() => openApp(id, params.get("case") ?? undefined), quiet ? 0 : 700 + i * 250));
   const sc = Number(params.get("scroll") ?? 0);
   if (sc) setTimeout(() => ((document.querySelector("#case-main .scroll") as HTMLElement).scrollTop = sc), 600);
-  const alb = params.get("album");
-  if (alb) {
-    // deep link: ?open=photos&album=photography&page=2
-    setTimeout(() => {
-      const root = wins.get("photos")?.body;
-      root?.querySelector<HTMLElement>(`.pile[data-id="${alb}"]`)?.click();
-      const n = Number(params.get("page") ?? 0);
-      setTimeout(() => root?.querySelector<HTMLElement>(".cf-view")?.dispatchEvent(new CustomEvent("goto", { detail: n })), 500);
-    }, 400);
-  }
   if (!quiet && !mobile()) setTimeout(notify, 4200);
   if (params.get("notif")) setTimeout(notify, 700);
 }
