@@ -707,50 +707,15 @@ function lock() {
   setTimeout(() => addEventListener("keydown", key), 600);
 }
 
-function startBoot(withSound: boolean) {
-  sfx.enabled = withSound;
-  if (withSound) sfx.unlock();
-  else setSound(false);
-  $("#cc-sound").setAttribute("aria-pressed", String(withSound));
-  $("#cc-sound small").textContent = withSound ? "On" : "Off";
-  if (withSound) sfx.chime();
-  const boot = $("#boot");
-  boot.classList.add("run");
-  bootTimer = window.setTimeout(() => {
-    boot.classList.add("done");
-    lock();
-    setTimeout(() => boot.remove(), 1200);
-  }, reduce ? 300 : 2600);
-}
-
-let bootTimer = 0;
-/** Skip straight to the desktop. Keeps sound on unless the visitor chose silence. */
-function skipIntro(withSound: boolean) {
-  if (entered) return;
-  clearTimeout(bootTimer);
-  if (withSound) sfx.unlock();
-  else setSound(false);
-  const boot = document.getElementById("boot");
-  boot?.classList.add("done");
-  setTimeout(() => boot?.remove(), 1200);
-  body.classList.remove("booting");
-  enterDesktop(true);
-  if (!mobile()) setTimeout(notify, 3200);
-}
-
 if (localStorage.getItem("dark") === "1" || params.get("dark")) setTheme(true);
 $("#cc-theme").addEventListener("click", () => localStorage.setItem("dark", body.classList.contains("dark") ? "1" : "0"));
 
-if (params.get("s")) {
-  sfx.enabled = false;
-  $("#boot").remove();
-  body.classList.remove("booting");
-  if (params.get("s") === "lock") lock();
-  else enterDesktop(true);
-} else {
-  $("#boot-go").addEventListener("click", () => startBoot(true));
-  $("#boot-quiet").addEventListener("click", () => startBoot(false));
-  $("#boot-skip0").addEventListener("click", () => skipIntro(true));
-  $("#boot-skip").addEventListener("click", () => skipIntro(sfx.enabled));
-  addEventListener("keydown", (e) => e.key === "Escape" && document.getElementById("boot") && skipIntro(sfx.enabled));
+/* no intro: the desktop opens straight away (?s=lock still shows the lock screen) */
+sfx.enabled = false;
+$("#boot").remove();
+body.classList.remove("booting");
+if (params.get("s") === "lock") lock();
+else {
+  enterDesktop(true);
+  if (!params.get("s") && !mobile()) setTimeout(notify, 3200);
 }
