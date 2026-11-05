@@ -31,12 +31,14 @@ export function mountWidgets(box: HTMLElement, cases: CaseStudy[], open: (id: st
     const art = th?.kind === "art" ? th.v : th ? `<img src="${th.v}" alt="" draggable="false" />` : "";
     return `<button type="button" class="wgt m" data-open="work" data-arg="${c.id}" aria-label="${t("Open", "Ouvrir")} ${esc(c.title)}"><span class="wgt-art">${art}</span><span class="wgt-l"><b>${esc(c.title)}</b><small>${esc(c.kind.split(" · ")[0])}</small></span></button>`;
   };
-  box.innerHTML = `<div class="wgt-row">
-    ${proj("magic-map")}
-    ${proj("suite-numerique")}
+  box.innerHTML = `<div class="wgt-grid">
+    <section class="wgt-sel" aria-labelledby="wgt-sel-h">
+      <header class="wgt-h"><h2 id="wgt-sel-h">${t("Selected work", "Projets choisis")}</h2><button type="button" class="wgt-all" data-open="work">${t("All my work", "Tous mes projets")}</button></header>
+      <div class="wgt-pair">${proj("magic-map")}${proj("suite-numerique")}</div>
+    </section>
     <button type="button" class="wgt s clk" data-open="calendar" aria-label="${t("Open the calendar", "Ouvrir le calendrier")}"><span class="clk-dot"></span><b class="clk-t">${t("Open to internships", "Ouverte aux stages")}</b><span class="clk-d">${t("March 2027 · 6 months", "Mars 2027 · 6 mois")}</span></button>
   </div>`;
-  box.querySelectorAll<HTMLElement>(".wgt").forEach((w) =>
+  box.querySelectorAll<HTMLElement>(".wgt, .wgt-all").forEach((w) =>
     w.addEventListener("click", () => {
       tick();
       open(w.dataset.open!, w.dataset.arg);

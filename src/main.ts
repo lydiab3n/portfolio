@@ -4,7 +4,7 @@ import { cases, hero } from "./content";
 import { Sfx } from "./sound";
 import { lang, switchLang, t } from "./i18n";
 import { Wallpaper } from "./wallpaper";
-import { mountPeek, mountWidgets, peekFor, type Peek } from "./desk";
+import { mountPeek, mountWidgets, type Peek } from "./desk";
 import { APPS, avatar, folderSvg, icon, type AppDef } from "./apps";
 
 const sfx = new Sfx();
@@ -355,30 +355,18 @@ function syncDock() {
 
 /* ================= Desktop: scattered icons, greeting, sticky note ================= */
 const fileSvg = `<svg viewBox="0 0 64 80" aria-hidden="true"><path d="M8 4h32l16 16v52a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4z" fill="var(--icon-paper)"/><path d="M40 4v12a4 4 0 0 0 4 4h12z" fill="var(--icon-fold)"/><path d="M14 40h36M14 49h36M14 58h24" stroke="var(--icon-line)" stroke-width="3" stroke-linecap="round" opacity="var(--icon-line-opacity)"/></svg>`;
+/** x, y: column and row in the little icon grid next to the widgets */
 interface DeskIcon { label: string; x: number; y: number; file?: boolean; fk?: string; peek?: Peek; go: () => void }
-/* each folder wears a texture that matches its category (light and dark versions) */
-const folderKey: Record<string, string> = { lineup: "product", "magic-map": "product", bookerfly: "product", "suite-numerique": "civic", "zen-rooms": "immersive", javarista: "games", khamsa: "tangible" };
 const texFolder = (k: string) => `<img class="fi-l" src="folders/light-${k}.png" alt="" draggable="false" /><img class="fi-d" src="folders/dark-${k}.png" alt="" draggable="false" />`;
-const caseSpot: Record<string, [number, number]> = {
-  lineup: [79, 27],
-  "zen-rooms": [89, 34],
-  "magic-map": [79, 41],
-  javarista: [89, 48],
-  bookerfly: [79, 55],
-  khamsa: [89, 62],
-  "suite-numerique": [79, 69],
-};
 const deskIcons: DeskIcon[] = [
-  { label: "About me", x: 15, y: 54, fk: "about", peek: { title: t("About me", "À propos de moi"), kind: t("Folder", "Dossier"), blurb: t("Who I am, where I come from, my two cats, and what I’m looking for next.", "Qui je suis, d’où je viens, mes deux chats, et ce que je cherche."), cta: t("Double-click to open", "Double-clic pour ouvrir") }, go: () => openApp("about") },
-  { label: "Resume.pdf", x: 6, y: 38, file: true, peek: { title: "Resume.pdf", kind: t("Document", "Document"), blurb: t("Education, experience and skills, ready to read or download.", "Formation, expérience et compétences, à lire ou à télécharger."), cta: t("Double-click to open", "Double-clic pour ouvrir") }, go: () => openApp("cv") },
-  { label: "Albums", x: 6, y: 62, fk: "albums", peek: { title: t("Photos", "Photos"), kind: t("Photo book", "Livre photo"), blurb: t("A little book to swipe through: my cats Ferrari and Lamborghini, the sea, Algiers.", "Un petit livre à feuilleter : mes chats Ferrari et Lamborghini, la mer, Alger."), cta: t("Double-click to open", "Double-clic pour ouvrir") }, go: () => openApp("photos") },
-  ...cases.map((c, i) => {
-    const [x, y] = caseSpot[c.id] ?? [78, 14 + i * 12];
-    return { label: c.title.replace(" — VR", ""), x, y, fk: folderKey[c.id] ?? "product", peek: peekFor(c), go: () => openApp("work", c.id) };
-  }),
+  { label: "About me", x: 1, y: 0, fk: "about", peek: { title: t("About me", "À propos de moi"), kind: t("Folder", "Dossier"), blurb: t("Who I am, where I come from, my two cats, and what I’m looking for next.", "Qui je suis, d’où je viens, mes deux chats, et ce que je cherche."), cta: t("Double-click to open", "Double-clic pour ouvrir") }, go: () => openApp("about") },
+  { label: "Resume.pdf", x: 0, y: 1, file: true, peek: { title: "Resume.pdf", kind: t("Document", "Document"), blurb: t("Education, experience and skills, ready to read or download.", "Formation, expérience et compétences, à lire ou à télécharger."), cta: t("Double-click to open", "Double-clic pour ouvrir") }, go: () => openApp("cv") },
+  { label: "Albums", x: 1, y: 1, fk: "albums", peek: { title: t("Photos", "Photos"), kind: t("Photo book", "Livre photo"), blurb: t("A little book to swipe through: my cats Ferrari and Lamborghini, the sea, Algiers.", "Un petit livre à feuilleter : mes chats Ferrari et Lamborghini, la mer, Alger."), cta: t("Double-click to open", "Double-clic pour ouvrir") }, go: () => openApp("photos") },
+  /* every project lives in one folder; the widgets above it show the selected ones */
+  { label: t("My work", "Mes projets"), x: 0, y: 0, fk: "product", peek: { title: t("My work", "Mes projets"), kind: t("Folder", "Dossier") + " · " + cases.length + " " + t("projects", "projets"), blurb: cases.map((c) => c.title.replace(" — VR", "")).join(", "), cta: t("Double-click to open", "Double-clic pour ouvrir") }, go: () => openApp("work") },
 ];
 $("#folders").innerHTML = deskIcons
-  .map((c, i) => `<button class="fld${c.file ? " file" : ""}" data-i="${i}" style="left:min(${c.x}%, calc(100% - 100px));top:${c.y}%"><span class="fi">${c.file ? fileSvg : c.fk ? texFolder(c.fk) : folderSvg}</span><span class="fl">${c.label}</span></button>`)
+  .map((c, i) => `<button class="fld${c.file ? " file" : ""}" data-i="${i}" style="--c:${c.x};--r:${c.y}"><span class="fi">${c.file ? fileSvg : c.fk ? texFolder(c.fk) : folderSvg}</span><span class="fl">${c.label}</span></button>`)
   .join("");
 const letters = (w: string) => [...w].map((ch) => `<span class="lt">${ch === " " ? "&nbsp;" : ch}</span>`).join("");
 $("#greet").innerHTML = `<p>${t("welcome to", "bienvenue sur")}</p><h1 aria-label="${t("Lydia’s portfolio", "Le portfolio de Lydia")}"><span class="wd" aria-hidden="true">${letters(t("Lydia’s", "portfolio"))}</span> <span class="wd" aria-hidden="true">${letters(t("portfolio", "de Lydia"))}</span><span class="lt dot" aria-hidden="true">.</span></h1><small>${hero.role}, ${hero.place}</small>`;
