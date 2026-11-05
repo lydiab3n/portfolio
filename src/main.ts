@@ -321,8 +321,9 @@ dks.forEach((d) => {
   d.addEventListener("click", () => {
     const id = d.dataset.app!;
     if (id === "room") {
+      /* same tab, so no pop-up blocker can stop it; the room has a "← Portfolio" button to come back */
       bounce(id);
-      window.open("room.html", "_blank", "noopener");
+      setTimeout(() => location.assign(`room.html?lang=${lang}`), reduce ? 0 : 260);
       return;
     }
     const w = wins.get(id);
