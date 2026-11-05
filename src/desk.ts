@@ -33,7 +33,7 @@ export function mountWidgets(box: HTMLElement, cases: CaseStudy[], open: (id: st
   };
   box.innerHTML = `<div class="wgt-grid">
     <section class="wgt-sel" aria-labelledby="wgt-sel-h">
-      <header class="wgt-h"><h2 id="wgt-sel-h">${t("Selected work", "Projets choisis")}</h2><button type="button" class="wgt-all" data-open="work">${t("All my work", "Tous mes projets")}</button></header>
+      <header class="wgt-h"><h2 id="wgt-sel-h">${t("Selected work", "Projets choisis")}</h2><button type="button" class="wgt-all" data-open="work">${t("All my work", "Tout voir")}</button></header>
       <div class="wgt-pair">${proj("magic-map")}${proj("suite-numerique")}</div>
     </section>
     <button type="button" class="wgt s clk" data-open="calendar" aria-label="${t("Open the calendar", "Ouvrir le calendrier")}"><span class="clk-dot"></span><b class="clk-t">${t("Open to internships", "Ouverte aux stages")}</b><span class="clk-d">${t("March 2027 · 6 months", "Mars 2027 · 6 mois")}</span></button>

@@ -43,14 +43,14 @@ root.innerHTML = `
   <div id="greet"></div>
 
 <aside id="sticky" aria-label="${t("To do", "À faire")}">
-  <b>${t("To do:", "À faire :")}</b>
+  <header><b>${t("To do", "À faire")}</b><span>4 ${t("left", "restants")}</span></header>
   <ul>
     <li>${t("Land my dream UX internship", "Décrocher le stage UX de mes rêves")}</li>
     <li>${t("Design something that makes people smile", "Créer un design qui donne le sourire")}</li>
-    <li><s>${t("Make peace with Figma Auto Layout", "Faire la paix avec l'Auto Layout de Figma")}</s></li>
+    <li class="done">${t("Make peace with Figma Auto Layout", "Faire la paix avec l'Auto Layout de Figma")}</li>
     <li>${t("Finish my Master's with my sanity intact", "Finir mon Master sans perdre la tête")}</li>
     <li>${t("Find the best matcha in Paris", "Trouver le meilleur matcha de Paris")}</li>
-    <li><s>${t("Stop overthinking every pixel", "Arrêter de trop réfléchir à chaque pixel")}</s></li>
+    <li class="done">${t("Stop overthinking every pixel", "Arrêter de trop réfléchir à chaque pixel")}</li>
   </ul>
   <button id="sticky-hi" type="button">${t("Say hello", "Dire bonjour")}</button>
 </aside>
