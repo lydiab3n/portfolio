@@ -4,7 +4,7 @@ import { frAbout, frAlbums, frCases, frEducation, frHero, frRoles, frSkills, frT
 /* All copy lives here. Items marked TODO are placeholders to replace with real details. */
 
 export interface Media { src: string; alt: string; caption?: string; wide?: boolean }
-export interface VideoMedia { src: string; caption: string }
+export interface VideoMedia { src: string; caption: string; poster?: string }
 export interface ExternalVideoMedia { src: string; caption: string }
 export interface DataTable { caption?: string; head: string[]; rows: string[][] }
 export interface Step {

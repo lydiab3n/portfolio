@@ -702,28 +702,74 @@ export const frCases: Record<string, CaseFr> = {
 
   "suite-numerique": {
     kind: "Designathon · Outils numériques publics",
-    blurb: "Deux sous-projets, Cagette et Suitespace, issus du designathon dirigé par Wendy Mackay autour de la suite numérique de l’État.",
+    blurb: "Et si la suite numérique de l’État n’avait plus d’applications ? Dans SuiteSpace, Tchap, Grist, Visio et les autres deviennent des objets sur un seul canevas partagé, et Cagette permet de les emporter d’un espace à l’autre.",
     facts: [
-      ["Format", "Designathon dirigé par Wendy Mackay"],
-      ["Sujet", "La Suite numérique, la suite numérique de l’État français"],
-      ["Sous-projets", "Cagette · Suitespace"],
-      ["Prototype", "Figma"],
+      ["Contexte", "Stage à l’Inria (Ex-Situ), designathon co-organisé avec la DINUM et ENSEMBLE"],
+      ["Dirigé par", "Wendy Mackay, Michel Beaudouin-Lafon et Janin Koch"],
+      ["Mon équipe", "Groupe 5, SuiteSpace : Lydia Benosmane, Emma-Jade De Moor, Victoria Myot"],
+      ["Calendrier", "Ateliers en mai 2026, designathon en juin 2026"],
+      ["Méthodes", "Conception participative · Prototypage papier · Prototypage vidéo"],
     ],
     links: [{ label: "Ouvrir le prototype Figma", hint: "Prototype interactif de La Suite numérique" }],
+    videoCaption: "SuiteSpace, notre prototype vidéo final : une équipe réorganise son planning quand une collègue est malade",
     brief:
-      "Le designathon, dirigé par Wendy Mackay, demandait aux équipes de repenser une partie de La Suite numérique, les outils numériques de l’État français. Le travail a porté sur deux sous-projets, Cagette et Suitespace, tous deux conçus et prototypés dans Figma.",
-    embedCaption: "Le prototype Figma, en direct",
+      "La Suite numérique regroupe les outils numériques de l’État pour les agents publics : Tchap pour les messages, Visio pour les appels, Grist pour les tableaux, Docs et d’autres. Chaque outil est une application séparée : un même travail se retrouve éparpillé dans plusieurs fenêtres, et faire passer une information de l’une à l’autre oblige à copier, re-téléverser et chercher. Le designathon posait une question audacieuse : et si on arrêtait de penser en applications ? Nous sommes partis des substrats d’interaction, un concept développé par Wendy Mackay et Michel Beaudouin-Lafon, où l’information devient des objets que l’on voit, déplace et combine, et où les outils deviennent des instruments qui agissent sur ces objets.",
     steps: [
       {
-        title: "Deux sous-projets, un prototype",
-        copy: "Cagette et Suitespace sont les deux directions que nous avons explorées. Le prototype cliquable montre les deux en action.",
-        bullets: ["Cagette", "Suitespace"],
-        note: "Un compte rendu détaillé des deux sous-projets arrive. En attendant, ouvrez le prototype Figma ci-dessus pour les voir.",
+        title: "Ateliers : une frustration, un prototype papier",
+        copy: "Pendant les semaines précédant le designathon, nous avons participé à des ateliers hebdomadaires de conception participative. En petits groupes, nous choisissions une frustration du quotidien avec La Suite, y répondions par des prototypes papier, puis filmions chaque idée en court prototype vidéo.",
+        videos: [
+          "File alternative de partage d’écran : les présentateurs alignent ce qu’ils vont partager, et changer se fait d’un geste (19 mai 2026)",
+          "Agenda en frise : survoler un appel affiche l’ordre du jour sous forme de frise ; une section ouvre la vue détaillée (21 mai 2026)",
+          "Marqueurs visuels : un clic pose un marqueur dans la transcription en direct, pour le retrouver, le modifier ou l’annoter plus tard",
+          "Calendrier dans Visio : glisser « Nouvelle réunion » sur le calendrier pour la planifier, et rejoindre une réunion en cours depuis l’accueil",
+        ],
+      },
+      {
+        title: "Le brief du designathon : des applications aux substrats",
+        copy: "Plutôt qu’améliorer une application, le designathon nous demandait de supprimer les frontières entre elles.",
+        bullets: [
+          "Un message, un fichier ou une ligne de tableau vit sur un canevas, pas dans une application.",
+          "Les outils deviennent des instruments que l’on peut combiner en instruments plus spécialisés.",
+          "Les espaces peuvent être personnels, partagés avec une équipe, ou collaboratifs.",
+        ],
+      },
+      {
+        title: "Une situation réelle comme point de départ",
+        copy: "Nous sommes partis d’un scénario que toute équipe connaît : une collègue est malade. Mandy, la manageuse, doit refaire le planning de l’équipe, garder une trace de ses changements, prévenir tout le monde et envoyer un récapitulatif à sa hiérarchie en fin de journée. Les personnages étaient communs à tous les groupes : Mandy la manageuse, Abby absente, Laeticia en retard et Ross le chef.",
+      },
+      {
+        title: "Premier essai sur papier",
+        copy: "Avant de filmer, nous avons joué l’idée avec des découpages en papier : une SuiteSpace pour un « Projet Éducation Numérique », où membres de l’équipe, fichiers et mails sont des objets que l’on prend et déplace. Dérouler le scénario à la main nous a permis de vérifier chaque étape avant de tourner la vidéo.",
+        videos: ["La version papier de SuiteSpace, testée à la main"],
+      },
+      {
+        title: "SuiteSpace : un seul canevas pour toute l’équipe",
+        copy: "SuiteSpace remplace les applications séparées par un canevas unique. Dans le prototype vidéo final (en haut de cette page) :",
+        bullets: [
+          "Mandy crée une SuiteSpace et la partage avec son équipe.",
+          "Le message d’Abby, malade, arrive comme un objet dans l’espace, avec son arrêt maladie en pièce jointe.",
+          "Mandy réattribue les tâches d’Abby directement dans le planning de l’équipe, et note pourquoi.",
+          "Chaque collègue organise les mêmes éléments partagés dans sa propre disposition.",
+          "En fin de journée, Mandy rassemble ce dont elle a besoin dans sa Cagette et en fait un modèle pour le prochain récapitulatif.",
+        ],
+      },
+      {
+        title: "Cagette : un panier pour vos informations",
+        copy: "Cagette est un instrument de sélection : on y glisse des documents, des messages ou des lignes de tableau, puis on les emporte de sa SuiteSpace personnelle vers celle de l’équipe, ou vers n’importe quel espace. Cagette vient du groupe voisin (Groupe 4 : Yousra Bourguiba, Mathys Caetano, Mélodie Sanchez), et SuiteSpace l’utilise pour déplacer des éléments entre les espaces.",
+        videos: ["Le prototype vidéo de Cagette : après la suppression d’un document, l’équipe rassemble les morceaux depuis ses espaces de travail pour le refaire"],
       },
     ],
-    decisions: [],
+    decisions: [
+      ["Des objets, pas des applications", "Tout ce dont Mandy a besoin est sur un seul canevas : rien ne se perd entre les fenêtres et le contexte reste visible."],
+      ["Des données, plusieurs dispositions", "Chacun organise les mêmes éléments partagés à sa façon, tandis que les données restent identiques pour tous."],
+      ["Un panier plutôt qu’un copier-coller", "Cagette rassemble des éléments et les transporte d’un espace à l’autre. Enregistrée comme modèle, une sélection devient un instrument réutilisable."],
+    ],
     outcome: [],
-    reflection: [],
+    future: ["Utiliser les icônes de La Suite comme des outils combinables", "Une file d’attente pour Visio, dans la continuité de l’atelier sur le partage d’écran", "Des transcriptions interactives en direct, dans la continuité de l’atelier sur les marqueurs visuels"],
+    reflection: [
+      "Ce que nous avons montré à la fin : plusieurs dispositions personnelles peuvent coexister sur un même ensemble de données, des outils généraux peuvent se combiner en outils spécialisés, et une sélection peut devenir un modèle.",
+    ],
   },
 };
 

@@ -88,7 +88,7 @@ const fig = (m: Media) =>
   `<figure class="media${m.wide ? " wide" : ""}"><button class="zoom" type="button" aria-label="${t("Enlarge", "Agrandir")}: ${esc(m.alt)}"><img src="${m.src}" alt="${esc(m.alt)}" loading="lazy" draggable="false" /></button>${m.caption ? `<figcaption>${esc(m.caption)}</figcaption>` : ""}</figure>`;
 
 const videoFig = (v: VideoMedia) =>
-  `<figure class="video"><video controls playsinline preload="metadata" aria-label="${esc(v.caption)}"><source src="${v.src}" type="video/mp4" /></video><figcaption>${esc(v.caption)}</figcaption></figure>`;
+  `<figure class="video"><video controls playsinline preload="${v.poster ? "none" : "metadata"}"${v.poster ? ` poster="${v.poster}"` : ""} aria-label="${esc(v.caption)}"><source src="${v.src}" type="video/mp4" /></video><figcaption>${esc(v.caption)}</figcaption></figure>`;
 
 const externalVideoFig = (v: ExternalVideoMedia) =>
   `<figure class="youtube-video"><iframe src="${v.src}" title="${esc(v.caption)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe><figcaption>${esc(v.caption)}</figcaption></figure>`;
