@@ -434,7 +434,10 @@ export const moreCases: CaseStudy[] = [
       ["Methods", "Participatory design · Paper prototyping · Video prototyping"],
     ],
     links: [{ label: "Open the Figma prototype", hint: "Interactive prototype for La Suite numérique", href: FIG }],
-    video: { src: "suite/suitespace-video.mp4", poster: "suite/suitespace-video.jpg", caption: "SuiteSpace, our final video prototype: a team reorganises its schedule when a colleague calls in sick" },
+    heroStack: true,
+    heroMedia: { src: "suite/figma.jpg", alt: "The SuiteSpace canvas in Figma: an instrument toolbar on the left, La Suite icons in a dock at the bottom, and the Cagette cart in the corner", caption: "The SuiteSpace prototype in Figma" },
+    embed: { src: "https://embed.figma.com/proto/QqMLKWPJKWYx8Jpt5kvuM0/la-suite-num%C3%A9rique?node-id=691-1270&embed-host=share", caption: "The Figma prototype, live: click around to try it" },
+    video: { src: "suite/suitespace-video.mp4", poster: "suite/suitespace-video.jpg", caption: "SuiteSpace video prototype, made with paper: a team reorganises its schedule when a colleague calls in sick" },
     brief:
       "La Suite numérique is the French government’s set of digital tools for public servants: Tchap for messages, Visio for video calls, Grist for tables, Docs and more. Each tool is a separate app, so one piece of work ends up spread across many windows, and moving information between them means copying, re-uploading and searching. The designathon asked a bold question: what if we stopped thinking in apps at all? We built on interaction substrates, a concept developed by Wendy Mackay and Michel Beaudouin-Lafon, where information becomes objects you can see, move and combine, and tools become instruments that act on those objects.",
     steps: [
@@ -472,7 +475,7 @@ export const moreCases: CaseStudy[] = [
       },
       {
         title: "SuiteSpace: one canvas for the whole team",
-        copy: "SuiteSpace replaces the separate apps with a single canvas. In the final video prototype (at the top of this page):",
+        copy: "SuiteSpace replaces the separate apps with a single canvas. In the Figma prototype, the La Suite icons (Tchap, Docs, Visio, Grist…) become tools you can combine. In our video prototype, made with paper (at the top of this page):",
         slots: [],
         bullets: [
           "Mandy creates a SuiteSpace and shares it with her team.",
@@ -495,7 +498,7 @@ export const moreCases: CaseStudy[] = [
       ["A cart instead of copy and paste", "Cagette collects elements and carries them across spaces. Saved as a template, a selection becomes a reusable instrument."],
     ],
     outcome: [],
-    future: ["Use La Suite icons as tools you can combine", "A queue for Visio, building on the screen-sharing workshop", "Interactive live transcripts, building on the visual markers workshop"],
+    future: ["A queue for Visio, building on the screen-sharing workshop", "Interactive live transcripts, building on the visual markers workshop"],
     reflection: [
       "What we showed at the end: several personal layouts can live on one shared set of data, general tools can be combined into specialised ones, and a selection can become a template.",
     ],

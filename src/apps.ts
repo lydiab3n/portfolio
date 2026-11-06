@@ -121,7 +121,11 @@ function caseHtml(c: CaseStudy): string {
         )
         .join("")}</div></section>`
     : "";
-  const hero = c.video
+  const videoHero = c.video ? `<figure class="video"><video controls playsinline preload="metadata" poster="${c.video.poster}"><source src="${c.video.src}" type="video/mp4" /></video><figcaption>${esc(c.video.caption)}</figcaption></figure>` : "";
+  const embedHero = c.embed ? `<figure class="embed"><iframe src="${c.embed.src}" title="${esc(c.embed.caption)}" loading="lazy" allowfullscreen></iframe><figcaption>${esc(c.embed.caption)}</figcaption></figure>` : "";
+  const hero = c.heroStack
+    ? `<div class="hero-stack">${c.heroMedia && !Array.isArray(c.heroMedia) ? fig(c.heroMedia) : ""}${embedHero}${videoHero}</div>`
+    : c.video
     ? `<figure class="video"><video controls playsinline preload="metadata" poster="${c.video.poster}"><source src="${c.video.src}" type="video/mp4" /></video><figcaption>${esc(c.video.caption)}</figcaption></figure>`
     : c.embed ? `<figure class="embed"><iframe src="${c.embed.src}" title="${esc(c.embed.caption)}" loading="lazy" allowfullscreen></iframe><figcaption>${esc(c.embed.caption)}</figcaption></figure>` : c.poster ? `<div class="poster-full">${fig(c.poster)}</div>` : Array.isArray(c.heroMedia) ? `<div class="gallery">${c.heroMedia.map(fig).join("")}</div>` : c.heroMedia ? fig(c.heroMedia) : slot(c.hero, "hero");
   return `

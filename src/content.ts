@@ -41,6 +41,8 @@ export interface CaseStudy {
   heroMedia?: Media | Media[];
   poster?: Media;
   embed?: { src: string; caption: string };
+  /** show screenshot, then embed, then video, stacked at the top */
+  heroStack?: boolean;
 }
 
 export const hero = {
@@ -87,6 +89,7 @@ export const roles: ExperienceRole[] = [
     place: "Inria · Ex-Situ team",
     where: "Gif-sur-Yvette",
     dates: "May – July 2026",
+    copy: "Supervised by Wendy E. Mackay.",
     bullets: [
       "Participated in the 3-day La Suite Numérique Design-a-thon, redesigning the government’s interface using new interaction techniques.",
       "Worked on organising workshops for the redesign of La Suite Numérique tools.",
@@ -100,6 +103,7 @@ export const roles: ExperienceRole[] = [
     place: "LISN · Venise team",
     where: "Gif-sur-Yvette",
     dates: "May – July 2025",
+    copy: "Supervised by Tifanie Bouchara.",
     bullets: [
       "Design and implementation of an early-stage prototype of a music therapy application for post-stroke physical rehabilitation on Meta Quest 3.",
       "Combined technical development with research activities: a literature review and on-site observation sessions.",
@@ -111,6 +115,7 @@ export const roles: ExperienceRole[] = [
     place: "LISN · Venise team",
     where: "Gif-sur-Yvette",
     dates: "January – April 2025",
+    copy: "Supervised by Tifanie Bouchara.",
     bullets: ["Ported an XR music therapy application from HTC Vive to Meta Quest 3.", "Developed a collaborative mode for two users."],
     tags: ["Unity", "C#", "Meta Quest SDK", "XR Interaction Toolkit"],
   },

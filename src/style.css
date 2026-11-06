@@ -1236,3 +1236,5 @@ body.dark #sticky li.done::before { background: #e8457f; box-shadow: none; }
 .tk dd { margin: 0; color: var(--ink); }
 .note-body .chips { margin-top: 16px; }
 @media (max-width: 600px) { .tk { grid-template-columns: 1fr; gap: 2px; } .tk dd { margin-bottom: 10px; } }
+
+.hero-stack { display: grid; gap: 22px; }

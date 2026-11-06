@@ -63,6 +63,7 @@ export const frRoles = [
     place: "Inria · équipe Ex-Situ",
     where: "Gif-sur-Yvette",
     dates: "Mai – juillet 2026",
+    copy: "Sous la supervision de Wendy E. Mackay.",
     bullets: [
       "Participation au Design-a-thon de 3 jours de La Suite Numérique, avec refonte de l’interface du gouvernement à l’aide de nouvelles techniques d’interaction.",
       "Contribution à l’organisation d’ateliers pour la refonte des outils de La Suite Numérique.",
@@ -76,6 +77,7 @@ export const frRoles = [
     place: "LISN · équipe Venise",
     where: "Gif-sur-Yvette",
     dates: "Mai – juillet 2025",
+    copy: "Sous la supervision de Tifanie Bouchara.",
     bullets: [
       "Conception et implémentation d’un prototype préliminaire d’une application de musicothérapie pour la rééducation physique post-AVC sur Meta Quest 3.",
       "Combinaison de développement technique et d’activités de recherche : revue de littérature et séances d’observation sur site.",
@@ -87,6 +89,7 @@ export const frRoles = [
     place: "LISN · équipe Venise",
     where: "Gif-sur-Yvette",
     dates: "Janvier – avril 2025",
+    copy: "Sous la supervision de Tifanie Bouchara.",
     bullets: ["Portage d’une application XR de musicothérapie de HTC Vive vers Meta Quest 3.", "Développement d’un mode collaboratif pour deux utilisateurs."],
     tags: ["Unity", "C#", "Meta Quest SDK", "XR Interaction Toolkit"],
   },
@@ -711,7 +714,9 @@ export const frCases: Record<string, CaseFr> = {
       ["Méthodes", "Conception participative · Prototypage papier · Prototypage vidéo"],
     ],
     links: [{ label: "Ouvrir le prototype Figma", hint: "Prototype interactif de La Suite numérique" }],
-    videoCaption: "SuiteSpace, notre prototype vidéo final : une équipe réorganise son planning quand une collègue est malade",
+    heroCaption: "Le prototype SuiteSpace dans Figma",
+    embedCaption: "Le prototype Figma, en direct : cliquez pour l’essayer",
+    videoCaption: "Prototype vidéo de SuiteSpace, fait en papier : une équipe réorganise son planning quand une collègue est malade",
     brief:
       "La Suite numérique regroupe les outils numériques de l’État pour les agents publics : Tchap pour les messages, Visio pour les appels, Grist pour les tableaux, Docs et d’autres. Chaque outil est une application séparée : un même travail se retrouve éparpillé dans plusieurs fenêtres, et faire passer une information de l’une à l’autre oblige à copier, re-téléverser et chercher. Le designathon posait une question audacieuse : et si on arrêtait de penser en applications ? Nous sommes partis des substrats d’interaction, un concept développé par Wendy Mackay et Michel Beaudouin-Lafon, où l’information devient des objets que l’on voit, déplace et combine, et où les outils deviennent des instruments qui agissent sur ces objets.",
     steps: [
@@ -745,7 +750,7 @@ export const frCases: Record<string, CaseFr> = {
       },
       {
         title: "SuiteSpace : un seul canevas pour toute l’équipe",
-        copy: "SuiteSpace remplace les applications séparées par un canevas unique. Dans le prototype vidéo final (en haut de cette page) :",
+        copy: "SuiteSpace remplace les applications séparées par un canevas unique. Dans le prototype Figma, les icônes de La Suite (Tchap, Docs, Visio, Grist…) deviennent des outils que l’on peut combiner. Dans notre prototype vidéo, fait en papier (en haut de cette page) :",
         bullets: [
           "Mandy crée une SuiteSpace et la partage avec son équipe.",
           "Le message d’Abby, malade, arrive comme un objet dans l’espace, avec son arrêt maladie en pièce jointe.",
@@ -766,7 +771,7 @@ export const frCases: Record<string, CaseFr> = {
       ["Un panier plutôt qu’un copier-coller", "Cagette rassemble des éléments et les transporte d’un espace à l’autre. Enregistrée comme modèle, une sélection devient un instrument réutilisable."],
     ],
     outcome: [],
-    future: ["Utiliser les icônes de La Suite comme des outils combinables", "Une file d’attente pour Visio, dans la continuité de l’atelier sur le partage d’écran", "Des transcriptions interactives en direct, dans la continuité de l’atelier sur les marqueurs visuels"],
+    future: ["Une file d’attente pour Visio, dans la continuité de l’atelier sur le partage d’écran", "Des transcriptions interactives en direct, dans la continuité de l’atelier sur les marqueurs visuels"],
     reflection: [
       "Ce que nous avons montré à la fin : plusieurs dispositions personnelles peuvent coexister sur un même ensemble de données, des outils généraux peuvent se combiner en outils spécialisés, et une sélection peut devenir un modèle.",
     ],
