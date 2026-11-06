@@ -129,9 +129,9 @@ export function panel(id: string, arg?: string): PanelDef {
         status: `✦ ${roles.length} ${t("roles", "expériences")}, ${education.length} ${t("degrees", "diplômes")}`,
         html: `<h2 class="big">${t("Where I've been", "D'où je viens")}</h2>
           <div class="tl">${roles
-            .map((r) => `<article><h3>${esc(r.title)}, ${esc(r.place)}</h3><p class="when">${esc(r.dates)}</p><p>${esc(r.copy)}</p>${r.bullets?.length ? `<ul class="bul">${r.bullets.map((b) => `<li>${esc(b)}</li>`).join("")}</ul>` : ""}</article>`)
+            .map((r) => `<article><h3>${esc(r.title)}, ${esc(r.place)}</h3><p class="when">${esc(r.dates)}${r.where ? `, ${esc(r.where)}` : ""}</p>${r.copy ? `<p>${esc(r.copy)}</p>` : ""}${r.bullets?.length ? `<ul class="bul">${r.bullets.map((b) => `<li>${esc(b)}</li>`).join("")}</ul>` : ""}${r.tags?.length ? `<ul class="chips">${r.tags.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}</article>`)
             .join("")}${education
-            .map((e) => `<article class="edu"><h3>${esc(e.title)}</h3><p class="when">${esc(e.place)}, ${esc(e.dates)}</p><p>${esc(e.copy)}</p></article>`)
+            .map((e) => `<article class="edu"><h3>${esc(e.title)}</h3><p class="when">${esc(e.place)}, ${esc(e.dates)}</p>${e.bullets?.length ? `<ul class="bul">${e.bullets.map((b) => `<li>${esc(b)}</li>`).join("")}</ul>` : ""}</article>`)
             .join("")}</div>`,
       };
     case "cv":

@@ -1,6 +1,6 @@
 import { moreCases } from "./cases2";
 import { lang } from "./i18n";
-import { frAbout, frAlbums, frCases, frEducation, frHero, frRoles, frSkills } from "./fr";
+import { frAbout, frAlbums, frCases, frEducation, frHero, frRoles, frSkills, frToolkit } from "./fr";
 /* All copy lives here. Items marked TODO are placeholders to replace with real details. */
 
 export interface Media { src: string; alt: string; caption?: string; wide?: boolean }
@@ -71,56 +71,85 @@ export const about = {
 export interface ExperienceRole {
   title: string;
   place: string;
+  /** city */
+  where?: string;
   dates: string;
-  copy: string;
+  copy?: string;
   bullets?: string[];
+  /** tools, as they appear on the CV */
+  tags?: string[];
 }
 
+/* mirrors the CV (public/cv-en.pdf), newest first */
 export const roles: ExperienceRole[] = [
   {
-    title: "Tutor",
-    place: "Parkours",
-    dates: "October 2024 – Present · Part-time",
-    copy: "On-site in Paris, supporting primary and middle-school students, particularly in mathematics, French, English and history.",
-  },
-  {
-    title: "Intern",
-    place: "Inria",
-    dates: "May – July 2026 · 3 months",
-    copy: "Supervised by Wendy Mackay:",
+    title: "Summer internship",
+    place: "Inria · Ex-Situ team",
+    where: "Gif-sur-Yvette",
+    dates: "May – July 2026",
     bullets: [
-      "Participated in weekly design workshops exploring innovative approaches to interaction design.",
-      "Contributed to reimagining the interaction design of La Suite Numérique tools, focusing on user experience and innovative interaction techniques.",
-      "Participated in the inaugural La Suite Numérique Designathon, collaborating on design explorations and new ideas for the digital ecosystem.",
+      "Participated in the 3-day La Suite Numérique Design-a-thon, redesigning the government’s interface using new interaction techniques.",
+      "Worked on organising workshops for the redesign of La Suite Numérique tools.",
+      "Attended weekly design workshops using participatory design methods.",
+      "Reviewed the current version of the DOIT book (Wendy Mackay) and identified areas for interactive video, collaborating on the design of interactive sections.",
     ],
+    tags: ["Figma", "Paper prototyping", "Video editing"],
   },
   {
-    title: "Summer Intern",
-    place: "LISN – Interdisciplinary Laboratory of Digital Sciences",
-    dates: "May – July 2025 · 3 months",
-    copy: "Three-month summer internship at LISN.",
+    title: "Magistère internship",
+    place: "LISN · Venise team",
+    where: "Gif-sur-Yvette",
+    dates: "May – July 2025",
+    bullets: [
+      "Design and implementation of an early-stage prototype of a music therapy application for post-stroke physical rehabilitation on Meta Quest 3.",
+      "Combined technical development with research activities: a literature review and on-site observation sessions.",
+    ],
+    tags: ["Unity", "Blender", "C#", "Meta Quest SDK", "Pure Data", "XR Interaction Toolkit"],
   },
   {
-    title: "Research Student Intern",
-    place: "LISN · VENISE team",
-    dates: "January – April 2025 · 4 months",
-    copy: "I designed an early-stage prototype of a music therapy application for post-stroke (AVC) physical rehabilitation and implemented it using Unity and the Meta Quest 3 within the VENISE team at LISN. The work combined technical development with research activities, including a literature review on immersive music therapy and rehabilitation, as well as an on-site observation session of music therapy practices with patients.",
+    title: "Research internship",
+    place: "LISN · Venise team",
+    where: "Gif-sur-Yvette",
+    dates: "January – April 2025",
+    bullets: ["Ported an XR music therapy application from HTC Vive to Meta Quest 3.", "Developed a collaborative mode for two users."],
+    tags: ["Unity", "C#", "Meta Quest SDK", "XR Interaction Toolkit"],
+  },
+  {
+    title: "School tutor",
+    place: "Parkours",
+    where: "Paris",
+    dates: "2024 – present",
+    bullets: [
+      "Providing homework help and academic support for primary and middle-school students in all subjects.",
+      "Adapting to each student’s needs, which builds active listening and teaching skills.",
+    ],
   },
 ];
 
-export const education = [
+export const education: ExperienceRole[] = [
   {
     title: "Master’s in Human-Computer Interaction",
     place: "Université Paris-Saclay",
-    dates: "September 2025 – August 2027",
-    copy: "Master’s program in Human-Computer Interaction.",
+    dates: "2025 – present",
+    bullets: ["Design of interactive systems (basic and advanced)", "Fundamentals of human-computer interaction, augmented reality", "Advanced web development", "Design project", "Interactive information visualisation"],
+    tags: ["Figma", "Blender", "Unity", "C++/C#"],
   },
   {
-    title: "Double Bachelor’s degree in Computer Science and Mathematics",
+    title: "Double degree in Computer Science and Mathematics, CS Magistère track",
     place: "Université Paris-Saclay",
     dates: "2022 – 2025",
-    copy: "Undergraduate double-degree program in Computer Science and Mathematics.",
+    bullets: ["Introduction to human-computer interaction", "Advanced programming of interactive interfaces", "Web development"],
   },
+];
+
+/* the CV's skills, languages and interests */
+export const toolkit: { label: string; items: string }[] = [
+  { label: "Programming languages", items: "C#, Java, Python" },
+  { label: "Web development", items: "HTML, CSS, JavaScript" },
+  { label: "3D / 2D / XR", items: "Unity, Blender" },
+  { label: "Prototyping", items: "Paper, Figma" },
+  { label: "Languages", items: "English (C2, Linguaskill), French (native)" },
+  { label: "Interests", items: "Art (acrylic painting, calligraphy), acoustic guitar" },
 ];
 
 export const skills = ["Interaction design", "UX/UI design", "Prototyping", "Art direction", "Spatial design", "Photography"];
@@ -491,6 +520,7 @@ if (lang === "fr") {
   skills.splice(0, skills.length, ...frSkills);
   roles.splice(0, roles.length, ...frRoles);
   education.splice(0, education.length, ...frEducation);
+  toolkit.splice(0, toolkit.length, ...frToolkit);
   for (const c of cases) {
     const f = frCases[c.id];
     if (!f) continue;

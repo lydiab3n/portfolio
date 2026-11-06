@@ -59,33 +59,46 @@ export const frSkills = ["Design d’interaction", "Design UX/UI", "Prototypage"
 
 export const frRoles = [
   {
-    title: "Tutrice",
-    place: "Parkours",
-    dates: "Octobre 2024 – aujourd’hui · Temps partiel",
-    copy: "À Paris, j’accompagne sur site des élèves de primaire et de collège, notamment en mathématiques, français, anglais et histoire.",
-  },
-  {
-    title: "Stagiaire",
-    place: "Inria",
-    dates: "Mai – juillet 2026 · 3 mois",
-    copy: "Sous la supervision de Wendy Mackay :",
+    title: "Stage d’été",
+    place: "Inria · équipe Ex-Situ",
+    where: "Gif-sur-Yvette",
+    dates: "Mai – juillet 2026",
     bullets: [
-      "Participation à des ateliers de design hebdomadaires explorant des approches innovantes du design d’interaction.",
-      "Contribution à la réflexion sur le design d’interaction des outils de La Suite Numérique, en mettant l’accent sur l’expérience utilisateur et des techniques d’interaction innovantes.",
-      "Participation au tout premier Designathon de La Suite Numérique, avec des explorations de design et de nouvelles idées pour l’écosystème numérique.",
+      "Participation au Design-a-thon de 3 jours de La Suite Numérique, avec refonte de l’interface du gouvernement à l’aide de nouvelles techniques d’interaction.",
+      "Contribution à l’organisation d’ateliers pour la refonte des outils de La Suite Numérique.",
+      "Participation à des ateliers de design hebdomadaires utilisant des méthodes de conception participative.",
+      "Analyse de la version actuelle du livre DOIT (Wendy Mackay) et identification de pistes pour la vidéo interactive, en collaborant à la conception de sections interactives.",
     ],
+    tags: ["Figma", "Prototypage papier", "Montage vidéo"],
   },
   {
-    title: "Stagiaire d’été",
-    place: "LISN – Laboratoire Interdisciplinaire des Sciences du Numérique",
-    dates: "Mai – juillet 2025 · 3 mois",
-    copy: "Stage d’été de trois mois au LISN.",
+    title: "Stage de Magistère",
+    place: "LISN · équipe Venise",
+    where: "Gif-sur-Yvette",
+    dates: "Mai – juillet 2025",
+    bullets: [
+      "Conception et implémentation d’un prototype préliminaire d’une application de musicothérapie pour la rééducation physique post-AVC sur Meta Quest 3.",
+      "Combinaison de développement technique et d’activités de recherche : revue de littérature et séances d’observation sur site.",
+    ],
+    tags: ["Unity", "Blender", "C#", "Meta Quest SDK", "Pure Data", "XR Interaction Toolkit"],
   },
   {
-    title: "Stagiaire en recherche",
-    place: "LISN · équipe VENISE",
-    dates: "Janvier – avril 2025 · 4 mois",
-    copy: "J’ai conçu un premier prototype d’application de musicothérapie pour la rééducation physique après un AVC et l’ai développé avec Unity et Meta Quest 3 au sein de l’équipe VENISE du LISN. Ce travail associait développement technique et recherche : revue de littérature sur la musicothérapie immersive et la rééducation, ainsi qu’observation sur site de séances de musicothérapie avec des patients.",
+    title: "Stage de recherche",
+    place: "LISN · équipe Venise",
+    where: "Gif-sur-Yvette",
+    dates: "Janvier – avril 2025",
+    bullets: ["Portage d’une application XR de musicothérapie de HTC Vive vers Meta Quest 3.", "Développement d’un mode collaboratif pour deux utilisateurs."],
+    tags: ["Unity", "C#", "Meta Quest SDK", "XR Interaction Toolkit"],
+  },
+  {
+    title: "Tutrice scolaire",
+    place: "Parkours",
+    where: "Paris",
+    dates: "2024 – aujourd’hui",
+    bullets: [
+      "Aide aux devoirs et soutien scolaire auprès d’élèves de primaire et de collège dans toutes les matières.",
+      "Adaptation aux besoins de chaque élève et développement de l’écoute active et des compétences pédagogiques.",
+    ],
   },
 ];
 
@@ -93,15 +106,25 @@ export const frEducation = [
   {
     title: "Master en interaction humain-machine",
     place: "Université Paris-Saclay",
-    dates: "Septembre 2025 – août 2027",
-    copy: "Master en interaction humain-machine.",
+    dates: "2025 – aujourd’hui",
+    bullets: ["Conception de systèmes interactifs (fondamental et avancé)", "Fondamentaux de l’interaction humain-machine, réalité augmentée", "Développement web avancé", "Projet de conception", "Visualisation interactive de l’information"],
+    tags: ["Figma", "Blender", "Unity", "C++/C#"],
   },
   {
-    title: "Double licence en informatique et mathématiques",
+    title: "Double diplôme en informatique et mathématiques, parcours Magistère d’informatique",
     place: "Université Paris-Saclay",
     dates: "2022 – 2025",
-    copy: "Double cursus de premier cycle en informatique et mathématiques.",
+    bullets: ["Introduction à l’interaction humain-machine", "Programmation avancée d’interfaces interactives", "Développement web"],
   },
+];
+
+export const frToolkit = [
+  { label: "Langages de programmation", items: "C#, Java, Python" },
+  { label: "Développement web", items: "HTML, CSS, JavaScript" },
+  { label: "3D / 2D / XR", items: "Unity, Blender" },
+  { label: "Prototypage", items: "Papier, Figma" },
+  { label: "Langues", items: "Anglais (C2, Linguaskill), français (langue maternelle)" },
+  { label: "Centres d’intérêt", items: "Art (peinture acrylique, calligraphie), guitare acoustique" },
 ];
 
 export const frCases: Record<string, CaseFr> = {

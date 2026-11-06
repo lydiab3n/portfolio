@@ -1,4 +1,4 @@
-import { cases, contact, education, hero, roles, skills, type CaseStudy, type DataTable, type ExternalVideoMedia, type Media, type VideoMedia } from "./content";
+import { cases, contact, education, hero, roles, toolkit, type CaseStudy, type ExperienceRole, type DataTable, type ExternalVideoMedia, type Media, type VideoMedia } from "./content";
 import type { Sfx } from "./sound";
 import { t } from "./i18n";
 import { renderAbout } from "./about";
@@ -223,10 +223,12 @@ function renderWork(body: HTMLElement, ctx: Ctx, arg?: string) {
 
 /* ---------- Experience (Notes) ---------- */
 function renderExperience(body: HTMLElement, ctx: Ctx) {
+  const entry = (r: ExperienceRole) =>
+    `<h1 class="display">${esc(r.title)}</h1><p class="role">${esc(r.place)}${r.where ? ` · ${esc(r.where)}` : ""} · ${esc(r.dates)}</p>${r.copy ? `<p class="prose-p">${esc(r.copy)}</p>` : ""}${r.bullets?.length ? `<ul class="bul">${r.bullets.map((b) => `<li>${esc(b)}</li>`).join("")}</ul>` : ""}${r.tags?.length ? `<div class="chips">${r.tags.map((x) => `<span>${esc(x)}</span>`).join("")}</div>` : ""}`;
   const notes = [
-    ...roles.map((r) => ({ key: r.title, sub: r.place, html: `<h1 class="display">${esc(r.title)}</h1><p class="role">${esc(r.place)} · ${esc(r.dates)}</p><p class="prose-p">${esc(r.copy)}</p>${r.bullets?.length ? `<ul class="bul">${r.bullets.map((bullet) => `<li>${esc(bullet)}</li>`).join("")}</ul>` : ""}` })),
-    ...education.map((e) => ({ key: e.title, sub: e.place, html: `<h1 class="display">${esc(e.title)}</h1><p class="role">${esc(e.place)} · ${esc(e.dates)}</p><p class="prose-p">${esc(e.copy)}</p>` })),
-    { key: t("Skills", "Compétences"), sub: t("Toolkit", "Boîte à outils"), html: `<h1 class="display">${t("Skills", "Compétences")}</h1><div class="chips big">${skills.map((s) => `<span>${esc(s)}</span>`).join("")}</div>` },
+    ...roles.map((r) => ({ key: r.title, sub: `${r.place} · ${r.dates}`, html: entry(r) })),
+    ...education.map((e) => ({ key: e.title, sub: `${e.place} · ${e.dates}`, html: entry(e) })),
+    { key: t("Skills & languages", "Compétences & langues"), sub: t("From my CV", "D’après mon CV"), html: `<h1 class="display">${t("Skills & languages", "Compétences & langues")}</h1><dl class="tk">${toolkit.map((k) => `<dt>${esc(k.label)}</dt><dd>${esc(k.items)}</dd>`).join("")}</dl>` },
   ];
   body.innerHTML = `
   <aside class="side notes"><p class="side-h">${t("Experience & education", "Expérience & formation")}</p>${notes.map((n, i) => `<button class="side-i" data-i="${i}"><span><b>${esc(n.key)}</b><small>${esc(n.sub)}</small></span></button>`).join("")}</aside>
