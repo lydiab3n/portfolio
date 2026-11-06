@@ -2,9 +2,9 @@
   --ink: #1d1a1f;
   --ink2: rgba(40, 14, 24, 0.74);
   --ink3: rgba(29, 26, 31, 0.4);
-  --glass: rgba(255, 251, 252, 0.88);
+  --glass: rgba(255, 250, 252, 0.95);
   --glass2: rgba(255, 255, 255, 0.42);
-  --side: rgba(255, 244, 247, 0.6);
+  --side-bg: rgba(255, 240, 245, 0.7);
   --stroke: rgba(70, 20, 45, 0.07);
   --line: rgba(60, 20, 40, 0.1);
   --row: rgba(255, 255, 255, 0.7);
@@ -106,9 +106,9 @@ body.dark {
   --ink: #f7e9ed;
   --ink2: rgba(247, 233, 237, 0.74);
   --ink3: rgba(247, 233, 237, 0.48);
-  --glass: rgba(30, 7, 13, 0.9);
+  --glass: rgba(30, 7, 13, 0.95);
   --glass2: rgba(51, 15, 28, 0.78);
-  --side: rgba(46, 10, 20, 0.78);
+  --side-bg: rgba(46, 10, 20, 0.6);
   --stroke: rgba(211, 157, 173, 0.14);
   --line: rgba(211, 157, 173, 0.13);
   --row: rgba(117, 44, 64, 0.18);
@@ -320,7 +320,7 @@ body.on #folders { opacity: 1; transform: none; }
 @keyframes pulse { 50% { box-shadow: 0 0 0 6px rgba(47, 210, 106, 0); } }
 
 /* split apps */
-.side { width: var(--side); flex: none; padding: 58px 12px 14px; background: var(--side); border-right: 1px solid var(--line); overflow-y: auto; }
+.side { width: var(--side); flex: none; padding: 58px 12px 14px; background: var(--side-bg); border-right: 1px solid var(--line); overflow-y: auto; }
 .side-h { margin: 0 8px 6px; font-size: 12px; font-weight: 600; color: var(--ink3); }
 .project-filter { display: grid; gap: 4px; margin: 0 8px 10px; color: var(--ink3); font-size: 11px; font-weight: 600; }
 .project-filter select { width: 100%; padding: 7px 9px; border: 1px solid var(--line); border-radius: 9px; background: var(--glass2); color: var(--ink); font: inherit; font-size: 12px; }
