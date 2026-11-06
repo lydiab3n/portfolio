@@ -69,7 +69,7 @@ export function renderAbout(body: HTMLElement, ctx: Ctx) {
       </div>
     </header>
 
-    <p class="ab-lede">${t("Bonjour! I’m Lydia. I grew up in Algiers, I live near Paris, and I design things with a bit of character: unexpected, a little dramatic, often pink.", "Bonjour ! Moi c’est Lydia. J’ai grandi à Alger, je vis près de Paris, et je conçois des choses avec un peu de caractère : inattendues, un peu dramatiques, souvent roses.")}</p>
+    <p class="ab-lede">${t("Bonjour! I’m Lydia.", "Bonjour ! Moi c’est Lydia.")}</p>
     <div class="prose">${about.paragraphs.slice(1).map((p) => `<p>${p}</p>`).join("")}</div>
 
     <h2 class="group-h">${t("Ask me anything", "Pose-moi une question")}</h2>
