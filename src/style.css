@@ -298,9 +298,9 @@ body.on #folders { opacity: 1; transform: none; }
 .scroll { flex: 1; overflow-y: auto; overscroll-behavior: contain; padding: 64px 48px 56px; scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
 
 /* type */
-.display { font: 400 clamp(38px, 5vw, 58px)/1 var(--serif); letter-spacing: -0.015em; margin: 0; }
+.display { font: 400 clamp(38px, 5vw, 58px)/1 var(--serif); letter-spacing: -0.025em; margin: 0; font-optical-sizing: auto; }
 .role { margin: 8px 0 0; color: var(--ink2); font-size: 15px; line-height: 1.5; }
-.lede { font: 400 24px/1.32 var(--serif); margin: 32px 0 20px; max-width: 32ch; color: var(--ink); letter-spacing: -0.008em; }
+.lede { font: 400 24px/1.35 var(--serif); margin: 32px 0 20px; max-width: 35ch; color: var(--ink); letter-spacing: -0.012em; font-optical-sizing: auto; }
 .prose { max-width: 68ch; }
 .prose p, .prose-p { margin: 0 0 16px; color: var(--ink2); max-width: 70ch; line-height: 1.66; }
 .prose b { color: var(--ink); font-weight: 600; }
@@ -1252,14 +1252,15 @@ body.dark #sticky li.done::before { background: #e8457f; box-shadow: none; }
 /* =====================================================================
    Interactions & Playful Feedback: spring animations, smooth states
    ===================================================================== */
-/* Button & link interactions */
-button, a[role="button"], .send, .pill, .links a, #sticky button, body #sticky button { transition: all 0.2s cubic-bezier(.2, .9, .2, 1); }
-button:hover, a[role="button"]:hover, .send:hover, .pill:hover, .links a:hover { transform: translateY(-1px); }
-button:active, a[role="button"]:active, .send:active, .pill:active { transform: scale(0.97); transition-duration: 0.15s; }
+/* Button & link interactions: Apple-style spring with instant response on pointer-down */
+button, a[role="button"], .send, .pill, .links a, #sticky button, body #sticky button { transition: all 0.3s cubic-bezier(.2, .9, .2, 1); }
+button:hover, a[role="button"]:hover, .send:hover, .pill:hover, .links a:hover { transform: translateY(-2px); }
+button:active, a[role="button"]:active, .send:active, .pill:active { transform: scale(0.96); transition-duration: 0.12s; }
+/* Interruptible: new input overrides mid-animation without jarring jumps */
 
-/* Card hover elevation */
-.wk-card, .decision, .facts, .rows li { transition: all 0.25s cubic-bezier(.2, .9, .2, 1); }
-.wk-card:hover, .decision:hover, .facts:hover { transform: translateY(-2px); box-shadow: inset 0 0 0 1px var(--stroke), 0 8px 20px -8px rgba(80, 20, 60, 0.25); }
+/* Card hover elevation: Apple direct manipulation feedback */
+.wk-card, .decision, .facts, .rows li { transition: all 0.3s cubic-bezier(.2, .9, .2, 1); will-change: transform; }
+.wk-card:hover, .decision:hover, .facts:hover { transform: translateY(-3px); box-shadow: inset 0 0 0 1px var(--stroke), 0 12px 24px -10px rgba(80, 20, 60, 0.32); }
 
 /* Link styling with spring hover */
 .prose a, .note a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; transition: color 0.2s cubic-bezier(.2, .9, .2, 1), text-decoration-color 0.2s cubic-bezier(.2, .9, .2, 1); }
