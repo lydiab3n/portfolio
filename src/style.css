@@ -229,8 +229,8 @@ body.locked #wall { filter: blur(26px) saturate(1.15); transform: scale(1.1); }
 @keyframes fill { 0% { width: 0 } 35% { width: 22% } 60% { width: 58% } 100% { width: 100% } }
 .boot-ask { display: grid; justify-items: center; gap: 12px; transition: opacity 0.4s; position: absolute; bottom: 12vh; }
 #boot.run .boot-ask { opacity: 0; pointer-events: none; }
-.pill { padding: 12px 26px; border-radius: 99px; background: rgba(255, 255, 255, 0.14); border: 1px solid rgba(255, 255, 255, 0.28); color: #fff; font-weight: 500; backdrop-filter: blur(20px); transition: background 0.25s, transform 0.25s; }
-.pill:hover { background: rgba(255, 255, 255, 0.24); transform: scale(1.03); }
+.pill { padding: 12px 26px; border-radius: 99px; background: rgba(255, 255, 255, 0.14); border: 1px solid rgba(255, 255, 255, 0.28); color: #fff; font-weight: 500; backdrop-filter: blur(20px); transition: all 0.2s cubic-bezier(.2, .9, .2, 1); }
+.pill:hover { background: rgba(255, 255, 255, 0.24); transform: translateY(-2px) scale(1.02); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); }
 .plain { color: rgba(255, 255, 255, 0.55); font-size: 13px; padding: 6px 10px; }
 .plain:hover { color: #fff; }
 
@@ -252,8 +252,8 @@ body.booting #lock { opacity: 0; }
 #menubar { position: absolute; z-index: 500; top: 0; left: 0; right: 0; height: 34px; display: flex; justify-content: space-between; align-items: center; padding: 0 10px; background: var(--bar); backdrop-filter: blur(30px) saturate(1.7); -webkit-backdrop-filter: blur(30px) saturate(1.7); font-size: 13.5px; font-weight: 500; transform: translateY(-110%); transition: transform 0.9s cubic-bezier(.2, .9, .2, 1) 0.1s; }
 body.on #menubar { transform: none; }
 .mb-l, .mb-r { display: flex; align-items: center; gap: 2px; min-width: 0; }
-.mb-btn, .mb-nav button { height: 24px; padding: 0 9px; border-radius: 7px; transition: background 0.2s; display: grid; place-items: center; font-weight: 500; }
-.mb-btn:hover, .mb-nav button:hover { background: var(--control-hover); }
+.mb-btn, .mb-nav button { height: 24px; padding: 0 9px; border-radius: 7px; transition: all 0.2s cubic-bezier(.2, .9, .2, 1); display: grid; place-items: center; font-weight: 500; }
+.mb-btn:hover, .mb-nav button:hover { background: var(--control-hover); transform: translateY(-1px); }
 .logo { padding: 0 6px; margin-right: 2px; }
 #mb-app { padding: 0 9px; font-weight: 700; white-space: nowrap; }
 .mb-nav { display: flex; }
@@ -266,7 +266,8 @@ body.on #menubar { transform: none; }
 /* ---------- desktop folders ---------- */
 #folders { position: absolute; top: 56px; right: 22px; display: grid; gap: 10px; z-index: 20; opacity: 0; transform: translateY(8px); transition: opacity 1s ease 0.5s, transform 1s ease 0.5s; }
 body.on #folders { opacity: 1; transform: none; }
-.fld { width: 104px; display: grid; justify-items: center; gap: 4px; padding: 6px 4px; border-radius: 10px; }
+.fld { width: 104px; display: grid; justify-items: center; gap: 4px; padding: 6px 4px; border-radius: 10px; transition: background 0.2s cubic-bezier(.2, .9, .2, 1); }
+.fld:hover { background: rgba(255, 255, 255, 0.08); }
 .fi { width: 68px; filter: drop-shadow(0 8px 12px var(--folder-shadow)); transition: transform 0.3s cubic-bezier(.2, .9, .2, 1.3); }
 .fld:hover .fi { transform: translateY(-3px) scale(1.04); }
 .fl { font-size: 12.5px; font-weight: 500; color: var(--folder-label-ink); text-shadow: 0 1px 6px rgba(90, 20, 60, 0.7); padding: 1px 7px; border-radius: 5px; }
@@ -283,7 +284,8 @@ body.on #folders { opacity: 1; transform: none; }
 .win:not(.active) .ttl { opacity: 0.45; }
 .win.split .ttl { opacity: 0; }
 .lights { display: flex; gap: 8px; position: relative; z-index: 2; }
-.l { width: 13px; height: 13px; border-radius: 50%; position: relative; box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.18); transition: filter 0.2s; }
+.l { width: 13px; height: 13px; border-radius: 50%; position: relative; box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.18); transition: all 0.2s cubic-bezier(.2, .9, .2, 1); cursor: pointer; }
+.l:hover { transform: scale(1.1); }
 .l::after { content: ""; position: absolute; inset: -6px -3px; }
 .c { background: #ff5f57; } .m { background: #febc2e; } .z { background: #28c840; }
 .win:not(.active) .l { background: rgba(120, 100, 110, 0.35); }
