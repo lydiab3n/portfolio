@@ -293,21 +293,21 @@ body.on #folders { opacity: 1; transform: none; }
 .lights:hover .z::before { clip-path: polygon(0 0, 85% 0, 0 85%, 15% 100%, 100% 15%); }
 .body { position: relative; flex: 1; min-height: 0; display: flex; }
 .win.split .body { padding: 0; }
-.scroll { flex: 1; overflow-y: auto; overscroll-behavior: contain; padding: 64px 40px 48px; scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+.scroll { flex: 1; overflow-y: auto; overscroll-behavior: contain; padding: 64px 48px 56px; scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
 
 /* type */
 .display { font: 400 clamp(38px, 5vw, 58px)/1 var(--serif); letter-spacing: -0.015em; margin: 0; }
 .role { margin: 6px 0 0; color: var(--ink2); font-size: 15px; }
-.lede { font: 400 24px/1.28 var(--serif); margin: 28px 0 18px; max-width: 30ch; color: var(--ink); }
-.prose { max-width: 62ch; }
-.prose p, .prose-p { margin: 0 0 12px; color: var(--ink2); max-width: 66ch; line-height: 1.62; }
+.lede { font: 400 24px/1.32 var(--serif); margin: 32px 0 20px; max-width: 32ch; color: var(--ink); letter-spacing: -0.008em; }
+.prose { max-width: 68ch; }
+.prose p, .prose-p { margin: 0 0 16px; color: var(--ink2); max-width: 70ch; line-height: 1.66; }
 .prose b { color: var(--ink); font-weight: 600; }
-.group-h { font-size: 13px; font-weight: 600; margin: 34px 0 10px; color: var(--ink2); }
+.group-h { font-size: 13px; font-weight: 600; margin: 40px 0 12px; color: var(--ink2); letter-spacing: 0.03em; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
 .chips span { padding: 6px 13px; border-radius: 99px; background: var(--row); box-shadow: inset 0 0 0 1px var(--stroke); font-size: 13px; font-weight: 500; }
 .chips.big span { font-size: 15px; padding: 9px 18px; }
 .rows { list-style: none; margin: 0; padding: 0; border-radius: 16px; background: var(--row); box-shadow: inset 0 0 0 1px var(--stroke); overflow: hidden; }
-.rows li { display: flex; justify-content: space-between; gap: 20px; padding: 12px 16px; font-size: 14px; }
+.rows li { display: flex; justify-content: space-between; gap: 20px; padding: 16px 18px; font-size: 14px; line-height: 1.5; }
 .rows li + li { border-top: 1px solid var(--line); }
 .rows span { color: var(--ink2); }
 .rows b { font-weight: 500; text-align: right; }
@@ -355,7 +355,7 @@ body.on #folders { opacity: 1; transform: none; }
 .facts dd { margin: 0; }
 .step { margin-bottom: 26px; }
 .step h3, .decision h3 { margin: 0 0 6px; font-size: 16px; font-weight: 600; }
-.step p, .decision p { margin: 0 0 12px; color: var(--ink2); max-width: 66ch; line-height: 1.6; }
+.step p, .decision p { margin: 0 0 14px; color: var(--ink2); max-width: 70ch; line-height: 1.65; }
 .slots { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
 .decisions { display: grid; gap: 12px; }
 .decision { padding: 16px 18px 6px; border-radius: 16px; background: var(--row); box-shadow: inset 0 0 0 1px var(--stroke); }
@@ -457,7 +457,7 @@ body.on #dock { transform: translateX(-50%); }
   #dock { bottom: 12px; gap: 8px; padding: 8px; border-radius: 28px; }
   .win { left: 0 !important; top: 34px !important; width: 100% !important; height: calc(100% - 34px - 86px) !important; border-radius: 22px; }
   .tb { cursor: default; }
-  .scroll { padding: 62px 20px 36px; }
+  .scroll { padding: 62px 24px 40px; }
   .win.split .body { flex-direction: column; }
   .side { width: 100%; flex: none; display: flex; gap: 6px; overflow-x: auto; padding: 52px 12px 8px; border-right: 0; border-bottom: 1px solid var(--line); }
   .side-h { display: none; }
@@ -873,8 +873,9 @@ body.dark .ic svg .petal { mix-blend-mode: normal; }
 @media (hover: none) { #peek { display: none; } }
 
 /* ================= About me ================= */
-.ab-hero { position: relative; display: flex; align-items: center; gap: 26px; padding-right: 210px; min-height: 200px; }
-.ab-photo { width: 168px; aspect-ratio: 4 / 5; flex: none; border-radius: 26px; overflow: hidden; box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.75), 0 22px 44px -12px rgba(120, 30, 80, 0.45); transition: transform 0.25s ease-out; will-change: transform; outline: none; }
+.ab-hero { position: relative; display: flex; align-items: center; gap: 40px; padding-right: 210px; min-height: 220px; }
+.ab-photo { width: 168px; aspect-ratio: 4 / 5; flex: none; border-radius: 26px; overflow: hidden; box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.75), 0 22px 44px -12px rgba(120, 30, 80, 0.45); transition: transform 0.3s cubic-bezier(.2, .9, .2, 1.2); will-change: transform; outline: none; }
+.ab-photo:hover, .ab-photo:focus { transform: scale(1.04) rotate(0.5deg); }
 .ab-img { width: 100%; height: 100%; background: url(/lydia-portrait.jpg) center 20% / cover; }
 .ab-polas .pola { position: absolute; width: 120px; padding: 7px 7px 26px; border-radius: 4px; background: #fff; box-shadow: 0 10px 22px -8px rgba(80, 20, 60, 0.45); transition: transform 0.4s cubic-bezier(.2, .9, .2, 1.3); }
 .pola img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 2px; }
@@ -1235,12 +1236,48 @@ body.dark #sticky li.done::before { background: #e8457f; box-shadow: none; }
 .tk dt { color: var(--ink2); }
 .tk dd { margin: 0; color: var(--ink); }
 .note-body .chips { margin-top: 16px; }
-@media (max-width: 600px) { .tk { grid-template-columns: 1fr; gap: 2px; } .tk dd { margin-bottom: 10px; } }
+@media (max-width: 600px) { .tk { grid-template-columns: 1fr; gap: 8px; } .tk dd { margin-bottom: 12px; } }
 
 .hero-stack { display: grid; gap: 22px; }
 
 /* windows are fully opaque in every browser: no see-through, no blur */
 .win { background: var(--glass); backdrop-filter: none; -webkit-backdrop-filter: none; }
+
+/* =====================================================================
+   Interactions & Playful Feedback: spring animations, smooth states
+   ===================================================================== */
+/* Button & link interactions */
+button, a[role="button"], .send, .pill, .links a, #sticky button, body #sticky button { transition: all 0.2s cubic-bezier(.2, .9, .2, 1); }
+button:hover, a[role="button"]:hover, .send:hover, .pill:hover, .links a:hover { transform: translateY(-1px); }
+button:active, a[role="button"]:active, .send:active, .pill:active { transform: scale(0.97); transition-duration: 0.15s; }
+
+/* Card hover elevation */
+.wk-card, .decision, .facts, .rows li { transition: all 0.25s cubic-bezier(.2, .9, .2, 1); }
+.wk-card:hover, .decision:hover, .facts:hover { transform: translateY(-2px); box-shadow: inset 0 0 0 1px var(--stroke), 0 8px 20px -8px rgba(80, 20, 60, 0.25); }
+
+/* Link styling with spring hover */
+.prose a, .note a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; transition: color 0.2s cubic-bezier(.2, .9, .2, 1), text-decoration-color 0.2s cubic-bezier(.2, .9, .2, 1); }
+.prose a:hover, .note a:hover { color: var(--accent); text-decoration-thickness: 1.5px; transform: translateY(-0.5px); }
+
+/* Icon hover animations */
+.mb-btn svg, .links svg, .wk-n svg { transition: transform 0.3s cubic-bezier(.2, .9, .2, 1.2), color 0.2s; }
+.mb-btn:hover svg, .links a:hover svg, .wk-n:hover svg { transform: scale(1.08); }
+
+/* Smooth transitions for visibility changes */
+.wk-over, .wk-cover, .lb-n, .lb-x { transition: opacity 0.25s cubic-bezier(.2, .9, .2, 1), transform 0.25s cubic-bezier(.2, .9, .2, 1); }
+
+/* Chip/tag interactions */
+.chips span { transition: all 0.2s cubic-bezier(.2, .9, .2, 1); }
+.chips span:hover { background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent-border); }
+
+/* Search input focus states */
+input { transition: border-color 0.2s cubic-bezier(.2, .9, .2, 1), box-shadow 0.2s; }
+input:focus { outline: none; }
+
+/* Smooth color transitions for theme/state changes */
+.side-i { transition: all 0.2s cubic-bezier(.2, .9, .2, 1); }
+.side-i:hover { background: rgba(236, 42, 114, 0.08); }
+.side-i.on { background: rgba(236, 42, 114, 0.15); }
 
 /* =====================================================================
    Work: the folder is a gallery of files, each project reads like a short book
@@ -1361,8 +1398,8 @@ body.dark .wk-card { box-shadow: inset 0 0 0 1px var(--stroke), 0 14px 26px -20p
   .wk-bar { padding: 0 12px; gap: 8px; }
   .wk-n { display: none; }
   .wk-search input { width: 96px; }
-  .wk .wk-scroll { padding: 6px 16px 28px; }
-  .wk .scroll.case { padding: 16px 18px 36px; }
+  .wk .wk-scroll { padding: 8px 18px 32px; }
+  .wk .scroll.case { padding: 18px 20px 40px; }
   .wk-chap { padding: 0 14px 8px; }
   .wk-grid[data-v="grid"] { grid-template-columns: 1fr; }
   .wk-grid[data-v="list"] .wk-cover { width: 120px; }
