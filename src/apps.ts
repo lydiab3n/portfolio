@@ -4,6 +4,7 @@ import { t } from "./i18n";
 import { renderAbout } from "./about";
 import { renderPhotos } from "./photobook";
 import { extraApps, extraIcon } from "./extra-apps";
+import { thumbFor } from "./desk";
 
 export interface Ctx {
   sfx: Sfx;
@@ -98,6 +99,39 @@ const tbl = (t: DataTable) =>
     .map((r) => `<tr>${r.map((c, i) => `<${i === 0 ? "th scope=\"row\"" : "td"}>${esc(c)}</${i === 0 ? "th" : "td"}>`).join("")}</tr>`)
     .join("")}</tbody></table></div>`;
 
+/* little numbers for the "At a glance" card, all counted from the case study itself */
+function mediaCount(c: CaseStudy): number {
+  let n = (c.video ? 1 : 0) + (c.embed ? 1 : 0) + (c.poster ? 1 : 0);
+  const h = c.heroMedia;
+  n += Array.isArray(h) ? h.length : h ? 1 : 0;
+  for (const st of c.steps) n += (st.media?.length ?? 0) + (st.videos?.length ?? 0) + (st.externalVideos?.length ?? 0);
+  n += c.outcome.filter((o) => o.media).length;
+  return n;
+}
+function stats(c: CaseStudy): string {
+  const items: [number, string, string][] = [
+    [c.steps.length, t("step", "étape"), t("steps", "étapes")],
+    [c.decisions.length, t("key decision", "décision clé"), t("key decisions", "décisions clés")],
+    [mediaCount(c), t("visual", "visuel"), t("visuals", "visuels")],
+  ];
+  return items.filter(([n]) => n > 0).map(([n, one, many]) => `<span><b>${n}</b> ${n === 1 ? one : many}</span>`).join("");
+}
+
+/* a few facts shown when a card is hovered */
+function cardFacts(c: CaseStudy): string[] {
+  const pick = c.facts.filter(([k]) => /time|calend|dur|period|tool|outil|method|métho/i.test(k));
+  return (pick.length ? pick : c.facts).slice(0, 2).map(([, v]) => clean(v)).filter((v) => v && v.length < 90);
+}
+
+const cover = (c: CaseStudy) => {
+  const th = thumbFor(c);
+  if (!th) return "";
+  return th.kind === "art" ? th.v : `<img src="${th.v}" alt="" loading="lazy" draggable="false" style="object-position:${th.pos ?? "center"}" />`;
+};
+
+const SELECTED = new Set(["magic-map", "suite-numerique"]);
+const catColor: Record<string, string> = { product: "#ec2a72", interaction: "#8f6bf0", immersive: "#1fa6a0", games: "#f08a3c", tangible: "#3f9b5e", civic: "#4f7cf0" };
+
 function caseHtml(c: CaseStudy): string {
   const facts = c.facts.map(([k, v]) => [k, clean(v)] as const).filter(([, v]) => v);
   const steps = c.steps
@@ -112,7 +146,7 @@ function caseHtml(c: CaseStudy): string {
   const refl = c.reflection.filter((r) => !/TODO/i.test(r));
   let n = 0;
   const scenario = c.scenario
-    ? `<section><h2 class="group-h">${t("The scenario, step by step", "Le scénario, étape par étape")}</h2><div class="scen">${c.scenario
+    ? `<section data-sec><h2 class="group-h">${t("The scenario, step by step", "Le scénario, étape par étape")}</h2><div class="scen">${c.scenario
         .map(
           (g) => `<div class="scen-g"><h3>${esc(g.label)}</h3><ol>${g.items
             .map(([tag, text]) => `<li>${tag ? `<b>${esc(tag)}</b>` : ""}<span>${esc(text)}</span></li>`)
@@ -130,28 +164,49 @@ function caseHtml(c: CaseStudy): string {
     : c.embed ? `<figure class="embed"><iframe src="${c.embed.src}" title="${esc(c.embed.caption)}" loading="lazy" allowfullscreen></iframe><figcaption>${esc(c.embed.caption)}</figcaption></figure>` : c.poster ? `<div class="poster-full">${fig(c.poster)}</div>` : Array.isArray(c.heroMedia) ? `<div class="gallery">${c.heroMedia.map(fig).join("")}</div>` : c.heroMedia ? fig(c.heroMedia) : slot(c.hero, "hero");
   return `
   <div class="scroll case">
-    <div class="case-title"><p>${esc(c.kind)}</p><h1 class="display">${esc(c.title)}</h1><p class="blurb">${esc(c.blurb)}</p></div>
+    <div class="case-title" data-top><p>${esc(c.kind)}</p><h1 class="display">${esc(c.title)}</h1><p class="blurb">${esc(c.blurb)}</p></div>
     <div class="case-hero">${hero}</div>
     ${c.links ? `<div class="doc-links">${c.links.map((l) => `<a href="${l.href}" target="_blank" rel="noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l5 5v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/></svg><span><b>${esc(l.label)}</b><small>${esc(l.hint)}</small></span></a>`).join("")}</div>` : ""}
-    <dl class="facts">${facts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
-    <section><h2 class="group-h">${t("The brief", "Le brief")}</h2><p class="prose-p">${esc(c.brief)}</p></section>
-    <section><h2 class="group-h">${t("Process", "Processus")}</h2>${steps}</section>
-    ${c.principles ? `<section><h2 class="group-h">${t("Principles in the design", "Les principes dans la conception")}</h2><ul class="bul">${c.principles.intro.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>${tbl(c.principles.table)}</section>` : ""}
+    <div class="glance"><p class="glance-h">${t("At a glance", "En un coup d’œil")}</p>
+      <div class="glance-stats">${stats(c)}</div>
+      <dl class="facts">${facts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl></div>
+    <section data-sec><h2 class="group-h">${t("The brief", "Le brief")}</h2><p class="prose-p">${esc(c.brief)}</p></section>
+    <section data-sec><h2 class="group-h">${t("Process", "Processus")}</h2><div class="process">${steps}</div></section>
+    ${c.principles ? `<section data-sec><h2 class="group-h">${t("Principles in the design", "Les principes dans la conception")}</h2><ul class="bul">${c.principles.intro.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>${tbl(c.principles.table)}</section>` : ""}
     ${scenario}
-    ${c.decisions.length ? `<section><h2 class="group-h">${t("Key decisions", "Décisions clés")}</h2><div class="decisions">${decisions}</div></section>` : ""}
-    ${c.outcome.length ? `<section><h2 class="group-h">${t("Outcome", "Résultat")}</h2><div class="outcome">${outcome}</div></section>` : ""}
-    ${c.evaluation ? `<section><h2 class="group-h">${t("Evaluation", "Évaluation")}</h2><ul class="bul">${c.evaluation.map((e) => `<li>${esc(e)}</li>`).join("")}</ul>${c.evaluationNote ? `<p class="note">${esc(c.evaluationNote)}</p>` : ""}</section>` : ""}
-    ${c.future ? `<section><h2 class="group-h">${t("Future improvements", "Améliorations futures")}</h2><ul class="bul">${c.future.map((e) => `<li>${esc(e)}</li>`).join("")}</ul></section>` : ""}
-    ${refl.length ? `<section><h2 class="group-h">${t("Reflection", "Réflexion")}</h2>${refl.map((r) => `<p class="prose-p">${esc(r)}</p>`).join("")}</section>` : ""}
+    ${c.decisions.length ? `<section data-sec><h2 class="group-h">${t("Key decisions", "Décisions clés")}</h2><div class="decisions">${decisions}</div></section>` : ""}
+    ${c.outcome.length ? `<section data-sec><h2 class="group-h">${t("Outcome", "Résultat")}</h2><div class="outcome">${outcome}</div></section>` : ""}
+    ${c.evaluation ? `<section data-sec><h2 class="group-h">${t("Evaluation", "Évaluation")}</h2><ul class="bul">${c.evaluation.map((e) => `<li>${esc(e)}</li>`).join("")}</ul>${c.evaluationNote ? `<p class="note">${esc(c.evaluationNote)}</p>` : ""}</section>` : ""}
+    ${c.future ? `<section data-sec><h2 class="group-h">${t("Future improvements", "Améliorations futures")}</h2><ul class="bul">${c.future.map((e) => `<li>${esc(e)}</li>`).join("")}</ul></section>` : ""}
+    ${refl.length ? `<section data-sec><h2 class="group-h">${t("Reflection", "Réflexion")}</h2>${refl.map((r) => `<p class="prose-p">${esc(r)}</p>`).join("")}</section>` : ""}
   </div>`;
 }
 
-function lightbox(src: string, alt: string, sfx: Sfx) {
+function lightbox(items: { src: string; alt: string }[], start: number, sfx: Sfx) {
+  let i = start;
   const box = document.createElement("div");
   box.className = "lightbox";
   box.setAttribute("role", "dialog");
-  box.setAttribute("aria-label", alt);
-  box.innerHTML = `<img src="${src}" alt="${esc(alt)}" /><button aria-label="${t("Close", "Fermer")}">×</button>`;
+  box.setAttribute("aria-label", items[i].alt);
+  const many = items.length > 1;
+  box.innerHTML = `<img src="${items[i].src}" alt="${esc(items[i].alt)}" /><button class="lb-x" aria-label="${t("Close", "Fermer")}">×</button>${
+    many ? `<button class="lb-n prev" aria-label="${t("Previous image", "Image précédente")}">‹</button><button class="lb-n next" aria-label="${t("Next image", "Image suivante")}">›</button><p class="lb-c"></p>` : ""
+  }${items[i].alt ? `<p class="lb-cap"></p>` : ""}`;
+  const img = box.querySelector("img")!;
+  const count = box.querySelector<HTMLElement>(".lb-c");
+  const cap = box.querySelector<HTMLElement>(".lb-cap");
+  const paint = () => {
+    img.src = items[i].src;
+    img.alt = items[i].alt;
+    box.setAttribute("aria-label", items[i].alt);
+    if (count) count.textContent = `${i + 1} / ${items.length}`;
+    if (cap) cap.textContent = items[i].alt;
+  };
+  const go = (d: number) => {
+    i = (i + d + items.length) % items.length;
+    sfx.tick();
+    paint();
+  };
   const close = () => {
     document.removeEventListener("keydown", key, true);
     box.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 180 }).onfinish = () => box.remove();
@@ -160,69 +215,248 @@ function lightbox(src: string, alt: string, sfx: Sfx) {
     if (e.key === "Escape") {
       e.stopPropagation();
       close();
+    } else if (many && (e.key === "ArrowRight" || e.key === "ArrowLeft")) {
+      e.stopPropagation();
+      e.preventDefault();
+      go(e.key === "ArrowRight" ? 1 : -1);
     }
   };
-  box.addEventListener("click", close);
+  box.addEventListener("click", (e) => {
+    const n = (e.target as HTMLElement).closest<HTMLElement>(".lb-n");
+    if (n) {
+      e.stopPropagation();
+      go(n.classList.contains("next") ? 1 : -1);
+    } else close();
+  });
   document.addEventListener("keydown", key, true);
   document.body.appendChild(box);
+  paint();
   sfx.spot();
   box.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 240 });
-  box.querySelector<HTMLElement>("button")!.focus();
+  box.querySelector<HTMLElement>(".lb-x")!.focus();
 }
 function renderWork(body: HTMLElement, ctx: Ctx, arg?: string) {
+  const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const pref = (() => {
+    try {
+      return localStorage.getItem("work.view") === "list" ? "list" : "grid";
+    } catch {
+      return "grid";
+    }
+  })();
+  const st = { cat: "all", q: "", view: pref as "grid" | "list", open: cases.find((c) => c.id === arg)?.id ?? null as string | null };
+  const count = (cat: string) => cases.filter((c) => cat === "all" || caseCategories[c.id]?.includes(cat)).length;
+  const visible = () => {
+    const q = st.q.trim().toLowerCase();
+    return cases.filter((c) => (st.cat === "all" || caseCategories[c.id]?.includes(st.cat)) && (!q || [c.title, c.kind, c.blurb, ...c.facts.map(([, v]) => v)].join(" ").toLowerCase().includes(q)));
+  };
+
   body.innerHTML = `
-  <aside class="side projects"><p class="side-h">${t("Projects", "Projets")}</p>
-    <label class="project-filter"><span>${t("Category", "Catégorie")}</span>
-      <select id="project-category" aria-label="${t("Filter projects by category", "Filtrer les projets par catégorie")}">
-        <option value="all">${t("All categories", "Toutes les catégories")}</option>
-        ${projectCategories.map((category) => `<option value="${category.id}">${esc(category.label)}</option>`).join("")}
-      </select>
-    </label>
+  <aside class="side projects" aria-label="${t("Projects", "Projets")}">
+    <p class="side-h">${t("My work", "Mes projets")}</p>
+    <button type="button" class="side-i wk-all" data-all><span class="mini">${icon("work")}</span><span><b>${t("All projects", "Tous les projets")}</b><small>${cases.length} ${t("files", "fichiers")}</small></span></button>
+    <p class="side-h">${t("Categories", "Catégories")}</p>
+    <div class="wk-cats">${projectCategories
+      .filter((k) => count(k.id) > 0)
+      .map((k) => `<button type="button" class="side-i cat" data-cat="${k.id}" style="--c:${catColor[k.id] ?? "#ec2a72"}"><i class="dot"></i><span><b>${esc(k.label)}</b></span><em>${count(k.id)}</em></button>`)
+      .join("")}</div>
+    <p class="side-h">${t("Files", "Fichiers")}</p>
     <div class="project-list"></div>
   </aside>
   <main class="main" id="case-main"></main>`;
-  const projectList = body.querySelector<HTMLElement>(".project-list")!;
-  const categorySelect = body.querySelector<HTMLSelectElement>("#project-category")!;
-  let activeCaseId = cases.find((c) => c.id === arg)?.id ?? cases[0].id;
+  const list = body.querySelector<HTMLElement>(".project-list")!;
+  const main = body.querySelector<HTMLElement>("#case-main")!;
 
-  const filteredCases = () => cases.filter((c) =>
-    categorySelect.value === "all" || caseCategories[c.id]?.includes(categorySelect.value)
+  const paintSide = () => {
+    body.querySelectorAll<HTMLElement>(".wk-all").forEach((b) => b.classList.toggle("on", st.open === null && st.cat === "all"));
+    body.querySelectorAll<HTMLElement>(".cat").forEach((b) => b.classList.toggle("on", st.open === null && b.dataset.cat === st.cat));
+    list.innerHTML = visible()
+      .map((c) => `<button type="button" class="side-i" data-case="${c.id}"><span class="wk-th">${cover(c)}</span><span><b>${esc(c.title)}</b><small>${esc(c.kind)}</small></span></button>`)
+      .join("");
+    list.querySelectorAll<HTMLElement>(".side-i").forEach((b) => {
+      b.classList.toggle("on", b.dataset.case === st.open);
+      b.addEventListener("click", () => {
+        ctx.sfx.tick();
+        showCase(b.dataset.case!);
+      });
+    });
+  };
+
+  /* ---------- the folder: a gallery of files ---------- */
+  const cardHtml = (c: CaseStudy, i: number) => {
+    const tags = (caseCategories[c.id] ?? []).map((k) => projectCategories.find((x) => x.id === k)).filter(Boolean);
+    const facts = cardFacts(c);
+    return `<button type="button" class="wk-card" data-case="${c.id}" style="--i:${i}">
+      <span class="wk-cover">${cover(c)}${SELECTED.has(c.id) ? `<i class="wk-sel">★ ${t("Selected", "Sélection")}</i>` : ""}
+        <span class="wk-over">${facts.map((f) => `<span>${esc(f)}</span>`).join("")}<b>${t("Open the project", "Ouvrir le projet")} →</b></span></span>
+      <span class="wk-meta"><small>${esc(c.kind)}</small><b>${esc(c.title)}</b><em>${esc(c.blurb)}</em>
+        <span class="wk-tags">${tags.map((k) => `<i style="--c:${catColor[k!.id] ?? "#ec2a72"}">${esc(k!.label)}</i>`).join("")}</span>
+      </span></button>`;
+  };
+
+  const showGallery = (focusId?: string) => {
+    st.open = null;
+    main.innerHTML = `<div class="wk">
+      <header class="wk-bar">
+        <nav class="wk-crumb" aria-label="${t("Location", "Emplacement")}"><b>${t("My work", "Mes projets")}</b><span class="wk-n"></span></nav>
+        <label class="wk-search"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="m13 13 4 4"/></svg><input type="search" placeholder="${t("Search projects", "Rechercher un projet")}" aria-label="${t("Search projects", "Rechercher un projet")}" value="${esc(st.q)}" /></label>
+        <div class="wk-seg" role="group" aria-label="${t("View", "Affichage")}">
+          <button type="button" data-v="grid" aria-label="${t("Gallery", "Galerie")}" aria-pressed="${st.view === "grid"}"><svg viewBox="0 0 20 20"><rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="11" y="3" width="6" height="6" rx="1.5"/><rect x="3" y="11" width="6" height="6" rx="1.5"/><rect x="11" y="11" width="6" height="6" rx="1.5"/></svg></button>
+          <button type="button" data-v="list" aria-label="${t("List", "Liste")}" aria-pressed="${st.view === "list"}"><svg viewBox="0 0 20 20"><path d="M3 5h14M3 10h14M3 15h14"/></svg></button>
+        </div>
+      </header>
+      <div class="scroll wk-scroll"><div class="wk-grid" data-v="${st.view}"></div></div></div>`;
+    const grid = main.querySelector<HTMLElement>(".wk-grid")!;
+    const n = main.querySelector<HTMLElement>(".wk-n")!;
+    const input = main.querySelector<HTMLInputElement>("input")!;
+    const fill = () => {
+      const v = visible();
+      n.textContent = `${v.length} ${v.length === 1 ? t("project", "projet") : t("projects", "projets")}`;
+      grid.dataset.v = st.view;
+      grid.innerHTML = v.length
+        ? v.map(cardHtml).join("")
+        : `<div class="wk-empty"><b>${t("Nothing matches that.", "Rien ne correspond.")}</b><span>${t("Try another word, or look through all the projects.", "Essayez un autre mot, ou parcourez tous les projets.")}</span><button type="button" class="btn ghost" data-clear>${t("Show all projects", "Voir tous les projets")}</button></div>`;
+      if (calm) grid.classList.add("calm");
+      paintSide();
+    };
+    fill();
+    input.addEventListener("input", () => {
+      st.q = input.value;
+      fill();
+    });
+    main.querySelectorAll<HTMLElement>(".wk-seg button").forEach((b) =>
+      b.addEventListener("click", () => {
+        ctx.sfx.tick();
+        st.view = b.dataset.v === "list" ? "list" : "grid";
+        try {
+          localStorage.setItem("work.view", st.view);
+        } catch {
+          /* private mode */
+        }
+        main.querySelectorAll<HTMLElement>(".wk-seg button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+        fill();
+      }),
+    );
+    grid.addEventListener("click", (e) => {
+      const el = e.target as HTMLElement;
+      if (el.closest("[data-clear]")) {
+        st.q = "";
+        st.cat = "all";
+        input.value = "";
+        fill();
+        return;
+      }
+      const card = el.closest<HTMLElement>(".wk-card");
+      if (card) {
+        ctx.sfx.tick();
+        showCase(card.dataset.case!);
+      }
+    });
+    /* arrow keys move between cards */
+    grid.addEventListener("keydown", (e) => {
+      const cards = [...grid.querySelectorAll<HTMLElement>(".wk-card")];
+      const i = cards.indexOf(document.activeElement as HTMLElement);
+      if (i < 0 || !["ArrowRight", "ArrowLeft", "ArrowDown", "ArrowUp"].includes(e.key)) return;
+      const cols = Math.max(1, cards.filter((c) => c.offsetTop === cards[0].offsetTop).length);
+      const d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : e.key === "ArrowDown" ? cols : -cols;
+      const to = cards[i + d];
+      if (to) {
+        e.preventDefault();
+        to.focus();
+      }
+    });
+    if (focusId) grid.querySelector<HTMLElement>(`.wk-card[data-case="${focusId}"]`)?.focus({ preventScroll: true });
+  };
+
+  /* ---------- one project: easier to read ---------- */
+  const showCase = (id: string) => {
+    const idx = cases.findIndex((c) => c.id === id);
+    const c = cases[idx] ?? cases[0];
+    st.open = c.id;
+    const prev = cases[(idx - 1 + cases.length) % cases.length];
+    const next = cases[(idx + 1) % cases.length];
+    main.innerHTML = `<div class="wk">
+      <header class="wk-bar">
+        <button type="button" class="wk-back"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m12 4-6 6 6 6"/></svg>${t("My work", "Mes projets")}</button>
+        <nav class="wk-crumb" aria-label="${t("Location", "Emplacement")}"><span>${t("My work", "Mes projets")}</span><i aria-hidden="true">›</i><b>${esc(c.title)}</b></nav>
+        <div class="wk-pn"><button type="button" data-go="${prev.id}" aria-label="${t("Previous project", "Projet précédent")}: ${esc(prev.title)}" title="${esc(prev.title)}">‹</button><span>${idx + 1} / ${cases.length}</span><button type="button" data-go="${next.id}" aria-label="${t("Next project", "Projet suivant")}: ${esc(next.title)}" title="${esc(next.title)}">›</button></div>
+      </header>
+      <nav class="wk-chap" aria-label="${t("Sections", "Sections")}"></nav>
+      <div class="wk-prog" aria-hidden="true"><i></i></div>
+      ${caseHtml(c)}</div>`;
+    paintSide();
+    const sc = main.querySelector<HTMLElement>(".scroll")!;
+    sc.scrollTop = 0;
+    main.querySelector(".wk-back")!.addEventListener("click", () => {
+      ctx.sfx.tick();
+      showGallery(c.id);
+    });
+    main.querySelectorAll<HTMLElement>(".wk-pn [data-go]").forEach((b) =>
+      b.addEventListener("click", () => {
+        ctx.sfx.tick();
+        showCase(b.dataset.go!);
+      }),
+    );
+    /* image viewer: browse every picture of this project */
+    const zooms = [...main.querySelectorAll<HTMLElement>(".zoom")];
+    const items = zooms.map((z) => {
+      const im = z.querySelector("img")!;
+      return { src: im.src, alt: im.alt };
+    });
+    zooms.forEach((z, k) => z.addEventListener("click", () => lightbox(items, k, ctx.sfx)));
+    /* chapter chips, reading progress and "where am I" */
+    const secs = [...sc.querySelectorAll<HTMLElement>("[data-top], section[data-sec]")];
+    const chap = main.querySelector<HTMLElement>(".wk-chap")!;
+    chap.innerHTML = secs
+      .map((el, k) => `<button type="button" data-k="${k}">${k === 0 ? t("Overview", "Aperçu") : esc(el.querySelector("h2")?.textContent ?? "")}</button>`)
+      .join("");
+    const chips = [...chap.querySelectorAll<HTMLElement>("button")];
+    const bar = main.querySelector<HTMLElement>(".wk-prog i")!;
+    let raf = 0;
+    const spy = () => {
+      raf = 0;
+      const max = sc.scrollHeight - sc.clientHeight;
+      bar.style.transform = `scaleX(${max > 0 ? Math.min(1, sc.scrollTop / max) : 0})`;
+      let on = 0;
+      secs.forEach((el, k) => {
+        if (el.offsetTop - sc.offsetTop <= sc.scrollTop + 90) on = k;
+      });
+      if (max > 0 && sc.scrollTop >= max - 4) on = secs.length - 1;
+      chips.forEach((ch, k) => {
+        const is = k === on;
+        ch.classList.toggle("on", is);
+        if (is) ch.setAttribute("aria-current", "true");
+        else ch.removeAttribute("aria-current");
+      });
+    };
+    sc.addEventListener("scroll", () => (raf ||= requestAnimationFrame(spy)), { passive: true });
+    chips.forEach((ch) =>
+      ch.addEventListener("click", () => {
+        ctx.sfx.tick();
+        const el = secs[Number(ch.dataset.k)];
+        sc.scrollTo({ top: Number(ch.dataset.k) === 0 ? 0 : el.offsetTop - sc.offsetTop - 12, behavior: calm ? "auto" : "smooth" });
+      }),
+    );
+    spy();
+    main.querySelector<HTMLElement>(".wk-back")!.focus({ preventScroll: true });
+  };
+
+  /* sidebar: all projects and categories */
+  body.querySelector(".wk-all")!.addEventListener("click", () => {
+    ctx.sfx.tick();
+    st.cat = "all";
+    showGallery();
+  });
+  body.querySelectorAll<HTMLElement>(".cat").forEach((b) =>
+    b.addEventListener("click", () => {
+      ctx.sfx.tick();
+      st.cat = st.cat === b.dataset.cat ? "all" : b.dataset.cat!;
+      showGallery();
+    }),
   );
 
-  const renderProjectList = (visibleCases: CaseStudy[]) => {
-    projectList.innerHTML = visibleCases
-      .map((c) => `<button class="side-i" data-case="${c.id}"><span class="mini">${icon("work")}</span><span><b>${esc(c.title)}</b><small>${esc(c.kind)}</small></span></button>`)
-      .join("");
-    projectList.querySelectorAll<HTMLButtonElement>(".side-i").forEach((button) =>
-      button.addEventListener("click", () => {
-        ctx.sfx.tick();
-        show(button.dataset.case!);
-      })
-    );
-  };
-
-  const show = (id: string) => {
-    const c = filteredCases().find((x) => x.id === id) ?? filteredCases()[0] ?? cases[0];
-    activeCaseId = c.id;
-    body.querySelectorAll<HTMLElement>(".side-i").forEach((b) => b.classList.toggle("on", b.dataset.case === c.id));
-    const m = body.querySelector<HTMLElement>("#case-main")!;
-    m.innerHTML = caseHtml(c);
-    m.scrollTop = 0;
-    m.querySelectorAll<HTMLElement>(".zoom").forEach((z) =>
-      z.addEventListener("click", () => {
-        const im = z.querySelector("img")!;
-        lightbox(im.src, im.alt, ctx.sfx);
-      })
-    );
-  };
-
-  categorySelect.addEventListener("change", () => {
-    const visibleCases = filteredCases();
-    renderProjectList(visibleCases);
-    show(activeCaseId);
-  });
-  renderProjectList(filteredCases());
-  show(activeCaseId);
+  if (st.open) showCase(st.open);
+  else showGallery();
 }
 
 /* ---------- Experience (Notes) ---------- */
@@ -324,7 +558,11 @@ function renderEmbed(kind: "music" | "video") {
 
 const BASE_APPS: AppDef[] = [
   { id: "about", name: t("About Lydia", "À propos de Lydia"), w: 800, h: 640, keywords: "about me lydia bio profile hello propos présentation bonjour", render: renderAbout },
-  { id: "work", name: t("Work", "Projets"), w: 1060, h: 740, split: 232, keywords: "work projects case studies lineup zen rooms portfolio projets travaux études de cas", render: renderWork, onArg: (b, a) => b.querySelector<HTMLElement>(`.side-i[data-case="${a}"]`)?.click() },
+  { id: "work", name: t("Work", "Projets"), w: 1060, h: 740, split: 232, keywords: "work projects case studies lineup zen rooms portfolio projets travaux études de cas", render: renderWork, onArg: (b, a) => {
+    const row = () => b.querySelector<HTMLElement>(`.side-i[data-case="${a}"]`);
+    if (!row()) b.querySelector<HTMLElement>(".wk-all")?.click();
+    row()?.click();
+  } },
   { id: "experience", name: t("Experience", "Parcours"), w: 820, h: 560, split: 232, keywords: "experience roles skills cv resume jobs parcours formation compétences", render: renderExperience },
   { id: "cv", name: "CV", w: 860, h: 700, keywords: "cv resume curriculum vitae download pdf télécharger", render: renderCV },
   { id: "photos", name: t("Photos", "Photos"), w: 1040, h: 720, keywords: "photos book album cats sea beach algiers photography images galerie livre chats mer plage", render: renderPhotos },
