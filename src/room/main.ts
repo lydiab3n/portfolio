@@ -5,10 +5,14 @@ import { Sfx } from "../sound";
 import { SPOTS, TOTAL, proxyHtml } from "./scene";
 import type { World } from "./world";
 import { Ambience } from "./ambience";
-import { strum } from "../about";
 import { panel, dialRotation } from "./panels";
 import { initChat } from "./chat-ui";
 import { mountThisThat } from "./thisthat";
+import { createScenes } from "./scenes/overlay";
+import { guitarScene } from "./scenes/guitar";
+import { makeupScene } from "./scenes/makeup";
+import { matchaScene } from "./scenes/matcha";
+import { petsScene } from "./scenes/pets";
 import { contact, hero } from "../content";
 
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -57,6 +61,8 @@ document.getElementById("room-app")!.innerHTML = `
     <button type="button" class="lap-scr" id="lap-scr" aria-label="${t("Open my portfolio", "Ouvrir mon portfolio")}"></button>
     <div class="lap-ui"><button type="button" class="gloss" id="lap-back">← ${t("Back to the room", "Retour à la chambre")}</button><p>${t("Click the screen to open my portfolio", "Cliquez sur l’écran pour ouvrir mon portfolio")}</p></div>
   </div>
+
+  <div class="scenes" id="scenes" hidden></div>
 
   <aside class="drawer" id="drawer" aria-label="${t("Quick links", "Liens rapides")}">
     <header><h2>${t("Quick links", "Liens rapides")}</h2><button type="button" class="orb" id="d-close" aria-label="${t("Close menu", "Fermer le menu")}">×</button></header>
@@ -127,6 +133,8 @@ function toast(text: string) {
   document.body.appendChild(el);
   el.onanimationend = () => el.remove();
 }
+
+const scenes = createScenes($("#scenes"), { burst, toast }, reduce);
 
 /* ---------- discovery counter ---------- */
 const STORE = "room.found.v2";
@@ -361,7 +369,8 @@ function lightbox(src: string, alt: string) {
 /* keep Tab inside the open dialog */
 addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
-    if (lapOpen) closeLaptop();
+    if (scenes.isOpen()) scenes.close();
+    else if (lapOpen) closeLaptop();
     else if (chat.isOpen()) chat.close();
     else if (drawer.classList.contains("on")) toggleDrawer(false);
     else closePanel();
@@ -520,11 +529,9 @@ const chat = initChat(room, {
   reduce,
 });
 
-let sips = 0;
 /* my favourite things on the shelves: each one has a little reaction */
 const FAVS: Record<string, { fx: string[]; lines: string[] }> = {
   perfume: { fx: ["✧", "✦", "·"], lines: [t("Pssht. Something rosy and a little bit dramatic.", "Pschitt. Quelque chose de rosé et un peu dramatique."), t("One more spray, for the cats. They hate it.", "Encore un pschitt, pour les chats. Ils détestent.")] },
-  lipstick: { fx: ["♥", "💋", "♥"], lines: [t("Red lipstick: instant confidence, no prototype needed.", "Rouge à lèvres : confiance immédiate, sans prototype."), t("The right red can fix any Monday.", "Le bon rouge répare n’importe quel lundi.")] },
   sunnies: { fx: ["♥", "☀", "♥"], lines: [t("Heart-shaped, obviously. For the beach in Béjaïa.", "En forme de cœur, évidemment. Pour la plage à Béjaïa."), t("Mermaid meets glamour, remember?", "Sirène et glamour, vous vous souvenez ?")] },
   bag: { fx: ["✦", "♥", "✧"], lines: [t("Inside: a sketchbook, a matcha card and cat hair. Always cat hair.", "Dedans : un carnet de croquis, une carte de fidélité matcha et des poils de chat. Toujours des poils de chat."), t("Fashion was my first design teacher.", "La mode a été mon premier prof de design.")] },
 };
@@ -624,19 +631,18 @@ function activate(id: string) {
       return openLaptop();
     case "about":
       return openPanel("thisthat", undefined, el);
-    case "matcha": {
+    case "matcha":
       world?.kick("matcha");
-      world?.hop("matcha");
-      const lines = [t("Sip. Earthy and perfect.", "Une gorgée. Terreuse et parfaite."), t("Another sip. Don't tell the cats.", "Encore une gorgée. Ne le dites pas aux chats."), t("Okay, last one. (It is not.)", "Bon, la dernière. (Ce n'est pas la dernière.)")];
-      return toast(lines[sips++ % lines.length]);
-    }
+      return scenes.open(matchaScene({ served: () => { world?.kick("matcha"); world?.hop("matcha"); } }), el);
+    case "lipstick":
+      world?.hop("lipstick");
+      return scenes.open(makeupScene(), el);
     case "plant":
       world?.kick("plant");
       return toast(t("She's thriving. Thanks for asking.", "Elle va très bien. Merci de demander."));
     case "music":
-      strum();
       world?.kick("music");
-      return openPanel(id, undefined, el);
+      return scenes.open(guitarScene({ listen: () => openPanel("music", undefined, el) }), el);
     case "exp":
       world?.kick("exp");
       return openPanel(id, undefined, el);
@@ -648,9 +654,10 @@ function activate(id: string) {
     case "lamp":
       return toggleNight();
     case "cat-a":
-      return chat.open("ferrari", el);
-    case "cat-b":
-      return chat.open("lambo", el);
+    case "cat-b": {
+      const cat = id === "cat-a" ? "ferrari" : "lambo";
+      return scenes.open(petsScene({ cat, chat: (c) => chat.open(c, el), hop: (sp) => world?.hop(sp) }), el);
+    }
     default:
       openPanel(id, undefined, el);
   }
@@ -721,7 +728,7 @@ import("./world")
     noRoom();
   });
 /** the 3D scene sleeps while something is open on top of it */
-setInterval(() => world?.setPaused(!panelEl.hidden || chat.isOpen() || drawer.classList.contains("on")), 250);
+setInterval(() => world?.setPaused(!panelEl.hidden || scenes.isOpen() || chat.isOpen() || drawer.classList.contains("on")), 250);
 
 /* ---------- start ---------- */
 setTimeout(() => lights.remove(), 25000);
