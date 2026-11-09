@@ -7,8 +7,12 @@ export interface Media { src: string; alt: string; caption?: string; wide?: bool
 export interface VideoMedia { src: string; caption: string; poster?: string }
 export interface ExternalVideoMedia { src: string; caption: string }
 export interface DataTable { caption?: string; head: string[]; rows: string[][] }
+/* the twelve steps of Wendy Mackay's DOIT circle */
+export type DoitId = "observations" | "needs" | "insights" | "inspiration" | "design-space" | "categories" | "design-inputs" | "designs" | "prototype" | "questions" | "implications" | "study-design";
 export interface Step {
   title: string;
+  /** which steps of the DOIT circle this part of the process belongs to */
+  doit?: DoitId[];
   copy?: string;
   slots: string[];
   media?: Media[];
@@ -483,6 +487,10 @@ export const cases: CaseStudy[] = [
 ];
 
 cases.push(...moreCases);
+/* the projects I most want to show come first */
+const FIRST = ["suite-numerique", "magic-map", "color-ai-t"];
+const rank = (id: string) => (FIRST.includes(id) ? FIRST.indexOf(id) : FIRST.length);
+cases.sort((a, b) => rank(a.id) - rank(b.id));
 
 /* Photo piles. These are PLACEHOLDERS: swap `ph(...)` for a real file in /public, e.g. p("photos/trip-1.jpg", "On the bridge"). */
 export interface AlbumPhoto { src: string; caption: string }

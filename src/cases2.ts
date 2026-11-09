@@ -14,7 +14,8 @@ export const moreCases: CaseStudy[] = [
       ["Team", "Lydia Benosmane, Sidonie Minodier, Victoria Myot, Ayda Yurtoglu"],
       ["My role", "Contributed across research, system and interaction design, prototyping, testing, redesign, diagrams and storyboard"],
       ["Timeline", "November–December 2025"],
-      ["Methods", "8 story interviews · personas · system diagrams · paper and video prototyping · generative walkthrough"],
+      ["Methods", "8 story interviews · personas · system diagrams · paper and video prototyping · generative walkthrough · participatory design workshop"],
+      ["Design method", "Wendy Mackay’s DOIT circle"],
       ["Context", "Design of Interactive Systems · M1 HCI, Paris-Saclay University"],
     ],
     brief:
@@ -27,6 +28,7 @@ export const moreCases: CaseStudy[] = [
     steps: [
       {
         title: "Problem and users",
+        doit: ["observations", "needs"],
         copy: "Eight story interviews surfaced two recurring breakdowns: it is hard to align a group’s interests and needs while planning, and hard to adapt the itinerary when a disruption changes the plan.",
         bullets: [
           "We designed for international students aged 18–26 visiting Paris, often with friends.",
@@ -36,6 +38,7 @@ export const moreCases: CaseStudy[] = [
       },
       {
         title: "Three personas",
+        doit: ["insights"],
         copy: "We used three personas to explore different needs, including Cam, an extreme user whose busy schedule can pull her away from the group.",
         bullets: [
           "Alf, 20, student: wants to see as much as possible, afraid of missing out, and uses social media to find places.",
@@ -47,6 +50,7 @@ export const moreCases: CaseStudy[] = [
       },
       {
         title: "First iteration: a modular paper system",
+        doit: ["design-space", "designs"],
         copy: "Rather than make another app, we explored how a familiar paper map could support shared planning through folding, touch and a connected pen.",
         bullets: [
           "Folding the left side opened interest lists; folding the right revealed the itinerary timeline.",
@@ -58,6 +62,7 @@ export const moreCases: CaseStudy[] = [
       },
       {
         title: "First video prototype and walkthrough",
+        doit: ["prototype", "questions", "implications"],
         copy: "We presented the first video prototype to another student group and ran a generative walkthrough. The feedback showed where the interactions and the video explanation were hard to follow.",
         bullets: [
           "It was unclear how to transfer a place from TikTok, add it to a list, or plan a stop that was not already marked on the map.",
@@ -69,6 +74,7 @@ export const moreCases: CaseStudy[] = [
       },
       {
         title: "Second iteration: clearer interactions",
+        doit: ["implications", "designs"],
         copy: "We simplified the system in response to the walkthrough and designed for a group whose plans and connectivity can change.",
         bullets: [
           "Folding now opens a menu of functions and tabs, and the map resizes to fit.",
@@ -81,18 +87,27 @@ export const moreCases: CaseStudy[] = [
         media: [{ src: "magicmap/slide-07.jpg", alt: "Slide listing the improvements made to Magic Map", caption: "Design changes after the walkthrough", wide: true }],
       },
       {
+        title: "A participatory design workshop",
+        doit: ["design-inputs", "study-design"],
+        copy: "In the redesign phase we imagined and organised a participatory design workshop of our own. We made role-playing cards that give each traveller a goal, so participants had to plan together while wanting different things.",
+        bullets: ["Four role-playing cards: the Matcha Lover, the Fancy Resto fan, the Museum Enthusiast and the Vegan."],
+        slots: [],
+        media: [{ src: "magicmap/nb-59.jpg", alt: "Cards describing the role-play personas: Matcha Lover, Fancy Resto, Museum Enthusiast and The Vegan", caption: "The role-playing cards: each traveller has a goal" }],
+      },
+      {
         title: "Revised storyboard and paper prototype tests",
+        doit: ["designs", "prototype", "questions"],
         copy: "The storyboard follows Alf, Béa and Cam from planning their Paris visit to splitting the map and using a saved itinerary on the metro. We tested the first paper prototype, then tested it again after making changes.",
         slots: [],
         media: [
-          { src: "magicmap/nb-40.jpg", alt: "Photo of sticky notes with handwritten ideas on a storyboard template", caption: "Workshop: ideas on sticky notes" },
-          { src: "magicmap/nb-41.jpg", alt: "Photo of sticky notes with sketched interaction flows", caption: "Workshop: sketching the flows" },
-          { src: "magicmap/nb-59.jpg", alt: "Cards describing the role-play personas: Matcha Lover, Fancy Resto, Museum Enthusiast and The Vegan", caption: "Role-playing cards: each traveller has a goal" },
+          { src: "magicmap/nb-40.jpg", alt: "Photo of sticky notes with handwritten ideas on a storyboard template", caption: "Storyboard: ideas on sticky notes" },
+          { src: "magicmap/nb-41.jpg", alt: "Photo of sticky notes with sketched interaction flows", caption: "Storyboard: sketching the flows" },
           { src: "magicmap/nb-68.jpg", alt: "Storyboard frames next to the step-by-step description of an interaction", caption: "Storyboard frames and the interaction that goes with each" },
         ],
       },
       {
         title: "Final video prototype",
+        doit: ["prototype"],
         copy: "The second video prototype brings the redesigned interactions together: collaborative planning, branching itineraries and adapting the trip on the move.",
         slots: [],
         videos: [{ src: "magicmap/paper-prototype-revised.mp4", caption: "Second video prototype" }],
@@ -503,5 +518,178 @@ export const moreCases: CaseStudy[] = [
       "What we showed at the end: several personal layouts can live on one shared set of data, general tools can be combined into specialised ones, and a selection can become a template.",
     ],
     hero: "La Suite numérique prototype",
+  },
+  /* ------------------------------------------------------------------ COLOR-AI-T */
+  {
+    id: "color-ai-t",
+    title: "Color-AI-t",
+    kind: "Interactive system · AI coloring-page app",
+    blurb: "A pen-based tablet app that turns your ideas into coloring pages with AI, and lets you change just the part you want.",
+    facts: [
+      ["Team", "Group 2: Moizza Azhar, Lydia Benosmane, Jay Gupte, Daniyal Nasiri Bavil, Ayda Yurtoglu"],
+      ["My role", "Story interviews, then concept, scenarios, storyboards, redesign and user study with the team"],
+      ["Timeline", "January–February 2026"],
+      ["Methods", "8 story interviews · design alternatives · scenarios and storyboards · paper and video prototyping · generative walkthrough · comparative user study"],
+      ["Design method", "Wendy Mackay’s DOIT circle"],
+      ["Context", "Advanced Design of Interactive Systems · M1 HCI, Paris-Saclay University"],
+    ],
+    video: { src: "coloraitt/final-video.mp4", poster: "coloraitt/final-video.jpg", caption: "Final video prototype, made with paper: drawing, selecting a part of the image and prompting the AI" },
+    brief:
+      "Making a coloring page with AI should be quick, but the people we interviewed ran into the same walls: they could not find the words for what they pictured, the lines were not always easy to color, and they could not change one part of an image without starting again. We designed a pen-based tablet app for hobbyists, parents who want custom pages for their kids, and anyone who wants their own coloring book.",
+    steps: [
+      {
+        title: "Story interviews",
+        doit: ["observations"],
+        copy: "We started by listening to how people really make coloring pages with AI. Our group ran eight story interviews with people who had tried Colorify AI and ChatGPT. I ran two, with a 19-year-old architecture student and a 25-year-old computer science student.",
+        bullets: [
+          "It is hard to describe an image in words. “I say a pretty butterfly with wings, but I don’t know how to be more specific than this.”",
+          "Generated images are not always good for coloring: meaningless artifacts, lines that are hard to follow. “The rose didn’t look like a proper rose at all… it looked like an ugly mushroom.”",
+          "People repeat the process many times, and stop when they are tired rather than satisfied. “When did you decide the coloring page was good enough?” “When I got tired.”",
+          "Editing is hard: you cannot easily change one part of the image.",
+        ],
+        slots: [],
+        media: [{ src: "coloraitt/slide-04.jpg", alt: "Slide listing the problems found in the story interviews, with quotes from participants", caption: "What the interviews showed", wide: true }],
+      },
+      {
+        title: "From interviews to needs",
+        doit: ["needs", "insights"],
+        copy: "We read the transcripts side by side and pulled out what kept coming back. Three issues stood out: people struggle with prompt engineering, the phone layout breaks their mental model, and there is no visual history to compare results. My own takeaways from my two interviews:",
+        bullets: [
+          "AI often fails when the request is specific or imaginative.",
+          "When people are not satisfied, they add more keywords rather than change approach.",
+          "If a page is “good enough”, people accept it and move on.",
+          "Small interface choices frustrate people even when the tool is easy to understand, like scrolling back down to press Generate, or losing previous images unless you download them.",
+          "People trust tools that explain their limits and suggest alternatives, rather than tools that just fail silently.",
+        ],
+        slots: [],
+      },
+      {
+        title: "Brainstorming: four directions",
+        doit: ["inspiration", "design-space"],
+        copy: "Before choosing, we sketched four different ways to help someone make a coloring page.",
+        bullets: [
+          "Node-based creation: build a page from connected prompts.",
+          "Search One: start from a search on the internet instead of a prompt.",
+          "Educational purpose: a tool that teaches a concept through coloring.",
+          "Storybook: AI, coloring pages and a story together, for children.",
+        ],
+        slots: [],
+        media: [{ src: "coloraitt/slide-07.jpg", alt: "Slide showing our sketches of the four alternatives: node-based creation, storybook, search one and educational purpose", caption: "Alternatives we considered", wide: true }],
+      },
+      {
+        title: "The design concept",
+        doit: ["design-space", "categories"],
+        copy: "We went deeper on one problem: words alone are not enough to change a specific part of a coloring page. Color-AI-t generates coloring-page outlines with AI from a text prompt, a sketch or a photo, and lets you modify one part at a time or apply a style.",
+        bullets: [
+          "The AI suggests and the person always has the final say.",
+          "You can select and modify specific parts of the outline, locally or globally.",
+          "You can correct the AI’s output directly on the canvas, and go back to any previous version.",
+        ],
+        slots: [],
+        media: [
+          { src: "coloraitt/slide-06.jpg", alt: "Slide with the design idea and three sketches: generating via prompt, modifying a selected part, applying a style", caption: "The design idea", wide: true },
+          { src: "coloraitt/slide-08.jpg", alt: "Slide describing the collaboration concept: the role of user and system, control by design, error handling", caption: "How the person and the AI share control", wide: true },
+        ],
+      },
+      {
+        title: "Scenarios and storyboards",
+        doit: ["design-inputs", "designs"],
+        copy: "We wrote scenarios around Anna, 24, who is creative and colors as a hobby, and drew each one as a storyboard with shooting instructions, so that we could film a paper prototype. A second storyboard on 12 February reflected what the walkthrough taught us.",
+        bullets: [
+          "Drawing with smart shape assistance: draw a rough circle and the system offers a clean one.",
+          "Applying a style from a photo or a Pinterest reference.",
+          "Undo and redo with a double-tap, and a history panel to look at past versions.",
+          "Saving a character in a library and reusing it on another page.",
+        ],
+        slots: [],
+        media: [
+          { src: "coloraitt/nb-36.jpg", alt: "First page of the storyboard: Anna, 24, creative, loves coloring as a hobby, opening the app and creating a new canvas", caption: "Storyboard, first page" },
+          { src: "coloraitt/nb-38.jpg", alt: "Storyboard page: drawing reference, moving and rotating an object, using the text extractor", caption: "Drawing a reference, moving an object, extracting text" },
+          { src: "coloraitt/nb-40.jpg", alt: "Storyboard page: looking at past versions, saving and reusing components on different pages", caption: "History and reusable components" },
+        ],
+      },
+      {
+        title: "Paper prototype and first video",
+        doit: ["prototype"],
+        copy: "We built a paper tablet with a toolbar, a drawing area and an AI assistant, and filmed our first video prototype on 29 January.",
+        slots: [],
+        videos: [{ src: "coloraitt/first-video.mp4", poster: "coloraitt/first-video.jpg", caption: "First video prototype (29 January)" }],
+      },
+      {
+        title: "Generative walkthrough: five pieces of feedback",
+        doit: ["questions", "implications"],
+        copy: "Another group walked through our video prototype. Their feedback came down to five points. For each one we named the socio-technical principle and the golden rule of interface design behind it before changing the design.",
+        slots: [],
+        table: {
+          head: ["What they told us", "What we changed", "Principle behind the change"],
+          rows: [
+            ["Spatial prompting with three dots is confusing", "A draggable AI anchor: drop it on the part of the image you want to change", "Situated action · Keep users in control, prevent errors"],
+            ["The AI gives only one result", "After a prompt, 3 to 5 variations appear directly on the canvas", "Reciprocal co-adaptation · Keep users in control"],
+            ["Photo, prompt and draw feel separate and confusing", "One AI panel that shows photo, text and drawing input at once", "Distributed cognition · Reduce short-term memory load, strive for consistency"],
+            ["The layout and icon style are not clear", "A new layout and clearer icons", "Explainability · Strive for consistency"],
+            ["Some interactions are unclear or missing", "A reusable components library, a history of prompts and multiple pages", "Distributed cognition · Reduce short-term memory load, permit easy reversal of actions"],
+          ],
+        },
+        media: [
+          { src: "coloraitt/slide-09.jpg", alt: "Paper prototype photo: dragging an AI anchor onto part of the drawing", caption: "The AI anchor, dragged onto a part of the drawing" },
+          { src: "coloraitt/slide-10.jpg", alt: "Paper prototype photos: the AI panel returns several variations on the canvas", caption: "Variations appear on the canvas" },
+          { src: "coloraitt/slide-11.jpg", alt: "Paper prototype photos: one AI panel with photo, text and drawing input", caption: "One panel for photo, text and drawing" },
+          { src: "coloraitt/slide-13.jpg", alt: "Paper prototype photos: a library of reusable components, history and multiple pages", caption: "Library, history and multiple pages" },
+        ],
+      },
+      {
+        title: "User study: Color-AI-t against Colorify",
+        doit: ["study-design", "questions", "implications"],
+        copy: "To see whether the redesign worked, we planned a comparative study on 17 February. Two participants used System A, Colorify, then System B, our paper prototype of Color-AI-t, and answered a questionnaire after each.",
+        bullets: [
+          "Both participants preferred Color-AI-t: easier to use, with more features.",
+          "Most liked: drawing by prompting and AI localization (the anchor).",
+          "Most confusing: navigating between screens. Some learning of the interface is needed before you can use it fully.",
+        ],
+        slots: [],
+        media: [
+          { src: "coloraitt/slide-14.jpg", alt: "Slide showing System A, the Colorify tool, and System B, the Color-AI-t paper prototype", caption: "The two systems we compared", wide: true },
+          { src: "coloraitt/slide-15.jpg", alt: "Slide with questionnaire answers: participants preferred Color-AI-t", caption: "Participants preferred our system" },
+          { src: "coloraitt/slide-16.jpg", alt: "Slide with questionnaire answers: the interface felt most confusing when navigating", caption: "Navigation was the most confusing part" },
+        ],
+      },
+      {
+        title: "Feasibility, control and impact",
+        doit: ["implications"],
+        copy: "We also asked what it would take to build, and what it does to the people using it.",
+        bullets: [
+          "Feasible today: existing AI such as ChatGPT or Leonardo can turn text into clean line art. The new part is the interface that snaps your drawings and the AI’s generations together.",
+          "Control: three choices for every prompt, a regenerate button, and a history to return to earlier versions.",
+          "Skills: the tool moves people from passive consumers of AI to active collaborators who think spatially and in words.",
+          "Precision: feedback loops to nudge a selection, and “ghost previews” of the selected area.",
+        ],
+        slots: [],
+        media: [{ src: "coloraitt/slide-19.jpg", alt: "Slide on impact and control: the in-painting challenge, three choices per prompt and a history area", caption: "Impact and control", wide: true }],
+      },
+    ],
+    decisions: [
+      ["Select a part instead of describing it", "Words could not point at one part of an image. The AI anchor is dragged onto the part you want to change, so the change stays local and the person, not the prompt, is in charge."],
+      ["Show several options, not one", "People stopped when they were tired, not satisfied. Returning three to five variations on the canvas lets them choose, and cuts the trial and error."],
+      ["One panel for every kind of input", "Photo, text and drawing were scattered across separate modes. One panel keeps everything you have given the AI visible in one place."],
+      ["No mistake is permanent", "A history of versions and prompts, plus a library of characters, lets people go back and keep a consistent look across pages."],
+    ],
+    outcome: [],
+    evaluation: [
+      "Two participants compared Colorify and Color-AI-t with a questionnaire.",
+      "Both preferred Color-AI-t, finding it easier to use and richer in features.",
+      "The localized circle (the anchor) and drawing by prompting were the most liked features.",
+      "Navigation was the most confusing part of the interface.",
+    ],
+    evaluationNote: "Two participants is a small study: it shows where to go next rather than proving the design.",
+    future: [
+      "Clearer navigation.",
+      "AI guidelines for different angles and perspectives.",
+      "In-painting that keeps the style of what surrounds the changed part.",
+      "More precise selection: nudging, and ghost previews of the selected area.",
+    ],
+    reflection: [
+      "The interviews showed that the problem was less the quality of the images than control: people could not say what they saw in their heads and could not change one part of the result. Every big change after the walkthrough (the anchor, the variations, one panel, the library and history) gave control back to the person drawing.",
+    ],
+    hero: "Color-AI-t video prototype",
   },
 ];

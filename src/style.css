@@ -1417,3 +1417,42 @@ body.dark .wk-card { box-shadow: inset 0 0 0 1px var(--stroke), 0 14px 26px -20p
   .process .step::before { left: -42px; }
 }
 @media (prefers-reduced-motion: reduce) { .wk-card, .wk-over, .wk-cover > img, .wk-cover > svg { animation: none; transition: none; } }
+
+/* =====================================================================
+   DOIT circle: Wendy Mackay's design method, with the steps we used lit up
+   ===================================================================== */
+.doit { display: grid; grid-template-columns: minmax(260px, 400px) 1fr; gap: 30px; align-items: center; margin-top: 18px; }
+.doit-wheel { width: 100%; height: auto; display: block; overflow: visible; }
+.doit-wheel text { font-family: var(--font); pointer-events: none; }
+.doit-seg path { stroke: var(--glass); stroke-width: 3; transition: filter 0.2s, stroke 0.2s; }
+.doit-seg { transition: opacity 0.3s, filter 0.3s, transform 0.35s cubic-bezier(.2, .9, .2, 1.25); transform-box: fill-box; transform-origin: center; }
+.doit-seg:not(.on) { opacity: 0.2; filter: saturate(0.2); }
+.doit-seg.on { cursor: pointer; }
+.doit-seg.on:hover { transform: scale(1.035); }
+.doit-seg.on:hover path { filter: brightness(1.1); }
+.doit-seg.sel path { stroke: var(--ink); stroke-width: 4; }
+.doit-seg:focus-visible { outline: none; }
+.doit-seg:focus-visible path { stroke: var(--accent); stroke-width: 5; }
+.doit-ph { font-size: 9.5px; font-weight: 500; letter-spacing: 0.04em; opacity: 0.85; }
+.doit-w { font-size: 12.5px; font-weight: 500; letter-spacing: 0.03em; }
+.doit-card { min-height: 168px; padding: 18px 20px; border-radius: 18px; background: var(--row); box-shadow: inset 0 0 0 1px var(--stroke); border-left: 5px solid var(--c, var(--line)); transition: border-color 0.3s; }
+.doit-hint { margin: 0; color: var(--ink2); }
+.doit-q { margin: 0 0 4px; font: italic 400 21px/1.2 var(--serif); color: var(--c); }
+.doit-card h3 { margin: 0; font-size: 17px; font-weight: 600; }
+.doit-card h3 small { margin-left: 6px; font-size: 12.5px; font-weight: 500; color: var(--ink2); }
+.doit-where { margin: 14px 0 6px; font-size: 12px; font-weight: 600; color: var(--ink2); }
+.doit-card ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.doit-card li button { width: 100%; text-align: left; padding: 8px 12px; border-radius: 10px; font-size: 13.5px; font-weight: 500; background: color-mix(in srgb, var(--c) 12%, transparent); transition: transform 0.25s cubic-bezier(.2, .9, .2, 1.3), background 0.2s; }
+.doit-card li button:hover { transform: translateX(3px); background: color-mix(in srgb, var(--c) 22%, transparent); }
+.doit-legend { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 16px; margin: 14px 0 0; padding: 0; font-size: 12.5px; color: var(--ink2); }
+.doit-legend i { display: inline-block; width: 10px; height: 10px; margin-right: 6px; border-radius: 50%; }
+.doit-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
+.doit-tags button { padding: 3px 10px; border-radius: 99px; font-size: 11.5px; font-weight: 600; color: var(--c); background: color-mix(in srgb, var(--c) 13%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c) 35%, transparent); transition: transform 0.25s cubic-bezier(.2, .9, .2, 1.3), background 0.2s; }
+.doit-tags button small { margin-left: 5px; font-size: inherit; font-weight: 500; opacity: 0.75; }
+.doit-tags button:hover { transform: translateY(-1px); background: color-mix(in srgb, var(--c) 22%, transparent); }
+body.dark .doit-tags button { color: color-mix(in srgb, var(--c) 55%, #fff); }
+body.dark .doit-q { color: color-mix(in srgb, var(--c) 55%, #fff); }
+.step.flash { border-radius: 12px; animation: stepflash 1.6s ease-out; }
+@keyframes stepflash { 0% { background: var(--accent-soft); box-shadow: 0 0 0 10px var(--accent-soft); } 100% { background: transparent; box-shadow: 0 0 0 10px transparent; } }
+@media (max-width: 759px) { .doit { grid-template-columns: 1fr; } .doit-wheel { max-width: 360px; margin: 0 auto; } }
+@media (prefers-reduced-motion: reduce) { .doit-seg, .doit-seg.on:hover { transition: none; transform: none; } .step.flash { animation: none; } }

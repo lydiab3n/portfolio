@@ -1,6 +1,6 @@
-import { cases, contact, education, hero, roles, toolkit, type CaseStudy, type ExperienceRole, type DataTable, type ExternalVideoMedia, type Media, type VideoMedia } from "./content";
+import { cases, contact, education, hero, roles, toolkit, type CaseStudy, type DoitId, type ExperienceRole, type DataTable, type ExternalVideoMedia, type Media, type VideoMedia } from "./content";
 import type { Sfx } from "./sound";
-import { t } from "./i18n";
+import { lang, t } from "./i18n";
 import { renderAbout } from "./about";
 import { renderPhotos } from "./photobook";
 import { extraApps, extraIcon } from "./extra-apps";
@@ -83,6 +83,7 @@ const caseCategories: Record<string, string[]> = {
   bookerfly: ["product", "interaction"],
   khamsa: ["tangible"],
   "suite-numerique": ["product", "civic"],
+  "color-ai-t": ["product", "interaction"],
 };
 
 const fig = (m: Media) =>
@@ -132,11 +133,125 @@ const cover = (c: CaseStudy) => {
 const SELECTED = new Set(["magic-map", "suite-numerique"]);
 const catColor: Record<string, string> = { product: "#ec2a72", interaction: "#8f6bf0", immersive: "#1fa6a0", games: "#f08a3c", tangible: "#3f9b5e", civic: "#4f7cf0" };
 
+
+/* ---------- Wendy Mackay's DOIT circle: four questions, each collecting, interpreting and representing ---------- */
+const QUAD = [
+  { q: () => t("Who is the user?", "Qui est l’utilisateur ?"), c: "#5b6bb0", soft: "#8a93c9" },
+  { q: () => t("What is possible?", "Qu’est-ce qui est possible ?"), c: "#3f9d99", soft: "#78b9a4" },
+  { q: () => t("What should it be?", "Que doit-il être ?"), c: "#f08a2c", soft: "#ffc76a" },
+  { q: () => t("Does it work?", "Est-ce que ça marche ?"), c: "#bd4a5a", soft: "#d27280" },
+];
+const PHASE = () => [t("collect", "collecter"), t("interpret", "interpréter"), t("represent", "représenter")];
+/* outer ring = collect / interpret, centre = represent. Angles run clockwise from the top. */
+const DOIT_SEGS: { id: DoitId; quad: number; phase: number; a0: number; a1: number; en: string[]; fr: string[] }[] = [
+  { id: "observations", quad: 0, phase: 0, a0: 0, a1: 45, en: ["OBSERVATIONS"], fr: ["OBSERVATIONS"] },
+  { id: "needs", quad: 0, phase: 1, a0: 45, a1: 90, en: ["NEEDS"], fr: ["BESOINS"] },
+  { id: "inspiration", quad: 1, phase: 0, a0: 90, a1: 135, en: ["INSPIRATION"], fr: ["INSPIRATION"] },
+  { id: "design-space", quad: 1, phase: 1, a0: 135, a1: 180, en: ["DESIGN", "SPACE"], fr: ["ESPACE DE", "CONCEPTION"] },
+  { id: "design-inputs", quad: 2, phase: 0, a0: 180, a1: 225, en: ["DESIGN", "INPUTS"], fr: ["DONNÉES DE", "CONCEPTION"] },
+  { id: "designs", quad: 2, phase: 1, a0: 225, a1: 270, en: ["DESIGNS"], fr: ["CONCEPTIONS"] },
+  { id: "questions", quad: 3, phase: 0, a0: 270, a1: 315, en: ["QUESTIONS"], fr: ["QUESTIONS"] },
+  { id: "implications", quad: 3, phase: 1, a0: 315, a1: 360, en: ["IMPLICATIONS"], fr: ["IMPLICATIONS"] },
+  { id: "insights", quad: 0, phase: 2, a0: 0, a1: 90, en: ["INSIGHTS"], fr: ["CONSTATS"] },
+  { id: "categories", quad: 1, phase: 2, a0: 90, a1: 180, en: ["CATE-", "GORIES"], fr: ["CATÉ-", "GORIES"] },
+  { id: "prototype", quad: 2, phase: 2, a0: 180, a1: 270, en: ["PROTO-", "TYPE"], fr: ["PROTO-", "TYPE"] },
+  { id: "study-design", quad: 3, phase: 2, a0: 270, a1: 360, en: ["STUDY", "DESIGN"], fr: ["PLAN", "D’ÉTUDE"] },
+];
+const doitLabel = (id: DoitId) => {
+  const d = DOIT_SEGS.find((x) => x.id === id)!;
+  const w = (lang === "fr" ? d.fr : d.en).join(" ").replace(/- /g, "").replace(/-$/, "");
+  return w.charAt(0) + w.slice(1).toLowerCase();
+};
+
+function doitHtml(c: CaseStudy): string {
+  const used = new Map<DoitId, number[]>();
+  c.steps.forEach((st, i) => st.doit?.forEach((id) => used.set(id, [...(used.get(id) ?? []), i])));
+  if (!used.size) return "";
+  const cx = 250;
+  const cy = 250;
+  const pt = (r: number, a: number) => `${(cx + r * Math.sin((a * Math.PI) / 180)).toFixed(1)} ${(cy - r * Math.cos((a * Math.PI) / 180)).toFixed(1)}`;
+  const ph = PHASE();
+  const segs = DOIT_SEGS.map((d) => {
+    const inner = d.phase === 2;
+    const [r0, r1] = inner ? [0, 118] : [126, 236];
+    const path = inner ? `M${cx} ${cy} L${pt(r1, d.a0)} A${r1} ${r1} 0 0 1 ${pt(r1, d.a1)} Z` : `M${pt(r1, d.a0)} A${r1} ${r1} 0 0 1 ${pt(r1, d.a1)} L${pt(r0, d.a1)} A${r0} ${r0} 0 0 0 ${pt(r0, d.a0)} Z`;
+    const mid = (d.a0 + d.a1) / 2;
+    const [tx, ty] = (inner ? pt(66, mid) : pt(181, mid)).split(" ").map(Number);
+    const words = lang === "fr" ? d.fr : d.en;
+    const q = QUAD[d.quad];
+    const on = used.has(d.id);
+    const fill = inner ? q.soft : q.c;
+    const ink = inner && d.quad === 2 ? "#6b3d00" : "#fff";
+    const lines = [`<tspan x="${tx}" dy="0" class="doit-ph">${ph[d.phase]}</tspan>`, ...words.map((w, k) => `<tspan x="${tx}" dy="${k === 0 ? 14 : 14}" class="doit-w">${w}</tspan>`)].join("");
+    const ty0 = ty - (words.length * 14 + 8) / 2 + 4;
+    return `<g class="doit-seg${on ? " on" : ""}" data-id="${d.id}" data-steps="${(used.get(d.id) ?? []).join(",")}"${on ? ` role="button" tabindex="0" aria-pressed="false" aria-label="${esc(doitLabel(d.id))}, ${ph[d.phase]}: ${esc(QUAD[d.quad].q())}"` : ` aria-hidden="true"`}><path d="${path}" fill="${fill}"/><text x="${tx}" y="${ty0.toFixed(1)}" text-anchor="middle" fill="${ink}">${lines}</text></g>`;
+  }).join("");
+  const legend = QUAD.map((q) => `<li><i style="background:${q.c}"></i>${esc(q.q())}</li>`).join("");
+  return `<section data-sec class="doit-sec"><h2 class="group-h">${t("DOIT circle", "Cercle DOIT")}</h2>
+    <p class="prose-p">${t("We designed this project with Wendy Mackay’s DOIT circle, a design method that moves through four questions. For each one you collect data, interpret it, then represent what you learned. The highlighted steps are the ones we went through. Select one to see where it happened.", "Nous avons conçu ce projet avec le cercle DOIT de Wendy Mackay, une méthode de conception qui suit quatre questions. Pour chacune, on collecte des données, on les interprète, puis on représente ce qu’on a appris. Les étapes en couleur sont celles que nous avons suivies. Sélectionnez-en une pour voir où cela s’est passé.")}</p>
+    <div class="doit">
+      <svg class="doit-wheel" viewBox="0 0 500 500" role="group" aria-label="${t("The DOIT circle", "Le cercle DOIT")}">${segs}</svg>
+      <div class="doit-info">
+        <div class="doit-card" aria-live="polite"><p class="doit-hint">${t("Select a highlighted step.", "Sélectionnez une étape en couleur.")}</p></div>
+        <ul class="doit-legend">${legend}</ul>
+      </div>
+    </div></section>`;
+}
+
+function wireDoit(root: HTMLElement, sc: HTMLElement, tick: () => void, calm: boolean) {
+  const card = root.querySelector<HTMLElement>(".doit-card")!;
+  const segs = [...root.querySelectorAll<SVGGElement>(".doit-seg.on")];
+  const steps = [...sc.querySelectorAll<HTMLElement>(".step")];
+  const pick = (g: SVGGElement) => {
+    tick();
+    segs.forEach((x) => {
+      x.classList.toggle("sel", x === g);
+      x.setAttribute("aria-pressed", String(x === g));
+    });
+    const d = DOIT_SEGS.find((x) => x.id === g.dataset.id)!;
+    const q = QUAD[d.quad];
+    const where = (g.dataset.steps ?? "").split(",").filter(Boolean).map(Number);
+    card.style.setProperty("--c", q.c);
+    card.innerHTML = `<p class="doit-q">${esc(q.q())}</p><h3>${esc(doitLabel(d.id))} <small>${PHASE()[d.phase]}</small></h3><p class="doit-where">${t("In this project", "Dans ce projet")}</p><ul>${where.map((i) => `<li><button type="button" data-step="${i}">${esc(steps[i]?.querySelector("h3")?.textContent ?? "")}</button></li>`).join("")}</ul>`;
+  };
+  segs.forEach((g) => {
+    g.addEventListener("click", () => pick(g));
+    g.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        pick(g);
+      }
+    });
+  });
+  const go = (i: number) => {
+    const el = steps[i];
+    if (!el) return;
+    tick();
+    sc.scrollTo({ top: el.getBoundingClientRect().top - sc.getBoundingClientRect().top + sc.scrollTop - 16, behavior: calm ? "auto" : "smooth" });
+    el.classList.remove("flash");
+    void el.offsetWidth;
+    el.classList.add("flash");
+  };
+  card.addEventListener("click", (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLElement>("[data-step]");
+    if (b) go(Number(b.dataset.step));
+  });
+  /* the small tags on each step also jump back to the circle */
+  sc.querySelectorAll<HTMLElement>(".doit-tags button").forEach((b) =>
+    b.addEventListener("click", () => {
+      tick();
+      const seg = segs.find((x) => x.dataset.id === b.dataset.id);
+      root.scrollIntoView({ block: "start", behavior: calm ? "auto" : "smooth" });
+      if (seg) pick(seg);
+    }),
+  );
+}
+
 function caseHtml(c: CaseStudy): string {
   const facts = c.facts.map(([k, v]) => [k, clean(v)] as const).filter(([, v]) => v);
   const steps = c.steps
     .map(
-      (s) => `<article class="step"><h3>${esc(s.title)}</h3>${s.copy ? `<p>${esc(s.copy)}</p>` : ""}${s.bullets ? `<ul class="bul">${s.bullets.map((b) => `<li>${esc(b)}</li>`).join("")}</ul>` : ""}${s.table ? tbl(s.table) : ""}${s.media ? `<div class="gallery">${s.media.map(fig).join("")}</div>` : ""}${s.videos ? `<div class="gallery">${s.videos.map(videoFig).join("")}</div>` : ""}${s.externalVideos ? `<div class="gallery">${s.externalVideos.map(externalVideoFig).join("")}</div>` : ""}${s.slots.length ? `<div class="slots">${s.slots.map((x) => slot(x)).join("")}</div>` : ""}${s.note ? `<p class="callout">${esc(s.note)}</p>` : ""}</article>`
+      (s) => `<article class="step"><h3>${esc(s.title)}</h3>${s.doit ? `<p class="doit-tags" aria-label="DOIT">${s.doit.map((id) => { const d = DOIT_SEGS.find((x) => x.id === id)!; return `<button type="button" data-id="${id}" style="--c:${QUAD[d.quad].c}" title="${esc(QUAD[d.quad].q())}">${esc(doitLabel(id))}<small>${PHASE()[d.phase]}</small></button>`; }).join("")}</p>` : ""}${s.copy ? `<p>${esc(s.copy)}</p>` : ""}${s.bullets ? `<ul class="bul">${s.bullets.map((b) => `<li>${esc(b)}</li>`).join("")}</ul>` : ""}${s.table ? tbl(s.table) : ""}${s.media ? `<div class="gallery">${s.media.map(fig).join("")}</div>` : ""}${s.videos ? `<div class="gallery">${s.videos.map(videoFig).join("")}</div>` : ""}${s.externalVideos ? `<div class="gallery">${s.externalVideos.map(externalVideoFig).join("")}</div>` : ""}${s.slots.length ? `<div class="slots">${s.slots.map((x) => slot(x)).join("")}</div>` : ""}${s.note ? `<p class="callout">${esc(s.note)}</p>` : ""}</article>`
     )
     .join("");
   const decisions = c.decisions.map(([h, p]) => `<article class="decision"><h3>${esc(h)}</h3><p>${esc(p)}</p></article>`).join("");
@@ -171,6 +286,7 @@ function caseHtml(c: CaseStudy): string {
       <div class="glance-stats">${stats(c)}</div>
       <dl class="facts">${facts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl></div>
     <section data-sec><h2 class="group-h">${t("The brief", "Le brief")}</h2><p class="prose-p">${esc(c.brief)}</p></section>
+    ${doitHtml(c)}
     <section data-sec><h2 class="group-h">${t("Process", "Processus")}</h2><div class="process">${steps}</div></section>
     ${c.principles ? `<section data-sec><h2 class="group-h">${t("Principles in the design", "Les principes dans la conception")}</h2><ul class="bul">${c.principles.intro.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>${tbl(c.principles.table)}</section>` : ""}
     ${scenario}
@@ -404,6 +520,8 @@ function renderWork(body: HTMLElement, ctx: Ctx, arg?: string) {
       return { src: im.src, alt: im.alt };
     });
     zooms.forEach((z, k) => z.addEventListener("click", () => lightbox(items, k, ctx.sfx)));
+    const doit = sc.querySelector<HTMLElement>(".doit");
+    if (doit) wireDoit(doit, sc, () => ctx.sfx.tick(), calm);
     /* chapter chips, reading progress and "where am I" */
     const secs = [...sc.querySelectorAll<HTMLElement>("[data-top], section[data-sec]")];
     const chap = main.querySelector<HTMLElement>(".wk-chap")!;

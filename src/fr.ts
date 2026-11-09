@@ -390,7 +390,8 @@ export const frCases: Record<string, CaseFr> = {
       ["Équipe", "Lydia Benosmane, Sidonie Minodier, Victoria Myot, Ayda Yurtoglu"],
       ["Mon rôle", "Contribution à toutes les étapes : recherche, conception du système et des interactions, prototypage, tests, refonte, diagrammes et storyboard"],
       ["Période", "Novembre–décembre 2025"],
-      ["Méthodes", "8 entretiens · personas · diagrammes système · prototypes papier et vidéo · generative walkthrough"],
+      ["Méthodes", "8 entretiens · personas · diagrammes système · prototypes papier et vidéo · generative walkthrough · atelier de conception participative"],
+      ["Méthode de conception", "Le cercle DOIT de Wendy Mackay"],
       ["Contexte", "Design of Interactive Systems · Master 1 IHM, Université Paris-Saclay"],
     ],
     brief:
@@ -447,15 +448,15 @@ export const frCases: Record<string, CaseFr> = {
         media: ["Améliorations de la deuxième itération"],
       },
       {
+        title: "Un atelier de conception participative",
+        copy: "Pendant la phase de refonte, nous avons imaginé et organisé notre propre atelier de conception participative. Nous avons créé des cartes de jeu de rôle qui donnent un objectif à chaque voyageur : les participants devaient planifier ensemble tout en voulant des choses différentes.",
+        bullets: ["Quatre cartes de jeu de rôle : « Matcha Lover », « Fancy Resto », « Museum Enthusiast » et « The Vegan »."],
+        media: ["Les cartes de jeu de rôle : chaque voyageur a un objectif"],
+      },
+      {
         title: "Storyboard révisé et tests du prototype papier",
         copy: "Le storyboard suit Alf, Béa et Cam de la préparation de leur séjour à leur déplacement dans Paris, avec un itinéraire qui se divise et une consultation hors ligne. Nous avons testé le premier prototype papier, puis sa version modifiée.",
-        media: [
-          "Atelier : des idées sur des post-it",
-          "Atelier : dessiner les parcours",
-          "Cartes de jeu de rôle : chaque voyageur a un objectif",
-          "Images de storyboard et l’interaction qui va avec chacune",
-        ],
-        videos: ["Premier prototype papier", "Prototype papier après modifications"],
+        media: ["Storyboard : des idées sur des post-it", "Storyboard : dessiner les parcours", "Images de storyboard et l’interaction qui va avec chacune"],
       },
       {
         title: "Prototype vidéo final",
@@ -774,6 +775,141 @@ export const frCases: Record<string, CaseFr> = {
     future: ["Une file d’attente pour Visio, dans la continuité de l’atelier sur le partage d’écran", "Des transcriptions interactives en direct, dans la continuité de l’atelier sur les marqueurs visuels"],
     reflection: [
       "Ce que nous avons montré à la fin : plusieurs dispositions personnelles peuvent coexister sur un même ensemble de données, des outils généraux peuvent se combiner en outils spécialisés, et une sélection peut devenir un modèle.",
+    ],
+  },
+  "color-ai-t": {
+    kind: "Système interactif · Application de coloriages par IA",
+    blurb: "Une application pour tablette, au stylet, qui transforme vos idées en coloriages grâce à l’IA, et vous laisse modifier seulement la partie que vous voulez.",
+    facts: [
+      ["Équipe", "Groupe 2 : Moizza Azhar, Lydia Benosmane, Jay Gupte, Daniyal Nasiri Bavil, Ayda Yurtoglu"],
+      ["Mon rôle", "Entretiens, puis concept, scénarios, storyboards, refonte et étude utilisateur avec l’équipe"],
+      ["Période", "Janvier–février 2026"],
+      ["Méthodes", "8 entretiens sur les récits d’usage · alternatives de conception · scénarios et storyboards · prototypes papier et vidéo · generative walkthrough · étude utilisateur comparative"],
+      ["Méthode de conception", "Le cercle DOIT de Wendy Mackay"],
+      ["Contexte", "Advanced Design of Interactive Systems · Master 1 IHM, Université Paris-Saclay"],
+    ],
+    videoCaption: "Prototype vidéo final, fait en papier : dessiner, sélectionner une partie de l’image et donner une instruction à l’IA",
+    brief:
+      "Créer un coloriage avec l’IA devrait être rapide, mais les personnes que nous avons interrogées se heurtaient aux mêmes obstacles : elles ne trouvaient pas les mots pour décrire ce qu’elles imaginaient, les traits n’étaient pas toujours faciles à colorier, et elles ne pouvaient pas modifier une partie de l’image sans tout recommencer. Nous avons conçu une application pour tablette, au stylet, destinée aux amateurs de coloriage, aux parents qui veulent des pages sur mesure pour leurs enfants et à toute personne qui souhaite son propre livre de coloriage.",
+    steps: [
+      {
+        title: "Entretiens sur les récits d’usage",
+        copy: "Nous avons commencé par écouter comment les gens créent vraiment des coloriages avec l’IA. Notre groupe a mené huit entretiens avec des personnes ayant essayé Colorify AI et ChatGPT. J’en ai mené deux, avec une étudiante en architecture de 19 ans et un étudiant en informatique de 25 ans.",
+        bullets: [
+          "Il est difficile de décrire une image avec des mots. « Je dis un joli papillon avec des ailes, mais je ne sais pas être plus précise. »",
+          "Les images générées ne sont pas toujours bonnes à colorier : des artefacts sans sens, des traits difficiles à suivre. « La rose ne ressemblait pas du tout à une rose… on aurait dit un horrible champignon. »",
+          "On recommence plusieurs fois, et on s’arrête par fatigue plutôt que par satisfaction. « Quand avez-vous décidé que le coloriage était assez bien ? » « Quand j’ai été fatigué. »",
+          "Modifier est difficile : on ne peut pas facilement changer une partie de l’image.",
+        ],
+        media: ["Ce que les entretiens ont montré"],
+      },
+      {
+        title: "Des entretiens aux besoins",
+        copy: "Nous avons lu les transcriptions côte à côte pour en tirer ce qui revenait sans cesse. Trois problèmes ressortaient : la difficulté à formuler des prompts, une mise en page mobile qui déroute, et l’absence d’historique visuel pour comparer les résultats. Mes propres constats après mes deux entretiens :",
+        bullets: [
+          "L’IA échoue souvent quand la demande est précise ou imaginative.",
+          "Quand ils ne sont pas satisfaits, les gens ajoutent des mots-clés au lieu de changer d’approche.",
+          "Si une page est « assez bien », on l’accepte et on passe à autre chose.",
+          "De petits choix d’interface frustrent même quand l’outil est simple, comme remonter faire défiler pour trouver « Générer », ou perdre les images précédentes sauf à les télécharger.",
+          "On fait davantage confiance aux outils qui expliquent leurs limites et proposent des alternatives qu’à ceux qui échouent en silence.",
+        ],
+      },
+      {
+        title: "Brainstorming : quatre directions",
+        copy: "Avant de choisir, nous avons esquissé quatre façons différentes d’aider quelqu’un à créer un coloriage.",
+        bullets: [
+          "Création par nœuds : construire une page à partir de prompts reliés.",
+          "Search One : partir d’une recherche sur internet plutôt que d’un prompt.",
+          "Usage éducatif : un outil qui enseigne une notion grâce au coloriage.",
+          "Livre d’histoires : IA, coloriages et récit réunis, pour les enfants.",
+        ],
+        media: ["Les alternatives que nous avons envisagées"],
+      },
+      {
+        title: "Le concept",
+        copy: "Nous avons approfondi un seul problème : les mots ne suffisent pas pour modifier une partie précise d’un coloriage. Color-AI-t génère des contours de coloriage avec l’IA à partir d’un texte, d’un croquis ou d’une photo, et permet de modifier une partie à la fois ou d’appliquer un style.",
+        bullets: [
+          "L’IA propose et la personne a toujours le dernier mot.",
+          "On peut sélectionner et modifier des parties précises du contour, localement ou globalement.",
+          "On peut corriger le résultat de l’IA directement sur le canevas, et revenir à n’importe quelle version précédente.",
+        ],
+        media: ["L’idée de conception", "Comment la personne et l’IA se partagent le contrôle"],
+      },
+      {
+        title: "Scénarios et storyboards",
+        copy: "Nous avons écrit des scénarios autour d’Anna, 24 ans, créative, qui colorie par passion, et les avons dessinés sous forme de storyboards avec des consignes de tournage, pour pouvoir filmer un prototype papier. Un second storyboard, le 12 février, a intégré ce que le walkthrough nous avait appris.",
+        bullets: [
+          "Dessiner avec une aide aux formes : on trace un cercle approximatif, le système en propose un propre.",
+          "Appliquer un style à partir d’une photo ou d’une référence Pinterest.",
+          "Annuler et rétablir d’un double tap, et un panneau d’historique pour revoir les versions passées.",
+          "Enregistrer un personnage dans une bibliothèque et le réutiliser sur une autre page.",
+        ],
+        media: ["Storyboard, première page", "Dessiner une référence, déplacer un objet, extraire du texte", "Historique et composants réutilisables"],
+      },
+      {
+        title: "Prototype papier et première vidéo",
+        copy: "Nous avons construit une tablette en papier avec une barre d’outils, une zone de dessin et un assistant IA, et filmé notre premier prototype vidéo le 29 janvier.",
+        videos: ["Premier prototype vidéo (29 janvier)"],
+      },
+      {
+        title: "Generative walkthrough : cinq retours",
+        copy: "Un autre groupe a parcouru notre prototype vidéo. Leurs retours se résument en cinq points. Pour chacun, nous avons nommé le principe socio-technique et la règle d’or d’interface qui le sous-tendent avant de modifier la conception.",
+        table: {
+          head: ["Ce qu’ils nous ont dit", "Ce que nous avons changé", "Principe derrière le changement"],
+          rows: [
+            ["Le prompt spatial avec trois points prête à confusion", "Une ancre IA que l’on glisse : on la dépose sur la partie de l’image à modifier", "Action située · Garder l’utilisateur aux commandes, prévenir les erreurs"],
+            ["L’IA ne donne qu’un seul résultat", "Après un prompt, 3 à 5 variantes apparaissent directement sur le canevas", "Co-adaptation réciproque · Garder l’utilisateur aux commandes"],
+            ["Photo, prompt et dessin semblent séparés et déroutants", "Un seul panneau IA qui montre à la fois photo, texte et dessin", "Cognition distribuée · Réduire la charge de mémoire à court terme, rester cohérent"],
+            ["La mise en page et le style des icônes ne sont pas clairs", "Une nouvelle mise en page et des icônes plus claires", "Explicabilité · Rester cohérent"],
+            ["Certaines interactions sont peu claires ou manquantes", "Une bibliothèque de composants réutilisables, un historique des prompts et plusieurs pages", "Cognition distribuée · Réduire la charge de mémoire à court terme, permettre d’annuler facilement"],
+          ],
+        },
+        media: ["L’ancre IA, glissée sur une partie du dessin", "Des variantes apparaissent sur le canevas", "Un seul panneau pour la photo, le texte et le dessin", "Bibliothèque, historique et plusieurs pages"],
+      },
+      {
+        title: "Étude utilisateur : Color-AI-t contre Colorify",
+        copy: "Pour voir si la refonte fonctionnait, nous avons préparé une étude comparative le 17 février. Deux participants ont utilisé le système A, Colorify, puis le système B, notre prototype papier de Color-AI-t, et ont rempli un questionnaire après chacun.",
+        bullets: [
+          "Les deux participants ont préféré Color-AI-t : plus facile à utiliser, avec plus de fonctionnalités.",
+          "Les plus appréciés : dessiner par prompt et la localisation par l’IA (l’ancre).",
+          "Le plus déroutant : la navigation entre les écrans. Il faut apprendre un peu l’interface avant de l’utiliser pleinement.",
+        ],
+        media: ["Les deux systèmes comparés", "Les participants ont préféré notre système", "La navigation était la partie la plus déroutante"],
+      },
+      {
+        title: "Faisabilité, contrôle et impact",
+        copy: "Nous nous sommes aussi demandé ce qu’il faudrait pour le construire, et ce qu’il change pour les personnes qui l’utilisent.",
+        bullets: [
+          "Faisable aujourd’hui : des IA existantes comme ChatGPT ou Leonardo peuvent transformer un texte en dessin au trait propre. La nouveauté, c’est l’interface qui assemble vos dessins et ce que génère l’IA.",
+          "Contrôle : trois choix pour chaque prompt, un bouton pour régénérer, et un historique pour revenir en arrière.",
+          "Compétences : l’outil fait passer de simple consommateur d’IA à collaborateur actif, qui réfléchit dans l’espace et avec des mots.",
+          "Précision : des boucles de retour pour affiner une sélection, et des « aperçus fantômes » de la zone sélectionnée.",
+        ],
+        media: ["Impact et contrôle"],
+      },
+    ],
+    decisions: [
+      ["Sélectionner une partie plutôt que la décrire", "Les mots ne permettaient pas de désigner une partie de l’image. L’ancre IA se dépose sur la partie à modifier : le changement reste local et c’est la personne, pas le prompt, qui décide."],
+      ["Proposer plusieurs options, pas une seule", "Les gens s’arrêtaient par fatigue, pas par satisfaction. Renvoyer trois à cinq variantes sur le canevas leur permet de choisir et limite les essais-erreurs."],
+      ["Un seul panneau pour toutes les entrées", "Photo, texte et dessin étaient dispersés dans des modes séparés. Un seul panneau garde visible, au même endroit, tout ce que vous avez donné à l’IA."],
+      ["Aucune erreur n’est définitive", "Un historique des versions et des prompts, et une bibliothèque de personnages, permettent de revenir en arrière et de garder un style cohérent d’une page à l’autre."],
+    ],
+    outcome: [],
+    evaluation: [
+      "Deux participants ont comparé Colorify et Color-AI-t à l’aide d’un questionnaire.",
+      "Tous deux ont préféré Color-AI-t, plus facile à utiliser et plus riche en fonctionnalités.",
+      "Le cercle de localisation (l’ancre) et le dessin par prompt étaient les fonctionnalités les plus appréciées.",
+      "La navigation était la partie la plus déroutante de l’interface.",
+    ],
+    evaluationNote: "Deux participants, c’est une petite étude : elle montre où aller ensuite plutôt qu’elle ne prouve la conception.",
+    future: [
+      "Une navigation plus claire.",
+      "Des consignes de l’IA pour différents angles et perspectives.",
+      "Une retouche locale qui conserve le style de ce qui entoure la partie modifiée.",
+      "Une sélection plus précise : affinage et aperçus fantômes de la zone sélectionnée.",
+    ],
+    reflection: [
+      "Les entretiens ont montré que le problème tenait moins à la qualité des images qu’au contrôle : les gens ne pouvaient pas dire ce qu’ils voyaient dans leur tête, ni changer une seule partie du résultat. Chaque grand changement après le walkthrough (l’ancre, les variantes, un seul panneau, la bibliothèque et l’historique) a rendu le contrôle à la personne qui dessine.",
     ],
   },
 };
