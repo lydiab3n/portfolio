@@ -71,6 +71,7 @@ export function matchaScene(opts: { served: () => void }): SceneDef {
       let iced = false;
       let sips = 0;
       let holdTimer = 0;
+      let holdStart = 0;
       let lastWhisk = 0;
       let lx = 0;
       let ly = 0;
@@ -128,7 +129,7 @@ export function matchaScene(opts: { served: () => void }): SceneDef {
           acts.innerHTML = `<button type="button" class="gloss" data-do="scoop">${t("Add a scoop", "Ajouter une dose")}</button><button type="button" class="gloss pink" data-do="next" ${scoops ? "" : "disabled"}>${t("Add water", "Ajouter l’eau")} →</button>`;
         } else if (step === 1) {
           talk(water > 0.5 ? t("That’s enough. Time to whisk.", "C’est assez. Place au fouet.") : t("Hold the button to pour hot water.", "Maintiens le bouton pour verser l’eau chaude."));
-          acts.innerHTML = `<button type="button" class="gloss" data-do="pour">${t("Hold to pour", "Maintenir pour verser")}</button><button type="button" class="gloss pink" data-do="next" ${water > 0.4 ? "" : "disabled"}>${t("Whisk", "Fouetter")} →</button>`;
+          acts.innerHTML = `<button type="button" class="gloss" data-do="pour">${t("Hold to pour", "Maintenir pour verser")}</button><button type="button" class="gloss pink" data-do="next" ${water > 0.25 ? "" : "disabled"}>${t("Whisk", "Fouetter")} →</button>`;
         } else if (step === 2) {
           talk(foam >= 1 ? t("Cloud-level foam. Perfect.", "Une mousse parfaite, façon nuage.") : foam > 0.5 ? t("Keep going, it’s getting frothy.", "Continue, ça mousse.") : t("Whisk it fast: drag back and forth across the bowl.", "Fouette vite : fais des allers-retours sur le bol."));
           acts.innerHTML = `<button type="button" class="gloss" data-do="whisk">${t("Whisk", "Fouetter")}</button><button type="button" class="gloss pink" data-do="next" ${foam > 0.35 ? "" : "disabled"}>${t("Finish it", "Finaliser")} →</button>`;
@@ -221,11 +222,12 @@ export function matchaScene(opts: { served: () => void }): SceneDef {
 
       const pourOn = () => {
         clearInterval(holdTimer);
+        holdStart = performance.now();
         holdTimer = window.setInterval(() => {
           water = Math.min(1, water + 0.035);
           sound.pour();
           render();
-          if (water > 0.4) {
+          if (water > 0.25) {
             const nx = acts.querySelector<HTMLButtonElement>("[data-do=next]");
             if (nx) nx.disabled = false;
           }
@@ -234,6 +236,13 @@ export function matchaScene(opts: { served: () => void }): SceneDef {
       };
       const pourOff = () => {
         clearInterval(holdTimer);
+        if (!holdStart) return;
+        /* a quick tap (not a hold) still pours a little, so a plain click works */
+        if (performance.now() - holdStart < 300) {
+          water = Math.min(1, water + 0.14);
+          sound.pour();
+        }
+        holdStart = 0;
         if (step === 1) screen();
       };
       root.addEventListener("pointerdown", (e) => {
@@ -275,7 +284,7 @@ export function matchaScene(opts: { served: () => void }): SceneDef {
             }
             return;
           case "whisk":
-            if (e instanceof MouseEvent && e.detail === 0) addFoam(0.12, 200, 130);
+            addFoam(0.12, 200, 130);
             return;
           case "next":
             step++;

@@ -1653,3 +1653,26 @@ body.dark .ar { --wall: #251d22; --mat: #f3ede6; }
 .ab-hero { margin-bottom: 44px; }
 body.dark .ab-cats { color: #ff9ab9; }
 @media (max-width: 759px) { .ab-cats { position: static; width: auto; flex-basis: 100%; transform: none; } .ab-cats svg { margin-top: 0; } }
+
+/* ---------- to-do: smaller, pinned to the top right, with the notification tucked underneath ---------- */
+@media (min-width: 760px) {
+  body #sticky { left: auto; right: 24px; top: 52px; width: 214px; padding: 22px 10px 11px 27px; font-size: 15px; line-height: 20px; transform: rotate(1.2deg); }
+  body #sticky {
+    background:
+      linear-gradient(90deg, transparent 19px, var(--margin) 19px, var(--margin) 20px, transparent 20px),
+      repeating-linear-gradient(180deg, transparent 0 19px, var(--line) 19px 20px),
+      radial-gradient(120% 90% at 20% 0%, rgba(255,255,255,0.7), transparent 60%),
+      #fdfbf4;
+    background-position: 0 0, 0 22px, 0 0, 0 0;
+  }
+  body.dark #sticky { background-color: #2b2530; background-image: linear-gradient(90deg, transparent 19px, var(--margin) 19px, var(--margin) 20px, transparent 20px), repeating-linear-gradient(180deg, transparent 0 19px, var(--line) 19px 20px); background-position: 0 0, 0 22px; }
+  body #sticky::before { width: 52px; height: 15px; margin-left: -26px; }
+  #notif { top: 336px; }
+  #sticky header { height: 20px; }
+  body #sticky header b { font-size: 21px; line-height: 20px; text-underline-offset: 4px; }
+  #sticky header span { font-size: 12px; }
+  body #sticky li { padding-left: 18px; line-height: 20px; min-height: 20px; }
+  #sticky li::before { width: 9px; height: 9px; top: 5px; border-width: 1.3px; }
+  #sticky li.done::after { left: 2px; top: 2px; width: 4px; height: 9px; border-width: 0 2px 2px 0; }
+  body #sticky button { height: 20px; margin-top: 2px; font-size: 16px; line-height: 20px; }
+}

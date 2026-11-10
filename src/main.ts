@@ -43,7 +43,7 @@ root.innerHTML = `
   <div id="greet"></div>
 
 <aside id="sticky" aria-label="${t("To do", "À faire")}">
-  <header><b>${t("To do", "À faire")}</b><span>4 ${t("left", "restants")}</span></header>
+  <header><b>${t("To do", "À faire")}</b></header>
   <ul>
     <li>${t("Land my dream UX internship", "Décrocher le stage UX de mes rêves")}</li>
     <li>${t("Design something that makes people smile", "Créer un design qui donne le sourire")}</li>
@@ -272,7 +272,7 @@ function toggleMax(w: Win) {
 /* ================= Dock ================= */
 dock.innerHTML = APPS.map((a) => `<button class="dk" data-app="${a.id}" aria-label="${a.name}"><span class="ic">${icon(a.id)}</span><span class="tip">${a.name}</span><i class="dot"></i></button>`).join("")
 /* Extra project: the explorable 3D room, a small app at the end of the Dock that opens in its own tab */
-const roomIcon = `<svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="g-room" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4a3540"/><stop offset="1" stop-color="#1b1417"/></linearGradient></defs><rect width="100" height="100" rx="23" fill="url(#g-room)"/><path d="M22 36l28-14 28 14v36L50 86 22 72z" fill="#6b4a52"/><path d="M22 36l28 14v36L22 72z" fill="#8a5d5a"/><path d="M78 36L50 50v36l28-14z" fill="#f0943e"/><path d="M50 50L22 36l28-14 28 14z" fill="#ffd9a8"/><circle cx="64" cy="60" r="4" fill="#fff3d6"/><rect width="100" height="100" rx="23" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="1.5"/></svg>`;
+const roomIcon = `<svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="g-room" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b07a54"/><stop offset="1" stop-color="#5a3420"/></linearGradient><radialGradient id="g-room-glow" cx=".72" cy=".62" r=".6"><stop offset="0" stop-color="#ffe27a" stop-opacity=".95"/><stop offset="1" stop-color="#ffe27a" stop-opacity="0"/></radialGradient></defs><rect width="100" height="100" rx="23" fill="url(#g-room)"/><circle cx="64" cy="58" r="30" fill="url(#g-room-glow)"/><path d="M22 36l28-14 28 14v36L50 86 22 72z" fill="#f6e6d2"/><path d="M22 36l28 14v36L22 72z" fill="#dcc0a0"/><path d="M78 36L50 50v36l28-14z" fill="#ffd166"/><path d="M50 50L22 36l28-14 28 14z" fill="#fff"/><rect x="58" y="56" width="12" height="12" rx="2" fill="#fff6cf" transform="skewY(-26)"/><path d="M36 60l6 3v8l-6-3z" fill="#ff5fa2"/><rect width="100" height="100" rx="23" fill="none" stroke="#fff" stroke-opacity=".4" stroke-width="1.5"/></svg>`;
 dock.insertAdjacentHTML("beforeend", `<button class="dk" data-app="room" aria-label="Explore my room (3D)"><span class="ic">${roomIcon}</span><span class="tip">${t("My room (3D)", "Ma chambre (3D)")}</span><i class="dot"></i></button>`);
 const dks = [...dock.querySelectorAll<HTMLElement>(".dk")];
 const cur = dks.map(() => 1);
