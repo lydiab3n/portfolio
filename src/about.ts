@@ -10,9 +10,6 @@ const questions = (): Q[] => [
   { q: t("Where are you from?", "D’où viens-tu ?"), a: t("Algiers. I carry the sea with me, which is why so many of my pictures are of water. Now I live near Paris, close enough to wave at the Eiffel Tower.", "D’Alger. J’emporte la mer avec moi, c’est pour ça que tant de mes photos sont de l’eau. Aujourd’hui je vis près de Paris, assez près pour faire coucou à la tour Eiffel.") },
   { q: t("What are you up to now?", "Que fais-tu en ce moment ?"), a: t("Finishing my Master’s in Human-Computer Interaction at Paris-Saclay University, and looking for an internship in product and UX design.", "Je termine mon Master en Interaction Homme-Machine à l’Université Paris-Saclay, et je cherche un stage en design produit et UX.") },
   { q: t("What do you design?", "Que conçois-tu ?"), a: t("Things people can touch, fold, play with or walk into: a foldable paper map for group trips, a coffee game that teaches Java, calm VR rooms.", "Des choses qu’on peut toucher, plier, jouer ou explorer : une carte en papier pliable pour voyager en groupe, un jeu de café qui enseigne Java, des pièces de VR apaisantes.") },
-  { q: t("Who are those cats?", "Qui sont ces chats ?"), a: t("Ferrari has the cut ear and Lamborghini has the pink flip-flop. Both are orange, both are in charge, and both live in my room in 3D if you want to chat with them.", "Ferrari a l’oreille coupée et Lamborghini a sa tong rose. Tous les deux sont roux, tous les deux commandent, et ils vivent dans ma chambre en 3D si vous voulez discuter avec eux."), act: "room" },
-  { q: t("Do you play music?", "Tu joues de la musique ?"), a: t("Electric guitar, and I’m never far from a playlist. Here, have a chord.", "De la guitare électrique, et je ne suis jamais loin d’une playlist. Tiens, un accord."), act: "strum" },
-  { q: t("Coffee or matcha?", "Café ou matcha ?"), a: t("Matcha. Finding the best one in Paris is officially on my to-do list.", "Matcha. Trouver le meilleur de Paris est officiellement sur ma liste de choses à faire.") },
   { q: t("Can we work together?", "On peut travailler ensemble ?"), a: t("I’d love that. I’m open to internships, so say hello.", "Avec plaisir. Je suis ouverte aux stages, alors dites bonjour."), act: "mail" },
 ];
 
@@ -66,6 +63,7 @@ export function renderAbout(body: HTMLElement, ctx: Ctx) {
       <div class="ab-polas">
         <button type="button" class="pola a" data-go="photos" aria-label="${t("Ferrari, open the photo book", "Ferrari, ouvrir le livre photo")}"><img src="room/cat-1.jpg" alt="" draggable="false" /><span>Ferrari</span></button>
         <button type="button" class="pola b" data-go="photos" aria-label="${t("Lamborghini, open the photo book", "Lamborghini, ouvrir le livre photo")}"><img src="room/cat-2.jpg" alt="" draggable="false" /><span>Lamborghini</span></button>
+        <p class="ab-cats" aria-hidden="true"><svg viewBox="0 0 70 56"><path d="M6 50c4-20 18-32 50-36" /><path d="M44 5l13 9-12 10" /></svg><span>${t("meet my cats, I love them to death", "voici mes chats, je les adore à la folie")}</span></p>
       </div>
     </header>
 

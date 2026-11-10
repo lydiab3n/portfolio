@@ -89,10 +89,34 @@ export const moreCases: CaseStudy[] = [
       {
         title: "A participatory design workshop",
         doit: ["design-inputs", "study-design"],
-        copy: "In the redesign phase we imagined and organised a participatory design workshop of our own. We made role-playing cards that give each traveller a goal, so participants had to plan together while wanting different things.",
-        bullets: ["Four role-playing cards: the Matcha Lover, the Fancy Resto fan, the Museum Enthusiast and the Vegan."],
+        copy: "In the redesign phase, we imagined and ran a participatory design workshop of our own. It had two activities: a paper challenge about the layout of a shared, foldable map, and a role-playing game about planning one day in Paris with competing goals.",
         slots: [],
-        media: [{ src: "magicmap/nb-59.jpg", alt: "Cards describing the role-play personas: Matcha Lover, Fancy Resto, Museum Enthusiast and The Vegan", caption: "The role-playing cards: each traveller has a goal" }],
+      },
+      {
+        title: "Activity 1: the paper challenge",
+        doit: ["design-inputs", "designs"],
+        copy: "Each group received an A3 sheet of paper and could draw, glue, fold or cut it however they liked. The task was to design the layout of a map with four elements: a map area, a list of places to visit, a timeline of planned activities and a search function. We provided ready-made components, and participants could make their own in other sizes and shapes. We asked them to ignore the content and focus on the layout.",
+        bullets: [
+          "The paper must be folded at least twice.",
+          "It must be divisible: the design should allow the paper to be torn or separated into two functional pieces.",
+          "It must be usable by two people at the same time, all on the same map.",
+        ],
+        slots: [],
+      },
+      {
+        title: "Activity 2: the role-playing game",
+        doit: ["design-inputs", "study-design"],
+        copy: "Seven friends plan one shared day in Paris, from 8:00 to 20:00. Each player reads a role card in silence and keeps a secret personal goal. They advocate for it as much as they can, because reaching it wins a small surprise, while the group negotiates one shared itinerary within 15 minutes. Participants built the day from place cards (landmarks, restaurants, cafés, museums and other outings) on a schedule from 8:00 to 20:00, split into morning, lunch, afternoon and evening.",
+        bullets: [
+          "Three simple roles: the Matcha Lover, the Fancy Resto fan and the Museum Enthusiast.",
+          "Four complex roles: the Vegan, the Non-walker, the Try-Hard and the Time-Sensitive Person, who need a coffee at 10:00 and the Eiffel Tower at sunset.",
+          "The places included Veggie Heaven, a three-star Fancy Steakhouse, Shodai Matcha, the Louvre, the Eiffel Tower, a Seine cruise and a karaoke.",
+        ],
+        slots: [],
+        media: [
+          { src: "magicmap/nb-59.jpg", alt: "Cards describing the role-play personas: Matcha Lover, Fancy Resto, Museum Enthusiast and The Vegan", caption: "Role cards: the simple roles and the Vegan" },
+          { src: "magicmap/roles-2.jpg", alt: "Role cards for The Non-walker, The Try-Hard and the Time-Sensitive Person", caption: "Role cards: the Non-walker, the Try-Hard and the Time-Sensitive Person" },
+        ],
       },
       {
         title: "Revised storyboard and paper prototype tests",

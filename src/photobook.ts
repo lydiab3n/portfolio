@@ -23,7 +23,7 @@ export function renderPhotos(body: HTMLElement, ctx: Ctx) {
 
   const photo = (p: Pg, n: number) =>
     `<div class="pb-pg"><div class="pb-ph"><img src="${p.src}" alt="${esc(p.alt)}" draggable="false" decoding="async" style="object-position:${p.pos ?? "50% 50%"}" /></div><p class="pb-cap">${esc(p.cap)}</p><span class="pb-n">${n}</span></div>`;
-  const cover = `<div class="pb-pg pb-cover"><h2>${t("Photos", "Photos")}</h2><p>${t("cats, the sea & home", "chats, mer & maison")}</p><small>${t("Swipe or tap a page to turn it", "Glissez ou touchez une page pour la tourner")}</small></div>`;
+  const cover = `<div class="pb-pg pb-cover"><h2>${t("Photos", "Photos")}</h2><p>${t("some photos I want to share", "quelques photos que j’ai envie de partager")}</p><small>${t("Swipe or tap a page to turn it", "Glissez ou touchez une page pour la tourner")}</small></div>`;
   const end = `<div class="pb-pg pb-end"><p>${t("That’s all for now.", "C’est tout pour l’instant.")}</p><a href="room.html" target="_blank" rel="noopener">${t("Meet the cats in my 3D room", "Rencontrer les chats dans ma chambre 3D")}</a></div>`;
   /* every sheet has a front and a back, so photos sit on both sides of the paper */
   const sheets = [

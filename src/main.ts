@@ -4,7 +4,7 @@ import { cases, hero } from "./content";
 import { Sfx } from "./sound";
 import { lang, switchLang, t } from "./i18n";
 import { Wallpaper } from "./wallpaper";
-import { mountPeek, mountWidgets, type Peek } from "./desk";
+import { mountWidgets, type Peek } from "./desk";
 import { APPS, avatar, folderSvg, icon, type AppDef } from "./apps";
 
 const sfx = new Sfx();
@@ -362,6 +362,7 @@ const deskIcons: DeskIcon[] = [
   { label: "About me", x: 1, y: 0, fk: "about", peek: { title: t("About me", "À propos de moi"), kind: t("Folder", "Dossier"), blurb: t("Who I am, where I come from, my two cats, and what I’m looking for next.", "Qui je suis, d’où je viens, mes deux chats, et ce que je cherche."), cta: t("Double-click to open", "Double-clic pour ouvrir") }, go: () => openApp("about") },
   { label: "Resume.pdf", x: 0, y: 1, file: true, peek: { title: "Resume.pdf", kind: t("Document", "Document"), blurb: t("Education, experience and skills, ready to read or download.", "Formation, expérience et compétences, à lire ou à télécharger."), cta: t("Double-click to open", "Double-clic pour ouvrir") }, go: () => openApp("cv") },
   { label: "Albums", x: 1, y: 1, fk: "albums", peek: { title: t("Photos", "Photos"), kind: t("Photo book", "Livre photo"), blurb: t("A little book to swipe through: my cats Ferrari and Lamborghini, the sea, Algiers.", "Un petit livre à feuilleter : mes chats Ferrari et Lamborghini, la mer, Alger."), cta: t("Double-click to open", "Double-clic pour ouvrir") }, go: () => openApp("photos") },
+  { label: "Art", x: 0, y: 2, fk: "tangible", peek: { title: "Art", kind: t("Folder", "Dossier") + " · " + t("paintings & videos", "peintures et créations"), blurb: t("Find out about one of my passions: arts and crafts. Paintings, and a felt book made for my nieces.", "Une de mes passions : les arts et la création. Des peintures, et un livre en feutrine fait pour mes nièces."), cta: t("Double-click to open", "Double-clic pour ouvrir") }, go: () => openApp("art") },
   /* every project lives in one folder; the widgets above it show the selected ones */
   { label: t("My work", "Mes projets"), x: 0, y: 0, fk: "product", peek: { title: t("My work", "Mes projets"), kind: t("Folder", "Dossier") + " · " + cases.length + " " + t("projects", "projets"), blurb: cases.map((c) => c.title.replace(" — VR", "")).join(", "), cta: t("Double-click to open", "Double-clic pour ouvrir") }, go: () => openApp("work") },
 ];
@@ -438,7 +439,6 @@ $("#sticky-hi").addEventListener("click", () => openApp("mail"));
 
 /* widgets */
 mountWidgets($("#widgets"), cases, openApp, () => sfx.tick());
-const peek = mountPeek(desktop);
 
 let dragged = false;
 document.querySelectorAll<HTMLElement>(".fld").forEach((f) => {
@@ -451,15 +451,6 @@ document.querySelectorAll<HTMLElement>(".fld").forEach((f) => {
     if (matchMedia("(pointer: coarse)").matches) it.go();
   });
   f.addEventListener("dblclick", () => !dragged && it.go());
-  if (it.peek) {
-    const p = it.peek;
-    const showIt = () => !dragged && !down && peek.show(f, p, it.go);
-    f.addEventListener("pointerenter", (e) => e.pointerType === "mouse" && showIt());
-    f.addEventListener("pointerleave", () => peek.hide());
-    f.addEventListener("pointerdown", () => peek.hide());
-    f.addEventListener("focus", showIt);
-    f.addEventListener("blur", () => peek.hide());
-  }
   f.addEventListener("keydown", (e) => e.key === "Enter" && it.go());
   let sx = 0, sy = 0, ox = 0, oy = 0, down = false;
   f.addEventListener("pointerdown", (e) => {

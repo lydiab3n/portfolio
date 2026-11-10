@@ -61,15 +61,14 @@ export const about = {
   photoAlt: "Lydia Benosmane smiling in a car",
   paragraphs: [
     "Bonjour! I’m <b>Lydia</b>, a Master’s student in Human-Computer Interaction (HCI) and a Product & UX designer based in Île-de-France, with my head somewhere between a fashion editorial, an art gallery and the seaside.",
-    "I love design that has character: a little unexpected, a little dramatic, sometimes pink (just like this portfolio). I’m all about the details that make something feel special.",
-    "Outside of design? I’m probably listening to music, getting lost on Pinterest, admiring pretty things or wishing I was sitting by the sea with a fresh drink in my hand and the sun on my skin.",
+    "I love design that has character: unexpected, dramatic and sometimes pink (just like this portfolio). I’m all about the details that make something feel special.",
+    "Outside of design? I’m out there listening to music, getting lost in the perfect life that would be if my life looked like my Pinterest boards, admiring pretty things or wishing I was sitting by the sea with a fresh drink in my hand and the sun hitting my skin.",
   ],
   tags: ["Île-de-France", "HCI Master’s", "Product & UX", "Art & fashion"],
   favourites: [
-    ["Colour crush", "Pink, obviously."],
+    ["Current fav colour", "Pink, obviously."],
     ["Forever inspired by", "Fashion, art and everything visual."],
     ["My happy place", "Somewhere by the sea."],
-    ["Current mood", "Mermaid meets glamour."],
     ["Always open", "Pinterest and my music playlists."],
   ] as [string, string][],
 };
@@ -161,7 +160,7 @@ export const toolkit: { label: string; items: string }[] = [
   { label: "Interests", items: "Art (acrylic painting, calligraphy), acoustic guitar" },
 ];
 
-export const skills = ["Interaction design", "UX/UI design", "Prototyping", "Art direction", "Spatial design", "Photography"];
+export const skills = ["Interaction design", "UX/UI design", "Prototyping", "Art direction", "Spatial design", "Photography", "Figma", "Blender", "Unity", "C#", "Java", "Python", "HTML/CSS/JS"];
 
 export const extras = [
   // TODO: swap the slots for real images.

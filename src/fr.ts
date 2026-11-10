@@ -42,20 +42,19 @@ export const frAbout = {
   photoAlt: "Lydia Benosmane souriant dans une voiture",
   paragraphs: [
     "Bonjour ! Je suis <b>Lydia</b>, étudiante en Master d’Interaction Homme-Machine (IHM) et designer Product & UX en Île-de-France, la tête quelque part entre un éditorial de mode, une galerie d’art et le bord de mer.",
-    "J’aime le design qui a du caractère : un peu inattendu, un peu dramatique, parfois rose (comme ce portfolio). Ce sont les détails qui rendent quelque chose spécial.",
-    "En dehors du design ? Je suis probablement en train d’écouter de la musique, de me perdre sur Pinterest, d’admirer de jolies choses ou de rêver d’être au bord de la mer, un verre frais à la main et le soleil sur la peau.",
+    "J’aime le design qui a du caractère : inattendu, dramatique et parfois rose (comme ce portfolio). Ce sont les détails qui rendent quelque chose de spécial.",
+    "En dehors du design ? Je suis dehors à écouter de la musique, à me perdre dans la vie parfaite que ce serait si ma vie ressemblait à mes tableaux Pinterest, à admirer de jolies choses ou à rêver d’être au bord de la mer, un verre frais à la main et le soleil sur la peau.",
   ],
   tags: ["Île-de-France", "Master IHM", "Product & UX", "Art & mode"],
   favourites: [
-    ["Coup de cœur couleur", "Le rose, évidemment."],
+    ["Couleur préférée du moment", "Le rose, évidemment."],
     ["Toujours inspirée par", "La mode, l’art et tout ce qui est visuel."],
     ["Mon endroit préféré", "Quelque part au bord de la mer."],
-    ["Humeur du moment", "Sirène et glamour."],
     ["Toujours ouverts", "Pinterest et mes playlists."],
   ] as [string, string][],
 };
 
-export const frSkills = ["Design d’interaction", "Design UX/UI", "Prototypage", "Direction artistique", "Design spatial", "Photographie"];
+export const frSkills = ["Design d’interaction", "Design UX/UI", "Prototypage", "Direction artistique", "Design spatial", "Photographie", "Figma", "Blender", "Unity", "C#", "Java", "Python", "HTML/CSS/JS"];
 
 export const frRoles = [
   {
@@ -449,9 +448,26 @@ export const frCases: Record<string, CaseFr> = {
       },
       {
         title: "Un atelier de conception participative",
-        copy: "Pendant la phase de refonte, nous avons imaginé et organisé notre propre atelier de conception participative. Nous avons créé des cartes de jeu de rôle qui donnent un objectif à chaque voyageur : les participants devaient planifier ensemble tout en voulant des choses différentes.",
-        bullets: ["Quatre cartes de jeu de rôle : « Matcha Lover », « Fancy Resto », « Museum Enthusiast » et « The Vegan »."],
-        media: ["Les cartes de jeu de rôle : chaque voyageur a un objectif"],
+        copy: "Pendant la phase de refonte, nous avons imaginé et animé notre propre atelier de conception participative. Il comportait deux activités : un défi papier sur la mise en page d’une carte pliable et partagée, et un jeu de rôle sur l’organisation d’une journée à Paris avec des objectifs contradictoires.",
+      },
+      {
+        title: "Activité 1 : le défi papier",
+        copy: "Chaque groupe recevait une feuille A3 et pouvait dessiner, coller, plier ou découper à sa guise. Il fallait concevoir la mise en page d’une carte avec quatre éléments : une zone de carte, une liste de lieux à visiter, une frise des activités prévues et une fonction de recherche. Nous fournissions des composants prêts à l’emploi, et les participants pouvaient en créer d’autres, de tailles et de formes différentes. Nous leur avons demandé d’ignorer le contenu et de se concentrer sur la mise en page.",
+        bullets: [
+          "Le papier doit être plié au moins deux fois.",
+          "Il doit être divisible : le design doit permettre de le déchirer ou de le séparer en deux parties fonctionnelles.",
+          "Il doit être utilisable par deux personnes en même temps, sur la même carte.",
+        ],
+      },
+      {
+        title: "Activité 2 : le jeu de rôle",
+        copy: "Sept amis organisent une même journée à Paris, de 8 h à 20 h. Chaque joueur lit sa carte de rôle en silence et garde un objectif personnel secret. Il le défend autant qu’il peut, car l’atteindre fait gagner une petite surprise, pendant que le groupe négocie un itinéraire commun en 15 minutes. Les participants construisaient la journée avec des cartes de lieux (monuments, restaurants, cafés, musées et autres sorties) sur un planning de 8 h à 20 h, découpé en matin, déjeuner, après-midi et soir.",
+        bullets: [
+          "Trois rôles simples : la Matcha Lover, le fan de Fancy Resto et la Museum Enthusiast.",
+          "Quatre rôles complexes : le Vegan, le Non-walker, le Try-Hard et la Time-Sensitive Person, qui veut son café à 10 h et la tour Eiffel au coucher du soleil.",
+          "Parmi les lieux : Veggie Heaven, un Fancy Steakhouse trois étoiles, Shodai Matcha, le Louvre, la tour Eiffel, une croisière sur la Seine et un karaoké.",
+        ],
+        media: ["Cartes de rôle : les rôles simples et le Vegan", "Cartes de rôle : le Non-walker, le Try-Hard et la Time-Sensitive Person"],
       },
       {
         title: "Storyboard révisé et tests du prototype papier",

@@ -3,7 +3,7 @@ import type { Sfx } from "./sound";
 import { lang, t } from "./i18n";
 import { renderAbout } from "./about";
 import { renderPhotos } from "./photobook";
-import { extraApps, extraIcon } from "./extra-apps";
+import { renderArt } from "./art";
 import { thumbFor } from "./desk";
 
 export interface Ctx {
@@ -47,12 +47,12 @@ export function icon(id: string): string {
     }
     case "mail":
       return sq(`<path d="M22 32h56a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H22a4 4 0 0 1-4-4V36a4 4 0 0 1 4-4z" fill="var(--icon-paper)"/><path d="M20 36l30 22 30-22" stroke="var(--icon-pink-deep)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`, ["var(--icon-pink-light)", "var(--icon-pink-deep)"], id);
-    case "music":
-      return `<img class="music-icon" src="music-note.png" alt="" draggable="false" />`;
+    case "art":
+      return sq(`<path d="M50 20c-17 0-31 12-31 29 0 16 12 30 29 30 6 0 8-3 8-7 0-5-4-6-4-11 0-4 3-6 7-6h11c8 0 13-5 13-12C83 30 69 20 50 20z" fill="var(--icon-paper)" fill-opacity=".97"/><circle cx="33" cy="47" r="6" fill="#ff5d8f"/><circle cx="42" cy="32" r="6" fill="#ffc83d"/><circle cx="58" cy="30" r="6" fill="#4fc6a5"/><circle cx="72" cy="42" r="6" fill="#5b8cff"/><circle cx="46" cy="64" r="5.5" fill="rgba(80,20,50,.18)"/>`, ["var(--icon-pink-light)", "var(--icon-pink-deep)"], "art");
     case "videos":
       return sq(`<rect x="19" y="29" width="62" height="42" rx="12" fill="var(--icon-paper)"/><path d="M44 40v20l18-10z" fill="var(--icon-accent)"/>`, ["var(--icon-accent-light)", "var(--icon-accent-deep)"], id);
     default:
-      return extraIcon(id);
+      return "";
   }
 }
 
@@ -404,6 +404,7 @@ function renderWork(body: HTMLElement, ctx: Ctx, arg?: string) {
     const facts = cardFacts(c);
     return `<button type="button" class="wk-card" data-case="${c.id}" style="--i:${i}">
       <span class="wk-cover">${cover(c)}${SELECTED.has(c.id) ? `<i class="wk-sel">★ ${t("Selected", "Sélection")}</i>` : ""}
+        <span class="wk-eye" data-ql title="${t("Quick Look (Space)", "Aperçu (Espace)")}" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M2 10s3-5.5 8-5.5 8 5.5 8 5.5-3 5.5-8 5.5S2 10 2 10Z"/><circle cx="10" cy="10" r="2.4"/></svg></span>
         <span class="wk-over">${facts.map((f) => `<span>${esc(f)}</span>`).join("")}<b>${t("Open the project", "Ouvrir le projet")} →</b></span></span>
       <span class="wk-meta"><small>${esc(c.kind)}</small><b>${esc(c.title)}</b><em>${esc(c.blurb)}</em>
         <span class="wk-tags">${tags.map((k) => `<i style="--c:${catColor[k!.id] ?? "#ec2a72"}">${esc(k!.label)}</i>`).join("")}</span>
@@ -421,7 +422,8 @@ function renderWork(body: HTMLElement, ctx: Ctx, arg?: string) {
           <button type="button" data-v="list" aria-label="${t("List", "Liste")}" aria-pressed="${st.view === "list"}"><svg viewBox="0 0 20 20"><path d="M3 5h14M3 10h14M3 15h14"/></svg></button>
         </div>
       </header>
-      <div class="scroll wk-scroll"><div class="wk-grid" data-v="${st.view}"></div></div></div>`;
+      <div class="scroll wk-scroll"><div class="wk-grid" data-v="${st.view}"></div></div>
+      <footer class="wk-foot" aria-hidden="true"><span><kbd>←</kbd><kbd>↑</kbd><kbd>↓</kbd><kbd>→</kbd> ${t("browse", "parcourir")}</span><span><kbd>Space</kbd> Quick Look</span><span><kbd>↵</kbd> ${t("open", "ouvrir")}</span></footer></div>`;
     const grid = main.querySelector<HTMLElement>(".wk-grid")!;
     const n = main.querySelector<HTMLElement>(".wk-n")!;
     const input = main.querySelector<HTMLInputElement>("input")!;
@@ -463,6 +465,10 @@ function renderWork(body: HTMLElement, ctx: Ctx, arg?: string) {
         return;
       }
       const card = el.closest<HTMLElement>(".wk-card");
+      if (card && el.closest("[data-ql]")) {
+        openQL(card.dataset.case!);
+        return;
+      }
       if (card) {
         ctx.sfx.tick();
         showCase(card.dataset.case!);
@@ -481,6 +487,89 @@ function renderWork(body: HTMLElement, ctx: Ctx, arg?: string) {
         to.focus();
       }
     });
+    /* Space = Quick Look, as in Finder */
+    grid.addEventListener("keydown", (e) => {
+      const card = (e.target as HTMLElement).closest<HTMLElement>(".wk-card");
+      if (card && e.key === " ") {
+        e.preventDefault();
+        openQL(card.dataset.case!);
+      }
+    });
+    grid.addEventListener("keyup", (e) => {
+      if (e.key === " ") e.preventDefault();
+    });
+
+    /* ---------- Quick Look: a floating preview of the project ---------- */
+    let qlBox: HTMLElement | null = null;
+    let qlId = "";
+    const closeQL = () => {
+      if (!qlBox) return;
+      const box = qlBox;
+      qlBox = null;
+      document.removeEventListener("keydown", qlKey, true);
+      box.classList.add("out");
+      setTimeout(() => box.remove(), calm ? 0 : 180);
+      grid.querySelector<HTMLElement>(`.wk-card[data-case="${qlId}"]`)?.focus({ preventScroll: true });
+    };
+    const qlPaint = () => {
+      const c = cases.find((x) => x.id === qlId)!;
+      const list = visible();
+      const tags = (caseCategories[c.id] ?? []).map((k) => projectCategories.find((x) => x.id === k)).filter(Boolean);
+      qlBox!.querySelector<HTMLElement>(".ql-win")!.innerHTML = `
+        <div class="ql-pic">${cover(c)}</div>
+        <div class="ql-info">
+          <small>${esc(c.kind)}</small>
+          <h3>${esc(c.title)}</h3>
+          <p>${esc(c.blurb)}</p>
+          <dl>${c.facts.slice(0, 5).map(([k, v]) => `<div><dt>${esc(clean(k))}</dt><dd>${esc(clean(v))}</dd></div>`).join("")}</dl>
+          <span class="wk-tags">${tags.map((k) => `<i style="--c:${catColor[k!.id] ?? "#ec2a72"}">${esc(k!.label)}</i>`).join("")}</span>
+          <div class="ql-act"><button type="button" class="btn" data-ql-open>${t("Open the project", "Ouvrir le projet")} →</button><span>${list.findIndex((x) => x.id === c.id) + 1} / ${list.length} · <kbd>←</kbd><kbd>→</kbd> · <kbd>Esc</kbd></span></div>
+        </div>`;
+    };
+    const qlKey = (e: KeyboardEvent) => {
+      if (!qlBox) return;
+      const list = visible();
+      const i = list.findIndex((x) => x.id === qlId);
+      if (e.key === "Escape" || e.key === " ") {
+        e.preventDefault();
+        e.stopPropagation();
+        closeQL();
+      } else if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+        e.preventDefault();
+        e.stopPropagation();
+        const to = list[(i + (e.key === "ArrowRight" ? 1 : -1) + list.length) % list.length];
+        if (to) {
+          qlId = to.id;
+          ctx.sfx.tick();
+          qlPaint();
+        }
+      } else if (e.key === "Enter") {
+        e.preventDefault();
+        e.stopPropagation();
+        const id = qlId;
+        closeQL();
+        showCase(id);
+      }
+    };
+    const openQL = (id: string) => {
+      if (qlBox) return;
+      qlId = id;
+      qlBox = document.createElement("div");
+      qlBox.className = "ql";
+      qlBox.innerHTML = `<div class="ql-win" role="dialog" aria-modal="true" aria-label="Quick Look"></div>`;
+      main.querySelector(".wk")!.appendChild(qlBox);
+      qlPaint();
+      qlBox.addEventListener("click", (e) => {
+        const t2 = e.target as HTMLElement;
+        if (t2.closest("[data-ql-open]")) {
+          const id2 = qlId;
+          closeQL();
+          showCase(id2);
+        } else if (!t2.closest(".ql-win")) closeQL();
+      });
+      document.addEventListener("keydown", qlKey, true);
+      ctx.sfx.tick();
+    };
     if (focusId) grid.querySelector<HTMLElement>(`.wk-card[data-case="${focusId}"]`)?.focus({ preventScroll: true });
   };
 
@@ -684,9 +773,8 @@ const BASE_APPS: AppDef[] = [
   { id: "experience", name: t("Experience", "Parcours"), w: 820, h: 560, split: 232, keywords: "experience roles skills cv resume jobs parcours formation compétences", render: renderExperience },
   { id: "cv", name: "CV", w: 860, h: 700, keywords: "cv resume curriculum vitae download pdf télécharger", render: renderCV },
   { id: "photos", name: t("Photos", "Photos"), w: 1040, h: 720, keywords: "photos book album cats sea beach algiers photography images galerie livre chats mer plage", render: renderPhotos },
-  { id: "music", name: t("Music", "Musique"), w: 560, h: 660, keywords: "music spotify playlist songs listen musique écouter", render: renderEmbed("music") },
+  { id: "art", name: t("Art", "Art"), w: 1000, h: 720, keywords: "art paintings painting drawing gouache acrylic felt book videos peinture dessin art créations", render: renderArt },
   { id: "mail", name: t("Contact", "Contact"), w: 640, h: 520, keywords: "mail contact email hire hello linkedin instagram message courriel écrire", render: renderMail },
 ];
 
-/* Messages, Maps, Safari and Calendar sit before Contact in the Dock */
-export const APPS: AppDef[] = [...BASE_APPS.slice(0, -1), ...extraApps(), BASE_APPS[BASE_APPS.length - 1]];
+export const APPS: AppDef[] = BASE_APPS;
