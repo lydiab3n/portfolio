@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Stats</title>
+<link rel="icon" href="favicon.svg" />
+<style>
+:root { --bg: #fff3f7; --card: #fff; --ink: #2a1019; --ink2: #7a4a5c; --line: rgba(120, 40, 80, 0.12); --accent: #ec2a72; --soft: #ffd3e2; }
+@media (prefers-color-scheme: dark) { :root { --bg: #1b0c14; --card: #2a1420; --ink: #fbe9f0; --ink2: #c79aae; --line: rgba(255, 190, 215, 0.14); --soft: #5a2640; } }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.45 -apple-system, "Inter", system-ui, sans-serif; }
+main { max-width: 980px; margin: 0 auto; padding: 28px 16px 60px; }
+h1 { margin: 0; font: italic 400 34px/1 Georgia, serif; }
+header { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 22px; }
+.range button, #go { font: inherit; padding: 7px 14px; border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 99px; cursor: pointer; }
+.range button.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-bottom: 14px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 16px 18px; }
+.card small { color: var(--ink2); display: block; }
+.card b { display: block; font: 400 34px/1.15 Georgia, serif; }
+h2 { margin: 0 0 10px; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink2); font-weight: 600; }
+.chart svg { width: 100%; height: 160px; display: block; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 12px; margin-top: 12px; }
+table { width: 100%; border-collapse: collapse; }
+td { padding: 6px 0; border-top: 1px solid var(--line); }
+td:last-child { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+tr:first-child td { border-top: 0; }
+.bar { display: block; height: 4px; border-radius: 4px; background: var(--soft); margin-top: 4px; }
+.bar i { display: block; height: 100%; border-radius: 4px; background: var(--accent); }
+.empty { color: var(--ink2); }
+#login { max-width: 320px; margin: 18vh auto 0; display: grid; gap: 10px; }
+#login input { font: inherit; padding: 11px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--ink); }
+#go { background: var(--accent); border-color: var(--accent); color: #fff; }
+#err { color: var(--accent); min-height: 1.4em; margin: 0; }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<form id="login">
+  <h1>Stats</h1>
+  <input id="pw" type="password" autocomplete="current-password" placeholder="Password" autofocus />
+  <button id="go" type="submit">Open</button>
+  <p id="err"></p>
+</form>
+<main id="app" hidden>
+  <header><h1>Stats</h1><div class="range" id="range"></div></header>
+  <section class="cards" id="cards"></section>
+  <section class="card chart"><h2>Views per day</h2><div id="chart"></div></section>
+  <section class="grid" id="tables"></section>
+</main>
+<script>
+const $ = (s) => document.querySelector(s);
+const KEY = "stats-pw";
+let days = 30;
+const countries = typeof Intl.DisplayNames === "function" ? new Intl.DisplayNames(["en"], { type: "region" }) : null;
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+const sum = (a) => a.reduce((x, y) => x + y, 0);
+
+async function load() {
+  const pw = sessionStorage.getItem(KEY);
+  const r = await fetch("/api/stats?days=" + days, { headers: { Authorization: "Bearer " + pw } });
+  if (r.status === 401) { sessionStorage.removeItem(KEY); $("#app").hidden = true; $("#login").hidden = false; $("#err").textContent = "Wrong password"; return; }
+  const d = await r.json();
+  if (!r.ok) { $("#login").hidden = false; $("#app").hidden = true; $("#err").textContent = d.error || "Something went wrong"; return; }
+  $("#login").hidden = true; $("#app").hidden = false;
+  draw(d);
+}
+
+function table(title, obj, label = (k) => k, limit = 8) {
+  const rows = Object.entries(obj).sort((a, b) => b[1] - a[1]).slice(0, limit);
+  const max = rows[0] ? rows[0][1] : 1;
+  const body = rows.length ? "<table>" + rows.map(([k, v]) => `<tr><td>${esc(label(k))}<span class="bar"><i style="width:${(v / max) * 100}%"></i></span></td><td>${v}</td></tr>`).join("") + "</table>" : '<p class="empty">Nothing yet</p>';
+  return `<section class="card"><h2>${title}</h2>${body}</section>`;
+}
+const group = (ev, prefix) => Object.fromEntries(Object.entries(ev).filter(([k]) => k.startsWith(prefix)).map(([k, v]) => [k.slice(prefix.length), v]));
+
+function draw(d) {
+  const views = sum(d.days.map((x) => x.views)), visitors = sum(d.days.map((x) => x.visitors));
+  const today = d.days[d.days.length - 1];
+  $("#cards").innerHTML = [["Views today", today.views], ["Visitors today", today.visitors], [`Views, ${days} days`, views], [`Visitors, ${days} days`, visitors]].map(([l, v]) => `<div class="card"><small>${l}</small><b>${v}</b></div>`).join("");
+  const max = Math.max(1, ...d.days.map((x) => x.views)), w = 600, h = 140, bw = w / d.days.length;
+  $("#chart").innerHTML = `<svg viewBox="0 0 ${w} ${h + 20}" preserveAspectRatio="none">${d.days.map((x, i) => `<rect x="${i * bw + 1}" y="${h - (x.views / max) * h}" width="${Math.max(1, bw - 2)}" height="${(x.views / max) * h}" rx="2" fill="#ec2a72" opacity="${x.day === today.day ? 1 : 0.55}"><title>${x.day}: ${x.views} views, ${x.visitors} visitors</title></rect>`).join("")}<text x="0" y="${h + 15}" font-size="10" fill="currentColor" opacity=".6">${d.days[0].day}</text><text x="${w}" y="${h + 15}" font-size="10" text-anchor="end" fill="currentColor" opacity=".6">${today.day}</text></svg>`;
+  $("#tables").innerHTML =
+    table("Windows opened", group(d.events, "open:")) +
+    table("Projects viewed", group(d.events, "case:")) +
+    table("Links clicked", group(d.events, "link:")) +
+    table("In the 3D room", group(d.events, "room:")) +
+    table("Where they come from", d.referrers) +
+    table("Countries", d.countries, (k) => (countries && k.length === 2 && k !== "??" ? countries.of(k.toUpperCase()) : k)) +
+    table("Devices", d.devices) +
+    table("Language", d.langs) +
+    table("Pages", d.pages, (k) => (k === "room" ? "3D room" : "Desktop"));
+}
+
+$("#range").innerHTML = [7, 30, 90].map((n) => `<button data-n="${n}" class="${n === days ? "on" : ""}">${n} days</button>`).join("");
+$("#range").addEventListener("click", (e) => {
+  const b = e.target.closest("button"); if (!b) return;
+  days = Number(b.dataset.n);
+  document.querySelectorAll("#range button").forEach((x) => x.classList.toggle("on", x === b));
+  load();
+});
+$("#login").addEventListener("submit", (e) => { e.preventDefault(); sessionStorage.setItem(KEY, $("#pw").value); $("#err").textContent = ""; load(); });
+if (sessionStorage.getItem(KEY)) load();
+</script>
+</body>
+</html>

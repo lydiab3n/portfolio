@@ -4,6 +4,7 @@ import { lang, t } from "./i18n";
 import { renderAbout } from "./about";
 import { renderPhotos } from "./photobook";
 import { renderArt } from "./art";
+import { track } from "./track";
 import { thumbFor } from "./desk";
 
 export interface Ctx {
@@ -578,6 +579,7 @@ function renderWork(body: HTMLElement, ctx: Ctx, arg?: string) {
     const idx = cases.findIndex((c) => c.id === id);
     const c = cases[idx] ?? cases[0];
     st.open = c.id;
+    track("case:" + c.id);
     const prev = cases[(idx - 1 + cases.length) % cases.length];
     const next = cases[(idx + 1) % cases.length];
     main.innerHTML = `<div class="wk">
@@ -719,6 +721,7 @@ function renderMail(body: HTMLElement, ctx: Ctx) {
       <button type="submit" class="send">${t("Send", "Envoyer")}</button>
     </div>
     <p class="sent" role="status" hidden>${t("Opened in your mail app.", "Ouvert dans votre application de messagerie.")}</p>
+    <p class="priv">${t("This site counts visits anonymously. No cookies, no personal data.", "Ce site compte les visites de façon anonyme. Aucun cookie, aucune donnée personnelle.")}</p>
   </form>`;
   const f = body.querySelector("form")!;
   f.addEventListener("submit", (e) => {

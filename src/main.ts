@@ -1,4 +1,5 @@
 import "./style.css";
+import { startTracking, track } from "./track";
 import "./piles.css";
 import { cases, hero } from "./content";
 import { Sfx } from "./sound";
@@ -143,6 +144,7 @@ function flyFrom(w: Win, rect?: DOMRect) {
 function openApp(id: string, arg?: string) {
   const app = APPS.find((a) => a.id === id);
   if (!app) return;
+  track("open:" + id);
   const ex = wins.get(id);
   if (ex) {
     if (ex.min) restore(ex);
@@ -698,3 +700,5 @@ else {
   enterDesktop(true);
   if (!params.get("s") && !mobile()) setTimeout(notify, 3200);
 }
+
+startTracking("/");

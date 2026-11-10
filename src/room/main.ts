@@ -1,4 +1,5 @@
 import "./room.css";
+import { startTracking, track } from "../track";
 import { cases } from "../content";
 import { lang, t } from "../i18n";
 import { Sfx } from "../sound";
@@ -612,6 +613,7 @@ function activate(id: string) {
   const el = document.getElementById("hs-" + id);
   const spot = SPOTS.find((x) => x.id === id);
   if (!el || !spot) return;
+  track("room:" + id);
   const [x, y] = center(el);
   sfx.tick();
   burst(x, y);
@@ -746,3 +748,5 @@ const fromHash = () => {
   else if (panel(h).html) openPanel(h, undefined, originFor(h));
 };
 setTimeout(fromHash, reduce ? 0 : 1500);
+
+startTracking("/room");
