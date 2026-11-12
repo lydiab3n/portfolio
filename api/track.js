@@ -24,6 +24,14 @@ export default async function handler(req, res) {
   b = b || {};
   const day = dayKey();
   const cmds = [];
+  const sid = /^[a-z0-9]{6,16}$/.test(String(b.s)) ? String(b.s) : "";
+  const now = Date.now();
+  const KEEP_VISITS = 90 * 86400;
+  /* one visit's trail: a short list of "time|what" lines under a random per-visit id */
+  const trail = (what) => {
+    if (!sid) return;
+    cmds.push(["RPUSH", `s:${sid}`, `${now}|${what}`], ["LTRIM", `s:${sid}`, "-300", "-1"], ["EXPIRE", `s:${sid}`, String(KEEP_VISITS)]);
+  };
   const touch = (key) => cmds.push(["EXPIRE", key, String(KEEP_DAYS * 86400)]);
 
   if (b.t === "view") {
@@ -43,11 +51,16 @@ export default async function handler(req, res) {
       cmds.push(["HINCRBY", key, field, "1"]);
       touch(key);
     }
+    if (sid) {
+      cmds.push(["ZADD", "sx", String(now), sid], ["ZREMRANGEBYRANK", "sx", "0", "-501"], ["HSET", `sm:${sid}`, "country", country, "device", device, "ref", clean(b.ref, 60) || "direct"], ["EXPIRE", `sm:${sid}`, String(KEEP_VISITS)]);
+      trail(`view:${page}`);
+    }
     cmds.push(["INCR", `v:${day}`], ["PFADD", `u:${day}`, visitor]);
     touch(`v:${day}`);
     touch(`u:${day}`);
   } else if (b.t === "ev" && typeof b.n === "string" && NAME.test(b.n)) {
     cmds.push(["HINCRBY", `e:${day}`, b.n.toLowerCase(), "1"]);
+    trail(b.n.toLowerCase());
     touch(`e:${day}`);
   } else {
     return res.status(400).end();

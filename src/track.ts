@@ -11,10 +11,30 @@ const off = () => {
 };
 const local = /^(localhost|127\.|192\.168\.|\[::1\])/.test(location.hostname);
 
+/* a random id for this visit only: kept in the tab's session storage (not a cookie), gone when the tab closes */
+let sid = "";
+const visitId = () => {
+  if (sid) return sid;
+  try {
+    sid = sessionStorage.getItem("vid") || "";
+  } catch {
+    /* ignore */
+  }
+  if (!sid) {
+    sid = Array.from(crypto.getRandomValues(new Uint8Array(6)), (b) => (b % 36).toString(36)).join("");
+    try {
+      sessionStorage.setItem("vid", sid);
+    } catch {
+      /* ignore */
+    }
+  }
+  return sid;
+};
+
 function send(body: Record<string, unknown>) {
   if (local || off()) return;
   try {
-    const data = JSON.stringify(body);
+    const data = JSON.stringify({ ...body, s: visitId() });
     if (!navigator.sendBeacon?.("/api/track", new Blob([data], { type: "application/json" }))) {
       void fetch("/api/track", { method: "POST", body: data, keepalive: true, headers: { "Content-Type": "application/json" } });
     }
