@@ -365,7 +365,7 @@ export const moreCases: CaseStudy[] = [
     id: "khamsa",
     title: "Yedd ouahda ma tsafek",
     kind: "3D printing · Tangible interface",
-    blurb: "A board of 3D-printed Khamsas that joins Algerian embroidery with a protective symbol. “One hand can’t applaud.”",
+    blurb: "A board of 3D-printed Khamsas that joins embroidery patterns with a protective symbol. “One hand can’t applaud.”",
     facts: [
       ["Title", "يد واحدة ما تصفق · Yedd ouahda ma tsafek · One hand can’t applaud"],
       ["Timeframe", "10 March to 23 April 2026"],
@@ -374,7 +374,7 @@ export const moreCases: CaseStudy[] = [
     ],
     links: [{ label: "Fabrication journal", hint: "Weekly documentation of the whole process", href: FAB_SITE }],
     brief:
-      "I wanted to mix my culture with creative expression. I combined Algerian embroidery, specifically from Algiers, with Al Khamsa, the Hand of Fatima, a symbol used across North Africa as a protective emblem against negative energy and the evil eye. The result is a mosaic of printed hands joined into one board: each piece alone is a symbol, together they form a whole.",
+      "I wanted to mix my culture with creative expression. I combined traditional embroidery patterns with Al Khamsa, the Hand of Fatima, a symbol used across North Africa as a protective emblem against negative energy and the evil eye. The result is a mosaic of printed hands joined into one board: each piece alone is a symbol, together they form a whole.",
     heroMedia: { src: "fab/expo-1.jpg", alt: "The complete piece, a board of black and gold Khamsas, standing on an easel at the tangible interface show", caption: "The complete piece at the Tangible Interface Show, 23 April 2026" },
     steps: [
       {
@@ -432,7 +432,7 @@ export const moreCases: CaseStudy[] = [
       },
       {
         title: "Week 6: connectors at last",
-        copy: "Mass printing looked good and I was halfway through covering my cardboard base, but I still had no connectors I liked. I designed many by hand, either keeping the arabesque theme or using moon and star shapes, which stand for my religion and for the flag of Algeria. They weren’t sturdy enough, the stars on the tips kept breaking, and so I turned them into arrows. Then I could assemble, with Marya’s help.",
+        copy: "Mass printing looked good and I was halfway through covering my cardboard base, but I still had no connectors I liked. I designed many by hand, either keeping the arabesque theme or using moon and star shapes, which are symbols I love. They weren’t sturdy enough, the stars on the tips kept breaking, and so I turned them into arrows. Then I could assemble, with Marya’s help.",
         slots: [],
         media: [
           { src: "fab/goldfail.jpg", alt: "Gold prints that failed", caption: "Gold attempt, failed" },

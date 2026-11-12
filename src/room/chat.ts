@@ -175,12 +175,6 @@ export function reply(cat: Cat, q: string): Reply {
         ],
         chips: pick("cv", "project", "who"),
       };
-    case "origin":
-      return {
-        lines: [t("Lydia comes from Algiers, in Algeria. Now she lives near Paris.", "Lydia vient d'Alger, en Algérie. Aujourd'hui elle vit près de Paris.")],
-        actions: [{ label: t("See the postcard", "Voir la carte postale"), open: { id: "algiers" } }],
-        chips: pick("who", "project", "reach"),
-      };
     case "place":
       return {
         lines: [`${t("Lydia lives in", "Lydia vit en")} ${hero.place}, ${t("close to Paris.", "près de Paris.")}`, t("She studies at Université Paris-Saclay and tutors in Paris.", "Elle étudie à l'Université Paris-Saclay et donne des cours à Paris.")],
@@ -221,7 +215,6 @@ const RULES: [string, string[]][] = [
   ["pet", ["pet ", "pets", "cuddle", "caress", "gratt", "stroke"]],
   ["treat", ["treat", "food", "snack", "friandise", "croquette", "manger", "hungry", "faim"]],
   ["play", ["play", "toy", "jouer", "jeu"]],
-  ["origin", ["where are you from", "where is she from", "where from", "origin", "origine", "algeria", "algerie", "alger", "algiers", "born", "native", "d'ou vient", "d'ou viens", "tu viens d", "vient d"]],
   ["place", ["where do you live", "where does she live", "where is she", "live", "lives", "habite", "vit ", "ou vit", "paris", "france", "city", "ville", "based"]],
   ["cv", ["resume", "cv", "curriculum", "download", "telecharg"]],
   ["contact", ["contact", "reach", "email", "mail", "linkedin", "hire", "recruit", "joindre", "ecrire", "message", "phone", "telephone", "embauch"]],

@@ -24,7 +24,6 @@ export const SPOTS: Spot[] = [
   { id: "exp", key: "exp", label: t("Experience", "Parcours") },
   { id: "music", key: "music", label: t("Music", "Musique") },
   { id: "paris", key: "paris", label: t("Where I live", "Où j'habite") },
-  { id: "algiers", key: "algiers", label: t("Postcard from Algiers", "Carte postale d'Alger") },
   { id: "lamp", key: "lamp", label: t("Switch the light", "Allumer ou éteindre") },
   { id: "matcha", key: "matcha", label: t("My favourite drink of the moment", "Ma boisson préférée du moment") },
   { id: "plant", key: "plant", label: t("Say hi to the plant", "Dire bonjour à la plante") },
