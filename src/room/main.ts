@@ -73,7 +73,6 @@ document.getElementById("room-app")!.innerHTML = `
       <button type="button" data-go="thisthat">${t("This or that", "Ceci ou cela")}</button>
       <p class="grp">${t("More", "Et aussi")}</p>
       <button type="button" data-go="exp">${t("Experience", "Parcours")}</button>
-      <button type="button" data-go="algiers">${t("Where I come from", "D'où je viens")}</button>
       <button type="button" data-go="paris">${t("Where I live", "Où j'habite")}</button>
       <button type="button" data-go="cv">${t("Résumé", "CV")}</button>
       <button type="button" data-go="cats">${t("The cats", "Les chats")}</button>
@@ -81,7 +80,7 @@ document.getElementById("room-app")!.innerHTML = `
       <button type="button" data-go="music">${t("Music", "Musique")}</button>
       <button type="button" data-go="phone">${t("Contact", "Contact")}</button>
     </nav>
-    <p class="credit">${t("3D model", "Modèle 3D")}: “SM - Eiffel Tower”, Scott Marshall, <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noreferrer">CC BY 3.0</a>, <a href="https://poly.pizza/m/aIpJchqtRTg" target="_blank" rel="noreferrer">Poly Pizza</a>. ${t("Postcard", "Carte postale")}: ${t("Algiers harbour, c. 1899, public domain (Library of Congress via", "port d'Alger, vers 1899, domaine public (Bibliothèque du Congrès via")} <a href="https://commons.wikimedia.org/wiki/File:Algiers_harbor_1899.jpg" target="_blank" rel="noreferrer">Wikimedia Commons</a>).</p>
+    <p class="credit">${t("3D model", "Modèle 3D")}: “SM - Eiffel Tower”, Scott Marshall, <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noreferrer">CC BY 3.0</a>, <a href="https://poly.pizza/m/aIpJchqtRTg" target="_blank" rel="noreferrer">Poly Pizza</a>.</p>
     <footer>
       <div class="seg" role="group" aria-label="${t("Language", "Langue")}"><button type="button" data-l="en" aria-pressed="${lang === "en"}">EN</button><button type="button" data-l="fr" aria-pressed="${lang === "fr"}">FR</button></div>
       <button type="button" class="gloss" id="sound" aria-pressed="false">${t("Sound off", "Son coupé")}</button>
@@ -533,7 +532,7 @@ const chat = initChat(room, {
 /* my favourite things on the shelves: each one has a little reaction */
 const FAVS: Record<string, { fx: string[]; lines: string[] }> = {
   perfume: { fx: ["✧", "✦", "·"], lines: [t("Pssht. Something rosy and a little bit dramatic.", "Pschitt. Quelque chose de rosé et un peu dramatique."), t("One more spray, for the cats. They hate it.", "Encore un pschitt, pour les chats. Ils détestent.")] },
-  sunnies: { fx: ["♥", "☀", "♥"], lines: [t("Heart-shaped, obviously. For the beach in Béjaïa.", "En forme de cœur, évidemment. Pour la plage à Béjaïa."), t("Mermaid meets glamour, remember?", "Sirène et glamour, vous vous souvenez ?")] },
+  sunnies: { fx: ["♥", "☀", "♥"], lines: [t("Heart-shaped, obviously. For the beach.", "En forme de cœur, évidemment. Pour la plage."), t("Mermaid meets glamour, remember?", "Sirène et glamour, vous vous souvenez ?")] },
   bag: { fx: ["✦", "♥", "✧"], lines: [t("Inside: a sketchbook, a matcha card and cat hair. Always cat hair.", "Dedans : un carnet de croquis, une carte de fidélité matcha et des poils de chat. Toujours des poils de chat."), t("Fashion was my first design teacher.", "La mode a été mon premier prof de design.")] },
 };
 const favSeen: Record<string, number> = {};

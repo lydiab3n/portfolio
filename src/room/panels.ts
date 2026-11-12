@@ -154,15 +154,6 @@ export function panel(id: string, arg?: string): PanelDef {
         html: `<h2 class="big">${t("Turn it up", "Plus fort")}</h2><p class="role">${t("The electric guitar is here because I love it. This is what I listen to.", "La guitare électrique est là parce que je l'adore. Voilà ce que j'écoute.")}</p>
           <iframe class="embed" style="margin-top:22px;height:352px" src="https://open.spotify.com/embed/playlist/${SPOTIFY_PLAYLIST}?theme=0" title="Spotify" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>`,
       };
-    case "algiers":
-      return {
-        title: t("postcard.jpg", "carte-postale.jpg"),
-        status: "Alger",
-        html: `<h2 class="big">Alger</h2>
-          <p class="role">${t("Where I come from", "D'où je viens")}</p>
-          <p>${t("Algiers, Algeria is where I come from. Today I live near Paris.", "Alger, en Algérie, c'est d'où je viens. Aujourd'hui je vis près de Paris.")}</p>
-          <div class="gallery" style="margin-top:22px"><figure class="wide"><button type="button" data-zoom="room/algiers.jpg" data-alt="${esc(t("Old colour postcard of the harbour and the white city of Algiers", "Ancienne carte postale en couleur du port et de la ville blanche d'Alger"))}"><img src="room/algiers.jpg" alt="${esc(t("Old colour postcard of the harbour and the white city of Algiers", "Ancienne carte postale en couleur du port et de la ville blanche d'Alger"))}" loading="lazy" draggable="false" /></button><figcaption>${t("The harbour of Algiers, around 1899. Photochrom print, public domain, Library of Congress via Wikimedia Commons.", "Le port d'Alger, vers 1899. Photochrome, domaine public, Bibliothèque du Congrès via Wikimedia Commons.")}</figcaption></figure></div>`,
-      };
     case "paris":
       return {
         title: t("where-i-live.map", "ou-jhabite.map"),

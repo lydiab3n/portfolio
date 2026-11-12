@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="noindex, nofollow" />
-<title>Stats</title>
+<title>Portfolio stats</title>
 <link rel="icon" href="favicon.svg" />
 <style>
 :root { --bg: #fff3f7; --card: #fff; --ink: #2a1019; --ink2: #7a4a5c; --line: rgba(120, 40, 80, 0.12); --accent: #ec2a72; --soft: #ffd3e2; }
@@ -35,20 +35,41 @@ tr:first-child td { border-top: 0; }
 #go { background: var(--accent); border-color: var(--accent); color: #fff; }
 #err { color: var(--accent); min-height: 1.4em; margin: 0; }
 [hidden] { display: none !important; }
+.sub { color: var(--ink2); margin: 4px 0 0; }
+.tools { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.ghost { font: inherit; padding: 7px 14px; border: 1px solid var(--line); background: transparent; color: var(--ink2); border-radius: 99px; cursor: pointer; }
+.sum { background: var(--soft); border-radius: 18px; padding: 14px 18px; margin-bottom: 14px; }
+.sum p { margin: 2px 0; }
+.card .hint { color: var(--ink2); font-size: 13px; margin: -6px 0 10px; }
+.card small { font-size: 13px; }
+.card .note { font-size: 12px; color: var(--ink2); margin-top: 2px; }
+.sect { margin: 26px 0 0; font: italic 400 22px/1.2 Georgia, serif; }
+.sect + .sub { margin-bottom: 10px; }
+.foot { color: var(--ink2); font-size: 13px; margin-top: 28px; }
+.hint-login { color: var(--ink2); margin: 0; font-size: 14px; }
 </style>
 </head>
 <body>
 <form id="login">
-  <h1>Stats</h1>
+  <h1>Portfolio stats</h1>
+  <p class="hint-login">Private page. Enter your admin password to see how people use your portfolio.</p>
   <input id="pw" type="password" autocomplete="current-password" placeholder="Password" autofocus />
   <button id="go" type="submit">Open</button>
   <p id="err"></p>
 </form>
 <main id="app" hidden>
-  <header><h1>Stats</h1><div class="range" id="range"></div></header>
+  <header>
+    <div><h1>Portfolio stats</h1><p class="sub" id="updated"></p></div>
+    <div class="tools"><span class="range" id="range"></span><button class="ghost" id="refresh" type="button">Refresh</button><button class="ghost" id="out" type="button">Sign out</button></div>
+  </header>
+  <section class="sum" id="sum"></section>
   <section class="cards" id="cards"></section>
-  <section class="card chart"><h2>Views per day</h2><div id="chart"></div></section>
-  <section class="grid" id="tables"></section>
+  <section class="card chart"><h2>Visits over time</h2><p class="hint">Each bar is one day. Hover a bar to see the exact numbers.</p><div id="chart"></div></section>
+  <h2 class="sect">What people do</h2><p class="sub">Which parts of your portfolio get attention.</p>
+  <section class="grid" id="t1"></section>
+  <h2 class="sect">Who visits</h2><p class="sub">Where visitors come from and what they use. No names or personal data are stored.</p>
+  <section class="grid" id="t2"></section>
+  <p class="foot">A <b>view</b> is one page load. A <b>visitor</b> is one person, counted once per day (anonymously, no cookies). Your own visits are not counted if you opened the site once with <code>?notrack</code> on this device.</p>
 </main>
 <script>
 const $ = (s) => document.querySelector(s);
@@ -61,40 +82,54 @@ const sum = (a) => a.reduce((x, y) => x + y, 0);
 async function load() {
   const pw = sessionStorage.getItem(KEY);
   const r = await fetch("/api/stats?days=" + days, { headers: { Authorization: "Bearer " + pw } });
-  if (r.status === 401) { sessionStorage.removeItem(KEY); $("#app").hidden = true; $("#login").hidden = false; $("#err").textContent = "Wrong password"; return; }
+  if (r.status === 401) { sessionStorage.removeItem(KEY); $("#app").hidden = true; $("#login").hidden = false; $("#err").textContent = "That password is not right. Try again."; return; }
   const d = await r.json();
   if (!r.ok) { $("#login").hidden = false; $("#app").hidden = true; $("#err").textContent = d.error || "Something went wrong"; return; }
   $("#login").hidden = true; $("#app").hidden = false;
   draw(d);
 }
 
-function table(title, obj, label = (k) => k, limit = 8) {
+const pretty = (k) => { const x = String(k).replace(/[-_]+/g, " ").trim(); return x.charAt(0).toUpperCase() + x.slice(1); };
+function table(title, hint, obj, label = pretty, limit = 8) {
   const rows = Object.entries(obj).sort((a, b) => b[1] - a[1]).slice(0, limit);
   const max = rows[0] ? rows[0][1] : 1;
-  const body = rows.length ? "<table>" + rows.map(([k, v]) => `<tr><td>${esc(label(k))}<span class="bar"><i style="width:${(v / max) * 100}%"></i></span></td><td>${v}</td></tr>`).join("") + "</table>" : '<p class="empty">Nothing yet</p>';
-  return `<section class="card"><h2>${title}</h2>${body}</section>`;
+  const body = rows.length ? "<table>" + rows.map(([k, v]) => `<tr><td>${esc(label(k))}<span class="bar"><i style="width:${(v / max) * 100}%"></i></span></td><td>${v}</td></tr>`).join("") + "</table>" : '<p class="empty">Nothing yet. It will fill in as people visit.</p>';
+  return `<section class="card"><h2>${title}</h2><p class="hint">${hint}</p>${body}</section>`;
 }
 const group = (ev, prefix) => Object.fromEntries(Object.entries(ev).filter(([k]) => k.startsWith(prefix)).map(([k, v]) => [k.slice(prefix.length), v]));
+const best = (o) => Object.entries(o).sort((a, b) => b[1] - a[1])[0];
+const plural = (n, w) => `${n} ${w}${n === 1 ? "" : "s"}`;
 
 function draw(d) {
   const views = sum(d.days.map((x) => x.views)), visitors = sum(d.days.map((x) => x.visitors));
   const today = d.days[d.days.length - 1];
-  $("#cards").innerHTML = [["Views today", today.views], ["Visitors today", today.visitors], [`Views, ${days} days`, views], [`Visitors, ${days} days`, visitors]].map(([l, v]) => `<div class="card"><small>${l}</small><b>${v}</b></div>`).join("");
+  const open = group(d.events, "open:"), cases = group(d.events, "case:"), links = group(d.events, "link:");
+  const bits = [`<p><b>${plural(visitors, "visitor")}</b> in the last ${days} days, with <b>${plural(views, "page view")}</b> in total.</p>`];
+  if (views) bits.push(`<p>That is about <b>${(visitors / days).toFixed(1)}</b> visitors a day. Today: <b>${plural(today.visitors, "visitor")}</b>.</p>`);
+  else bits.push("<p>No visits yet in this period. Share your link and check back.</p>");
+  const tc = best(cases), to = best(open), tl = best(links);
+  if (tc) bits.push(`<p>Most opened project: <b>${esc(pretty(tc[0]))}</b> (${plural(tc[1], "time")}).</p>`);
+  if (to) bits.push(`<p>Most opened window: <b>${esc(pretty(to[0]))}</b>.</p>`);
+  if (tl) bits.push(`<p>Most clicked link: <b>${esc(pretty(tl[0]))}</b>.</p>`);
+  $("#sum").innerHTML = bits.join("");
+  $("#cards").innerHTML = [["Visitors today", today.visitors, "people"], ["Views today", today.views, "page loads"], [`Visitors, ${days} days`, visitors, "people"], [`Views, ${days} days`, views, "page loads"]].map(([l, v, n]) => `<div class="card"><small>${l}</small><b>${v}</b><div class="note">${n}</div></div>`).join("");
   const max = Math.max(1, ...d.days.map((x) => x.views)), w = 600, h = 140, bw = w / d.days.length;
-  $("#chart").innerHTML = `<svg viewBox="0 0 ${w} ${h + 20}" preserveAspectRatio="none">${d.days.map((x, i) => `<rect x="${i * bw + 1}" y="${h - (x.views / max) * h}" width="${Math.max(1, bw - 2)}" height="${(x.views / max) * h}" rx="2" fill="#ec2a72" opacity="${x.day === today.day ? 1 : 0.55}"><title>${x.day}: ${x.views} views, ${x.visitors} visitors</title></rect>`).join("")}<text x="0" y="${h + 15}" font-size="10" fill="currentColor" opacity=".6">${d.days[0].day}</text><text x="${w}" y="${h + 15}" font-size="10" text-anchor="end" fill="currentColor" opacity=".6">${today.day}</text></svg>`;
-  $("#tables").innerHTML =
-    table("Windows opened", group(d.events, "open:")) +
-    table("Projects viewed", group(d.events, "case:")) +
-    table("Links clicked", group(d.events, "link:")) +
-    table("In the 3D room", group(d.events, "room:")) +
-    table("Where they come from", d.referrers) +
-    table("Countries", d.countries, (k) => (countries && k.length === 2 && k !== "??" ? countries.of(k.toUpperCase()) : k)) +
-    table("Devices", d.devices) +
-    table("Language", d.langs) +
-    table("Pages", d.pages, (k) => (k === "room" ? "3D room" : "Desktop"));
+  $("#chart").innerHTML = `<svg viewBox="0 0 ${w} ${h + 20}" preserveAspectRatio="none">${d.days.map((x, i) => `<rect x="${i * bw + 1}" y="${h - (x.views / max) * h}" width="${Math.max(1, bw - 2)}" height="${(x.views / max) * h}" rx="2" fill="#ec2a72" opacity="${x.day === today.day ? 1 : 0.55}"><title>${x.day}: ${plural(x.views, "view")}, ${plural(x.visitors, "visitor")}</title></rect>`).join("")}<text x="0" y="${h + 15}" font-size="10" fill="currentColor" opacity=".6">${d.days[0].day}</text><text x="${w}" y="${h + 15}" font-size="10" text-anchor="end" fill="currentColor" opacity=".6">${today.day} (today)</text></svg>`;
+  $("#t1").innerHTML =
+    table("Windows opened", "Apps people open on the desktop.", open) +
+    table("Projects viewed", "Case studies people open to read.", cases) +
+    table("Links clicked", "Email, CV and other outside links.", links) +
+    table("In the 3D room", "Objects people click in the room.", group(d.events, "room:"));
+  $("#t2").innerHTML =
+    table("Where they come from", "The site that sent them. Empty means they typed or pasted your link.", d.referrers, (k) => (k === "direct" || k === "" ? "Direct (typed or pasted link)" : k)) +
+    table("Countries", "Approximate location of visitors.", d.countries, (k) => (countries && k.length === 2 && k !== "??" ? countries.of(k.toUpperCase()) : k === "??" ? "Unknown" : k)) +
+    table("Devices", "Phone, tablet or computer.", d.devices) +
+    table("Language", "The browser language of visitors.", d.langs) +
+    table("Pages", "Desktop or the 3D room.", d.pages, (k) => (k === "room" ? "3D room" : "Desktop"));
+  $("#updated").textContent = "Updated " + new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 }
 
-$("#range").innerHTML = [7, 30, 90].map((n) => `<button data-n="${n}" class="${n === days ? "on" : ""}">${n} days</button>`).join("");
+$("#range").innerHTML = [7, 30, 90].map((n) => `<button data-n="${n}" class="${n === days ? "on" : ""}">Last ${n} days</button>`).join("");
 $("#range").addEventListener("click", (e) => {
   const b = e.target.closest("button"); if (!b) return;
   days = Number(b.dataset.n);
@@ -102,6 +137,8 @@ $("#range").addEventListener("click", (e) => {
   load();
 });
 $("#login").addEventListener("submit", (e) => { e.preventDefault(); sessionStorage.setItem(KEY, $("#pw").value); $("#err").textContent = ""; load(); });
+$("#refresh").addEventListener("click", load);
+$("#out").addEventListener("click", () => { sessionStorage.removeItem(KEY); location.reload(); });
 if (sessionStorage.getItem(KEY)) load();
 </script>
 </body>

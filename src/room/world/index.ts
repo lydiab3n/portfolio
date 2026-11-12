@@ -3,7 +3,7 @@ import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeom
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import * as TX from "./textures";
-import { bake, bookcase, corkboard, desk, folder, framedPhoto, globe, guitar, lamp, laptop, matcha, phone, plant, postcard, rugMesh, shade, std, windowFrame, type Reg } from "./props";
+import { bake, bookcase, corkboard, desk, folder, framedPhoto, globe, guitar, lamp, laptop, matcha, phone, plant, rugMesh, shade, std, windowFrame, type Reg } from "./props";
 import { ferrari, lamborghini } from "./cats";
 
 export class NoWebGL extends Error {}
@@ -226,18 +226,13 @@ export async function createWorld(o: WorldOptions): Promise<World> {
   add(pl.group, -1.5, shelfTop, 0.14);
   reg("plant", pl.group, "none");
 
-  /* wall: portrait, corkboard, postcard, window */
+  /* wall: portrait, corkboard, window */
   const portrait = framedPhoto("lydia-portrait.jpg", 0.44, 0.6, [0.52, 0.32]);
   add(portrait, -2.82, 1.18, 0.02);
   reg("about", portrait as THREE.Group, "pull");
   const cork = corkboard(o.notes);
   add(cork, -1.9, 1.18, 0.02);
   reg("notes", cork, "pull");
-  const pc = postcard();
-  add(pc, -1.11, 1.56, 0.012);
-  pc.rotation.z = 0.05;
-  pc.scale.setScalar(1.3);
-  reg("algiers", pc, "pull");
   const win = windowFrame();
   add(win, -0.2, 2.15, 0);
   reg("sea", win, "none");

@@ -665,7 +665,7 @@ export const frCases: Record<string, CaseFr> = {
 
   khamsa: {
     kind: "Impression 3D · Interface tangible",
-    blurb: "Un tableau de Khamsas imprimées en 3D qui unit la broderie algérienne à un symbole protecteur. « Une seule main ne peut pas applaudir. »",
+    blurb: "Un tableau de Khamsas imprimées en 3D qui unit la broderie traditionnelle à un symbole protecteur. « Une seule main ne peut pas applaudir. »",
     facts: [
       ["Titre", "يد واحدة ما تصفق · Yedd ouahda ma tsafek · Une seule main ne peut pas applaudir"],
       ["Période", "10 mars au 23 avril 2026"],
@@ -674,7 +674,7 @@ export const frCases: Record<string, CaseFr> = {
     ],
     links: [{ label: "Journal de fabrication", hint: "Documentation hebdomadaire de tout le processus (en anglais)" }],
     brief:
-      "Je voulais mêler ma culture à l’expression créative. J’ai associé la broderie algérienne, en particulier celle d’Alger, à Al Khamsa, la main de Fatma, un symbole utilisé dans toute l’Afrique du Nord comme emblème protecteur contre les énergies négatives et le mauvais œil. Le résultat est une mosaïque de mains imprimées réunies en un seul tableau : chaque pièce seule est un symbole, ensemble elles forment un tout.",
+      "Je voulais mêler ma culture à l’expression créative. J’ai associé la broderie traditionnelle à Al Khamsa, la main de Fatma, un symbole utilisé dans toute l’Afrique du Nord comme emblème protecteur contre les énergies négatives et le mauvais œil. Le résultat est une mosaïque de mains imprimées réunies en un seul tableau : chaque pièce seule est un symbole, ensemble elles forment un tout.",
     heroCaption: "La pièce complète au Tangible Interface Show, le 23 avril 2026",
     steps: [
       {
@@ -704,7 +704,7 @@ export const frCases: Record<string, CaseFr> = {
       },
       {
         title: "Semaine 6 : enfin les connecteurs",
-        copy: "L’impression en série était réussie et j’avais recouvert la moitié de mon support en carton, mais je n’avais toujours aucun connecteur qui me plaise. J’en ai dessiné beaucoup à la main, soit en gardant le thème des arabesques, soit avec des formes de lune et d’étoile, qui représentent ma religion et le drapeau de l’Algérie. Ils n’étaient pas assez solides, les étoiles aux extrémités cassaient sans cesse, alors je les ai transformés en flèches. J’ai pu ensuite assembler, avec l’aide de Marya.",
+        copy: "L’impression en série était réussie et j’avais recouvert la moitié de mon support en carton, mais je n’avais toujours aucun connecteur qui me plaise. J’en ai dessiné beaucoup à la main, soit en gardant le thème des arabesques, soit avec des formes de lune et d’étoile, des symboles que j’aime. Ils n’étaient pas assez solides, les étoiles aux extrémités cassaient sans cesse, alors je les ai transformés en flèches. J’ai pu ensuite assembler, avec l’aide de Marya.",
         media: ["Essai doré, raté", "À mi-parcours du recouvrement du tableau", "Essais de connecteurs", "Les étoiles cassaient sans cesse", "Les connecteurs finaux", "Assemblage, avec Marya"],
       },
     ],

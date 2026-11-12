@@ -12,7 +12,6 @@ const pages = (): Pg[] => [
   { src: "room/sea-sunset.jpg", alt: t("The sea at sunset with a rocky headland", "La mer au coucher du soleil, devant un promontoire rocheux"), cap: t("Golden hour by the sea", "L’heure dorée au bord de la mer"), pos: "60% 50%" },
   { src: "room/sea-rocks.jpg", alt: t("Turquoise water and sunlit rocks", "Eau turquoise et rochers ensoleillés"), cap: t("Salt water and warm rocks", "Eau salée et rochers chauds") },
   { src: "room/shells.jpg", alt: t("Three pearly shells on a weathered wooden table", "Trois coquillages nacrés sur une table en bois patiné"), cap: t("Shells I couldn’t leave behind", "Des coquillages que je n’ai pas pu laisser") },
-  { src: "room/algiers.jpg", alt: t("An old colour print of the port of Algiers", "Une ancienne gravure en couleur du port d’Alger"), cap: t("Algiers, where I come from", "Alger, d’où je viens") },
 ];
 
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);

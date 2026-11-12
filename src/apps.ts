@@ -775,7 +775,7 @@ const BASE_APPS: AppDef[] = [
   } },
   { id: "experience", name: t("Experience", "Parcours"), w: 820, h: 560, split: 232, keywords: "experience roles skills cv resume jobs parcours formation compétences", render: renderExperience },
   { id: "cv", name: "CV", w: 860, h: 700, keywords: "cv resume curriculum vitae download pdf télécharger", render: renderCV },
-  { id: "photos", name: t("Photos", "Photos"), w: 1040, h: 720, keywords: "photos book album cats sea beach algiers photography images galerie livre chats mer plage", render: renderPhotos },
+  { id: "photos", name: t("Photos", "Photos"), w: 1040, h: 720, keywords: "photos book album cats sea beach photography images galerie livre chats mer plage", render: renderPhotos },
   { id: "art", name: t("Art", "Art"), w: 1000, h: 720, keywords: "art paintings painting drawing gouache acrylic felt book videos peinture dessin art créations", render: renderArt },
   { id: "mail", name: t("Contact", "Contact"), w: 640, h: 520, keywords: "mail contact email hire hello linkedin instagram message courriel écrire", render: renderMail },
 ];

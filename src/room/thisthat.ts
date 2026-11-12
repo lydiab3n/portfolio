@@ -4,12 +4,11 @@ import { t } from "../i18n";
 interface Q { a: string; b: string; me: "a" | "b" | "both"; why: string }
 const QS = (): Q[] => [
   { a: t("Matcha", "Matcha"), b: t("Coffee", "Café"), me: "a", why: t("Matcha, always. I’m still hunting for the best one in Paris.", "Matcha, toujours. Je cherche encore le meilleur de Paris.") },
-  { a: t("The sea", "La mer"), b: t("The mountains", "La montagne"), me: "a", why: t("The sea. I grew up in Algiers with it right outside.", "La mer. J’ai grandi à Alger avec elle juste à côté.") },
+  { a: t("The sea", "La mer"), b: t("The mountains", "La montagne"), me: "a", why: t("The sea. Always the sea.", "La mer. Toujours la mer.") },
   { a: t("Cats", "Chats"), b: t("Dogs", "Chiens"), me: "a", why: t("Two orange cats run my life: Ferrari and Lamborghini.", "Deux chats roux dirigent ma vie : Ferrari et Lamborghini.") },
   { a: t("Pink", "Rose"), b: t("Black", "Noir"), me: "a", why: t("Pink, obviously. Look around this room.", "Rose, évidemment. Regardez cette chambre.") },
   { a: "Pinterest", b: "Instagram", me: "a", why: t("Pinterest. My boards are basically a second brain.", "Pinterest. Mes tableaux sont un deuxième cerveau.") },
   { a: t("Guitar", "Guitare"), b: t("Piano", "Piano"), me: "a", why: t("Electric guitar. Go strum the one by the desk.", "Guitare électrique. Allez gratter celle près du bureau.") },
-  { a: "Paris", b: t("Algiers", "Alger"), me: "both", why: t("Don’t make me choose. Algiers is home, Paris is now.", "Ne me faites pas choisir. Alger c’est chez moi, Paris c’est maintenant.") },
 ];
 
 export const thisThatHtml = () =>
