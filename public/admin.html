@@ -46,6 +46,12 @@ tr:first-child td { border-top: 0; }
 .sect { margin: 26px 0 0; font: italic 400 22px/1.2 Georgia, serif; }
 .sect + .sub { margin-bottom: 10px; }
 .foot { color: var(--ink2); font-size: 13px; margin-top: 28px; }
+.visit { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 12px 16px; margin-top: 10px; }
+.visit summary { cursor: pointer; display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline; }
+.visit code { background: var(--soft); padding: 1px 8px; border-radius: 8px; font-weight: 600; }
+.visit ol { margin: 10px 0 0; padding-left: 0; list-style: none; }
+.visit li { display: flex; gap: 12px; padding: 4px 0; border-top: 1px solid var(--line); }
+.visit li time { color: var(--ink2); font-variant-numeric: tabular-nums; min-width: 64px; }
 .hint-login { color: var(--ink2); margin: 0; font-size: 14px; }
 </style>
 </head>
@@ -60,7 +66,7 @@ tr:first-child td { border-top: 0; }
 <main id="app" hidden>
   <header>
     <div><h1>Portfolio stats</h1><p class="sub" id="updated"></p></div>
-    <div class="tools"><span class="range" id="range"></span><button class="ghost" id="refresh" type="button">Refresh</button><button class="ghost" id="out" type="button">Sign out</button></div>
+    <div class="tools"><span class="range" id="range"></span><button class="ghost" id="refresh" type="button">Refresh</button><button class="ghost" id="out" type="button">Sign out</button><button class="ghost" id="wipe" type="button">Delete all data</button></div>
   </header>
   <section class="sum" id="sum"></section>
   <section class="cards" id="cards"></section>
@@ -69,7 +75,9 @@ tr:first-child td { border-top: 0; }
   <section class="grid" id="t1"></section>
   <h2 class="sect">Who visits</h2><p class="sub">Where visitors come from and what they use. No names or personal data are stored.</p>
   <section class="grid" id="t2"></section>
-  <p class="foot">A <b>view</b> is one page load. A <b>visitor</b> is one person, counted once per day (anonymously, no cookies). Your own visits are not counted if you opened the site once with <code>?notrack</code> on this device.</p>
+  <h2 class="sect">Individual visits</h2><p class="sub">The 40 most recent visits. Each visit gets a random code (not linked to a name, an IP address or a cookie) that is forgotten when the person closes the tab, so you see one visit's path, not a person over time.</p>
+  <section id="visits"></section>
+  <p class="foot">A <b>view</b> is one page load. A <b>visitor</b> is one person, counted once per day (anonymously, no cookies). Each visit gets a random code so you can follow its path; it is forgotten when the tab closes. Your own visits are not counted if you opened the site once with <code>?notrack</code> on this device.</p>
 </main>
 <script>
 const $ = (s) => document.querySelector(s);
@@ -87,6 +95,7 @@ async function load() {
   if (!r.ok) { $("#login").hidden = false; $("#app").hidden = true; $("#err").textContent = d.error || "Something went wrong"; return; }
   $("#login").hidden = true; $("#app").hidden = false;
   draw(d);
+  loadVisits();
 }
 
 const pretty = (k) => { const x = String(k).replace(/[-_]+/g, " ").trim(); return x.charAt(0).toUpperCase() + x.slice(1); };
@@ -99,6 +108,21 @@ function table(title, hint, obj, label = pretty, limit = 8) {
 const group = (ev, prefix) => Object.fromEntries(Object.entries(ev).filter(([k]) => k.startsWith(prefix)).map(([k, v]) => [k.slice(prefix.length), v]));
 const best = (o) => Object.entries(o).sort((a, b) => b[1] - a[1])[0];
 const plural = (n, w) => `${n} ${w}${n === 1 ? "" : "s"}`;
+
+const stepName = (w) => {
+  const [k, ...r] = w.split(":"), v = pretty(r.join(":"));
+  return ({ view: "Arrived on " + (v === "Room" ? "the 3D room" : "the desktop"), open: "Opened window: " + v, case: "Read project: " + v, link: "Clicked link: " + v, room: "3D room: clicked " + v })[k] || pretty(w);
+};
+async function loadVisits() {
+  const r = await fetch("/api/stats?visits=1", { headers: { Authorization: "Bearer " + sessionStorage.getItem(KEY) } });
+  if (!r.ok) return;
+  const { visits } = await r.json();
+  $("#visits").innerHTML = visits.length ? visits.map((v) => {
+    const t0 = v.steps[0] ? new Date(v.steps[0].t) : null;
+    const place = [v.country && v.country !== "??" && countries ? countries.of(v.country.toUpperCase()) : "", v.device].filter(Boolean).join(", ");
+    return `<details class="visit"><summary><code>${esc(v.id)}</code><span>${t0 ? t0.toLocaleString([], { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : ""}</span><span class="sub">${esc(place)} · ${plural(Math.max(0, v.steps.length - 1), "action")}</span></summary><ol>${v.steps.map((s) => `<li><time>${new Date(s.t).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}</time><span>${esc(stepName(s.what))}</span></li>`).join("")}</ol></details>`;
+  }).join("") : '<p class="empty">No visits recorded yet. New visits will show up here.</p>';
+}
 
 function draw(d) {
   const views = sum(d.days.map((x) => x.views)), visitors = sum(d.days.map((x) => x.visitors));
@@ -137,6 +161,11 @@ $("#range").addEventListener("click", (e) => {
   load();
 });
 $("#login").addEventListener("submit", (e) => { e.preventDefault(); sessionStorage.setItem(KEY, $("#pw").value); $("#err").textContent = ""; load(); });
+$("#wipe").addEventListener("click", async () => {
+  if (!confirm("Delete ALL stats and visit history? This cannot be undone.")) return;
+  const r = await fetch("/api/stats", { method: "DELETE", headers: { Authorization: "Bearer " + sessionStorage.getItem(KEY) } });
+  if (r.ok) load(); else alert("Could not delete the data.");
+});
 $("#refresh").addEventListener("click", load);
 $("#out").addEventListener("click", () => { sessionStorage.removeItem(KEY); location.reload(); });
 if (sessionStorage.getItem(KEY)) load();
