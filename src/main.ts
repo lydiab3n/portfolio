@@ -373,6 +373,12 @@ $("#folders").innerHTML = deskIcons
   .join("");
 const letters = (w: string) => [...w].map((ch) => `<span class="lt">${ch === " " ? "&nbsp;" : ch}</span>`).join("");
 $("#greet").innerHTML = `<p>${t("welcome to", "bienvenue sur")}</p><h1 aria-label="${t("Lydia’s portfolio", "Le portfolio de Lydia")}"><span class="wd" aria-hidden="true">${letters(t("Lydia’s", "portfolio"))}</span> <span class="wd" aria-hidden="true">${letters(t("portfolio", "de Lydia"))}</span><span class="lt dot" aria-hidden="true">.</span></h1><small>${hero.role}, ${hero.place}</small>`;
+/* phone only (hidden by CSS on desktop): the three things a recruiter wants, one tap away */
+$("#greet").insertAdjacentHTML("beforeend", `<div id="m-cta"><button type="button" class="pri" data-go="work">${t("See my work", "Voir mes projets")}</button><button type="button" data-go="cv">${t("Résumé", "CV")}</button><button type="button" data-go="mail">${t("Say hello", "Me contacter")}</button></div>`);
+$("#m-cta").addEventListener("click", (e) => {
+  const b = (e.target as HTMLElement).closest<HTMLElement>("[data-go]");
+  if (b) openApp(b.dataset.go!);
+});
 
 /* letters lean toward the pointer, lift, tilt and warm up; click to make one hop */
 {
