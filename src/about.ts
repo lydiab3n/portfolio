@@ -114,8 +114,15 @@ export function renderAbout(body: HTMLElement, ctx: Ctx) {
   btns.forEach((b) =>
     b.addEventListener("click", () => {
       const q = qs[Number(b.dataset.i)];
-      btns.forEach((o) => o.classList.toggle("on", o === b));
       clearInterval(timer);
+      /* clicking the open question again closes the chat */
+      if (b.classList.contains("on")) {
+        b.classList.remove("on");
+        ctx.sfx.tick();
+        out.innerHTML = `<p class="ab-hint">${t("Pick a question.", "Choisis une question.")}</p>`;
+        return;
+      }
+      btns.forEach((o) => o.classList.toggle("on", o === b));
       ctx.sfx.tick();
       out.innerHTML = `<p class="ab-me">${esc(q.q)}</p><p class="ab-you"><span></span></p>`;
       const el = out.querySelector<HTMLElement>(".ab-you span")!;
