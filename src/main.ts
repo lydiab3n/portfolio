@@ -222,6 +222,14 @@ function nextActive() {
   setActive(vis[0] ?? null);
 }
 
+/* click on the bare desktop (not a window, icon, dock or menu) closes the front window, desktop only */
+document.addEventListener("pointerdown", (e) => {
+  if (mobile() || !active || active.min) return;
+  const el = e.target as HTMLElement;
+  if (!el.matches?.("body, #screen, #wall, #app, #desktop, #wins, #shade, #folders, #greet, #widgets")) return;
+  closeWin(active);
+});
+
 function closeWin(w: Win) {
   sfx.close();
   wins.delete(w.app.id);

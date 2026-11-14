@@ -29,7 +29,7 @@ export function renderPhotos(body: HTMLElement, ctx: Ctx) {
     [cover, photo(ph[0], 1)],
     [photo(ph[1], 2), photo(ph[2], 3)],
     [photo(ph[3], 4), photo(ph[4], 5)],
-    [photo(ph[5], 6), end],
+    [end, `<div class="pb-pg"></div>`],
   ];
   const L = sheets.length;
 
