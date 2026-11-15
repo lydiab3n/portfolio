@@ -61,7 +61,8 @@ export const about = {
   photoAlt: "Lydia Benosmane smiling in a car",
   paragraphs: [
     "Bonjour! I’m <b>Lydia</b>, a Master’s student in Human-Computer Interaction (HCI) and a Product & UX designer based in Île-de-France, with my head somewhere between a fashion editorial, an art gallery and the seaside.",
-    "I love design that has character: unexpected, dramatic and sometimes pink (just like this portfolio). I’m all about the details that make something feel special.",
+    "I have loved art since the earliest years of my life. As I grew up, I found new skills in communication and technology, and I learned to use them to make visual artwork and design for the web.",
+    "Since starting college, I have been sharpening my UX/UI research and design skills through projects and internships. I love design that has character: unexpected, dramatic and sometimes pink (just like this portfolio), and I’m all about the details that make something feel special. I’m really motivated, and I’m looking for opportunities in these fields.",
     "Outside of design? I’m out there listening to music, getting lost in the perfect life that would be if my life looked like my Pinterest boards, admiring pretty things or wishing I was sitting by the sea with a fresh drink in my hand and the sun hitting my skin.",
   ],
   tags: ["Île-de-France", "HCI Master’s", "Product & UX", "Art & fashion"],
