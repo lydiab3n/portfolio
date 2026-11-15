@@ -745,7 +745,7 @@ export const frCases: Record<string, CaseFr> = {
       {
         title: "Ce qu’est La Suite numérique",
         copy: "La Suite numérique (écrite LaSuite sur son site) est un espace de travail numérique ouvert et souverain pour les agents publics, conçu par la DINUM. Ses principes ont cadré ce que nous pouvions changer ou non, nous avons donc commencé par les lire :",
-        media: ["Les outils de La Suite numérique avec leurs logos officiels (source : lasuite.numerique.gouv.fr)"],
+        media: ["Les outils de La Suite numérique (source : lasuite.numerique.gouv.fr)"],
         bullets: [
           "Simplicité : des outils faits pour le plus grand nombre, pas seulement pour les experts.",
           "Sécurité et souveraineté : données hébergées en France, avec Docs et Visio sur un hébergement SecNumCloud.",
@@ -753,7 +753,7 @@ export const frCases: Record<string, CaseFr> = {
           "Interopérabilité et réversibilité : les outils sont pensés pour fonctionner ensemble, et l’on peut importer et exporter des formats standards (.ppt, .xls, .odt).",
           "Coûts maîtrisés : les outils sont mutualisés entre administrations plutôt qu’achetés un par un.",
         ],
-        note: "Ce que cela impliquait pour le design : chaque outil a déjà son logo, sa fenêtre et ses habitudes, et un agent passe de l’un à l’autre pour finir une seule tâche. SuiteSpace garde les noms et les logos pour que les outils restent reconnaissables, et supprime les murs entre eux.",
+        note: "Ce que cela impliquait pour le design : chaque outil a déjà sa fenêtre et ses habitudes, et un agent passe de l’un à l’autre pour finir une seule tâche. SuiteSpace garde les noms pour que les outils restent reconnaissables, et supprime les murs entre eux.",
       },
       {
         title: "Ateliers : une frustration, un prototype papier",
@@ -819,12 +819,12 @@ export const frCases: Record<string, CaseFr> = {
       {
         title: "Instruments et applications : deux choses différentes",
         copy: "Le bord gauche et le bord bas du canevas accueillent deux familles de commandes, volontairement séparées.",
-        media: ["À gauche : la barre d’instruments. À droite : le dock des applications de La Suite, avec leurs logos officiels"],
+        media: ["À gauche : la barre d’instruments. À droite : le dock des applications de La Suite"],
         bullets: [
           "Les instruments à gauche (sélectionner, annoncer, partager, chercher, épingler, masquer) sont des verbes : ils agissent sur ce qui se trouve sur le canevas. Ce sont des icônes simples, d’une seule couleur, pour qu’on les lise comme des outils et non comme des lieux.",
           "Le « + » sous la barre est l’endroit d’où naissent de nouveaux instruments : des instruments généraux peuvent être combinés en instruments plus spécialisés, c’est l’idée des instruments dans les substrats d’interaction.",
-          "Le dock rassemble Tchap, Docs, Visio, Grist et les autres applications de La Suite, avec leurs logos officiels pour qu’un agent les reconnaisse tout de suite. Ici, une application est quelque chose que l’on place sur le canevas, pas une fenêtre où l’on va.",
-          "La palette reprend le bleu, le blanc et le rouge des logos de La Suite, pour que le prototype fasse partie de la même famille.",
+          "Le dock rassemble Tchap, Docs, Visio, Grist et les autres applications de La Suite, pour qu’un agent les reconnaisse tout de suite. Ici, une application est quelque chose que l’on place sur le canevas, pas une fenêtre où l’on va.",
+          "La palette reprend le bleu, le blanc et le rouge de La Suite, pour que le prototype fasse partie de la même famille.",
         ],
       },
       {
@@ -841,7 +841,7 @@ export const frCases: Record<string, CaseFr> = {
       ["Instruments et applications séparés", "Les verbes (la barre) à gauche et les outils (le dock) en bas. Les mélanger brouillerait la différence entre agir sur quelque chose et aller quelque part."],
       ["Les mêmes commandes dans chaque espace", "La barre, le dock et Cagette restent en place quand on change d’espace : on se construit une seule série d’habitudes au lieu de réapprendre chaque espace."],
       ["Dire ce qui s’est passé, sans boîte de dialogue", "Un bandeau et un emblème d’équipe indiquent que l’espace est créé et dans lequel on se trouve, sans interrompre le travail."],
-      ["Garder La Suite reconnaissable", "Logos, noms et couleurs officiels restent. Ce qui change, c’est la façon dont les outils se relient, pas leur nom, ce qui rend l’idée plus facile à adopter."],
+      ["Garder La Suite reconnaissable", "Noms et couleurs officiels restent. Ce qui change, c’est la façon dont les outils se relient, pas leur nom, ce qui rend l’idée plus facile à adopter."],
     ],
     outcome: [],
     future: ["Une file d’attente pour Visio, dans la continuité de l’atelier sur le partage d’écran", "Des transcriptions interactives en direct, dans la continuité de l’atelier sur les marqueurs visuels"],

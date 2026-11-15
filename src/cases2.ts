@@ -488,7 +488,7 @@ export const moreCases: CaseStudy[] = [
         title: "What La Suite numérique is",
         copy: "La Suite numérique (written LaSuite on its website) is an open and sovereign digital workspace for French public servants, made by DINUM. Its principles shaped what we could and could not change, so we started by reading them:",
         slots: [],
-        media: [{ src: "suite/apps-board.jpg", alt: "The La Suite numérique logo above the official logos of its tools: Tchap, Visio, Docs, Grist, Messagerie, Fichiers, FranceTransfert and ProConnect", caption: "The tools of La Suite numérique with their official logos (source: lasuite.numerique.gouv.fr)", wide: true }],
+        media: [{ src: "suite/apps-board.jpg", alt: "The tools of La Suite numérique: Tchap, Visio, Docs, Grist, Messagerie, Fichiers, FranceTransfert and ProConnect", caption: "The tools of La Suite numérique (source: lasuite.numerique.gouv.fr)", wide: true }],
         bullets: [
           "Simplicity: tools made for the largest possible number of people, not only for experts.",
           "Security and sovereignty: data hosted in France, with Docs and Visio on SecNumCloud hosting.",
@@ -496,7 +496,7 @@ export const moreCases: CaseStudy[] = [
           "Interoperability and reversibility: the tools are meant to work together, and you can import and export standard formats (.ppt, .xls, .odt).",
           "Controlled costs: tools are pooled across administrations instead of bought one by one.",
         ],
-        note: "What this meant for the design: each tool already has its own logo, window and habits, and a public servant moves between several of them to finish one task. SuiteSpace keeps the names and logos so the tools stay recognisable, and removes the walls between them.",
+        note: "What this meant for the design: each tool already has its own window and habits, and a public servant moves between several of them to finish one task. SuiteSpace keeps the names so the tools stay recognisable, and removes the walls between them.",
       },
       {
         title: "Workshops: one frustration, one paper prototype",
@@ -570,12 +570,12 @@ export const moreCases: CaseStudy[] = [
         title: "Instruments and apps: two different things",
         copy: "The left edge and the bottom edge of the canvas hold two families of controls, deliberately kept apart.",
         slots: [],
-        media: [{ src: "suite/fig-instruments.jpg", alt: "On the left, the instrument toolbar with six icons and a “+” button; on the right, the dock with the logos of seven La Suite apps", caption: "Left: the instrument toolbar. Right: the dock of La Suite apps, with their official logos", wide: true }],
+        media: [{ src: "suite/fig-instruments.jpg", alt: "On the left, the instrument toolbar with six icons and a “+” button; on the right, the dock with seven La Suite apps", caption: "Left: the instrument toolbar. Right: the dock of La Suite apps", wide: true }],
         bullets: [
           "The instruments on the left (select, announce, share, search, pin, hide) are verbs: they act on whatever is on the canvas. They are plain single-colour icons, so they read as tools and not as places.",
           "The “+” under the toolbar is where new instruments come from: general ones can be combined into more specialised ones, which is the idea of instruments in interaction substrates.",
-          "The dock holds Tchap, Docs, Visio, Grist and the other La Suite apps, with their official logos so a public servant recognises them at once. Here an app is something you place on the canvas, not a window you go to.",
-          "The palette is the blue, white and red of the La Suite logos, so the prototype reads as part of the same family.",
+          "The dock holds Tchap, Docs, Visio, Grist and the other La Suite apps, so a public servant recognises them at once. Here an app is something you place on the canvas, not a window you go to.",
+          "The palette is the blue, white and red of La Suite, so the prototype reads as part of the same family.",
         ],
       },
       {
@@ -593,7 +593,7 @@ export const moreCases: CaseStudy[] = [
       ["Instruments and apps are kept apart", "Verbs (the toolbar) on the left and tools (the dock) at the bottom. Mixing them would blur whether you are acting on something or going somewhere."],
       ["The same controls in every space", "The toolbar, the dock and Cagette stay put when the space changes, so people build one set of habits instead of relearning each space."],
       ["Say what happened, without a dialog", "A banner and a team emblem tell you the space was created and which space you are in, without interrupting the work."],
-      ["Keep La Suite recognisable", "Official logos, names and colours stay. What changes is how the tools connect, not what they are called, which makes the idea easier to adopt."],
+      ["Keep La Suite recognisable", "Official names and colours stay. What changes is how the tools connect, not what they are called, which makes the idea easier to adopt."],
     ],
     outcome: [],
     future: ["A queue for Visio, building on the screen-sharing workshop", "Interactive live transcripts, building on the visual markers workshop"],
