@@ -53,7 +53,6 @@ root.innerHTML = `
     <li>${t("Find the best matcha in Paris", "Trouver le meilleur matcha de Paris")}</li>
     <li class="done">${t("Stop overthinking every pixel", "Arrêter de trop réfléchir à chaque pixel")}</li>
   </ul>
-  <button id="sticky-hi" type="button">${t("Say hello", "Dire bonjour")}</button>
 </aside>
   <div id="folders"></div>
   <section id="widgets" aria-label="${t("Selected work", "Projets à la une")}"></section>
@@ -379,6 +378,14 @@ const deskIcons: DeskIcon[] = [
 $("#folders").innerHTML = deskIcons
   .map((c, i) => `<button class="fld${c.file ? " file" : ""}" data-i="${i}" style="--c:${c.x};--r:${c.y}"><span class="fi">${c.file ? fileSvg : c.fk ? texFolder(c.fk) : folderSvg}</span><span class="fl">${c.label}</span></button>`)
   .join("");
+/* desktop: the folders sit in a loose, different-every-visit scatter right under the title */
+{
+  const order = [...document.querySelectorAll<HTMLElement>("#folders .fld")].sort(() => Math.random() - 0.5);
+  order.forEach((f, i) => {
+    f.style.setProperty("--fx", `${((i - (order.length - 1) / 2) * 118 + (Math.random() - 0.5) * 36).toFixed(0)}px`);
+    f.style.setProperty("--fy", `${(Math.random() * 46 - 10).toFixed(0)}px`);
+  });
+}
 const letters = (w: string) => [...w].map((ch) => `<span class="lt">${ch === " " ? "&nbsp;" : ch}</span>`).join("");
 $("#greet").innerHTML = `<p>${t("welcome to", "bienvenue sur")}</p><h1 aria-label="${t("Lydia’s portfolio", "Le portfolio de Lydia")}"><span class="wd" aria-hidden="true">${letters(t("Lydia’s", "portfolio"))}</span> <span class="wd" aria-hidden="true">${letters(t("portfolio", "de Lydia"))}</span><span class="lt dot" aria-hidden="true">.</span></h1><small>${hero.role}, ${hero.place}</small>`;
 /* phone only (hidden by CSS on desktop): the three things a recruiter wants, one tap away */
@@ -451,7 +458,6 @@ document.querySelectorAll<HTMLButtonElement>(".lang button").forEach((b) =>
     switchLang(b.dataset.l as "en" | "fr", keep);
   }),
 );
-$("#sticky-hi").addEventListener("click", () => openApp("mail"));
 
 /* widgets */
 mountWidgets($("#widgets"), cases, openApp, () => sfx.tick());

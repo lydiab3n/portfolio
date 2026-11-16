@@ -19,9 +19,14 @@ const BLUSH = () => [
 ];
 
 /* A cartoon portrait of Lydia drawn with shapes, in an 800 x 960 space. */
-const UPPER = "M322 592 C345 582 372 568 388 574 C396 577 404 577 412 574 C428 568 455 582 478 592 C455 604 430 608 400 608 C370 608 345 604 322 592Z";
-const LOWER = "M322 592 C345 604 370 608 400 608 C430 608 455 604 478 592 C470 620 440 642 400 642 C360 642 330 620 322 592Z";
-const FACE = "M400 235 C515 235 595 320 595 445 C595 570 530 665 400 708 C270 665 205 570 205 445 C205 320 285 235 400 235Z";
+/* the lips are drawn once at 1:1, then shrunk to fit the CSS portrait (LS) and centred on its mouth */
+const LS = 0.66;
+const LCY = 594;
+const sc = (d: string) => d.replace(/(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)/g, (_, x, y) => `${(400 + (+x - 400) * LS).toFixed(1)} ${(LCY + (+y - 618) * LS).toFixed(1)}`);
+const UPPER = sc("M316 598 C338 586 366 560 388 567 C396 570 404 570 412 567 C434 560 462 586 484 598 C458 612 430 614 400 614 C370 614 342 612 316 598Z");
+const LOWER = sc("M316 598 C342 612 370 614 400 614 C430 614 458 612 484 598 C478 640 444 670 400 670 C356 670 322 640 316 598Z");
+const MOUTHLINE = sc("M316 598 C345 612 455 612 484 598");
+const FACE = "M256 496 a144 192 0 1 0 288 0 a144 192 0 1 0 -288 0Z";
 
 function eye(cx: number, id: string) {
   const almond = `M${cx - 42} 456 Q${cx} 414 ${cx + 42} 456 Q${cx} 488 ${cx - 42} 456Z`;
@@ -60,40 +65,17 @@ export function makeupScene(): SceneDef {
           </defs>
           <rect width="800" height="960" rx="52" fill="url(#mk-bg)"/>
           <g clip-path="url(#mk-frame)"><g id="mk-head">
-            <path d="M400 55 C240 55 150 180 150 340 Q120 400 150 460 Q180 520 140 580 Q110 640 150 700 Q185 760 140 820 Q110 880 150 960 L650 960 Q690 880 660 820 Q615 760 650 700 Q690 640 665 580 Q620 520 650 460 Q680 400 650 340 C650 180 560 55 400 55Z" fill="#3a2016"/>
-            <path d="M40 960 C70 860 200 790 340 760 L460 760 C600 790 730 860 760 960Z" fill="#c98250"/>
-            <path d="M335 640 H465 V745 C440 780 360 780 335 745Z" fill="#c07a48"/>
-            <g clip-path="url(#mk-top)">
-              <path d="M342 700 L400 790 L458 700 L525 790 L575 960 L225 960 L275 790Z" fill="#3fa9d9"/>
-              <g fill="#fff" opacity=".9"><circle cx="300" cy="860" r="15"/><circle cx="360" cy="900" r="15"/><circle cx="420" cy="850" r="15"/><circle cx="490" cy="905" r="15"/><circle cx="545" cy="860" r="15"/><circle cx="240" cy="925" r="15"/><circle cx="600" cy="925" r="15"/><circle cx="395" cy="940" r="12"/></g>
-            </g>
-            <path d="M342 700 L400 790 L458 700" fill="none" stroke="#2d87b8" stroke-width="6" stroke-linejoin="round"/>
-            <path d="M346 720 Q400 800 454 720" fill="none" stroke="#1a1214" stroke-width="5" stroke-linecap="round"/>
-            <path d="M352 724 Q400 760 448 724" fill="none" stroke="#e0b25a" stroke-width="3" stroke-linecap="round"/>
-            <path d="M400 784 q-9 6 -8 22 q2 18 8 26 q6 -8 8 -26 q1 -16 -8 -22z" fill="#fbf3e2" stroke="#e5d6b8" stroke-width="2"/>
-            <circle cx="400" cy="868" r="14" fill="#f4a261" stroke="#e0b25a" stroke-width="5"/>
-            <path d="M400 760 V854" stroke="#e0b25a" stroke-width="2.5"/>
-            <path d="${FACE}" fill="url(#mk-skin)"/>
-            <g clip-path="url(#mk-faceclip)"><g style="mix-blend-mode:multiply"><ellipse cx="300" cy="545" rx="48" ry="30" fill="#ff8a6a" opacity=".3" filter="url(#mk-soft)"/><ellipse cx="500" cy="545" rx="48" ry="30" fill="#ff8a6a" opacity=".3" filter="url(#mk-soft)"/><g id="mk-blush" filter="url(#mk-soft)"></g></g></g>
-            ${eye(338, "mk-eye-l")}${eye(462, "mk-eye-r")}
-            <path d="M290 410 Q336 372 386 398" fill="none" stroke="#2a140e" stroke-width="9" stroke-linecap="round"/>
-            <path d="M414 398 Q464 372 510 410" fill="none" stroke="#2a140e" stroke-width="9" stroke-linecap="round"/>
-            <path d="M412 490 Q424 530 414 546" fill="none" stroke="#b86f3e" stroke-width="9" stroke-linecap="round" opacity=".3"/>
-            <path d="M386 550 Q400 562 414 550" fill="none" stroke="#a8612f" stroke-width="5" stroke-linecap="round"/>
+            <foreignObject x="0" y="160" width="800" height="800"><div xmlns="http://www.w3.org/1999/xhtml" class="cssav">   <div class="hair-back"></div>   <div class="strand l2"></div><div class="strand r2"></div>   <div class="strand l"></div><div class="strand r"></div>   <div class="shoulders"></div>   <div class="neck"></div>   <div class="head">     <div class="left-ear ear"><div class="stud"></div></div>     <div class="right-ear ear"><div class="stud"></div></div>     <div class="brow-left brow"></div><div class="brow-right brow"></div>     <div class="eye-left eye"><div class="iris"></div></div>     <div class="eye-right eye"><div class="iris"></div></div>     <div class="nose"></div>     <div class="blush l"></div><div class="blush r"></div>     <div class="hair-top"></div>     <div class="hl a"></div><div class="hl b"></div>   </div></div></foreignObject>
+            <g clip-path="url(#mk-faceclip)"><g style="mix-blend-mode:multiply"><g id="mk-blush" filter="url(#mk-soft)"></g></g></g>
             <g id="mk-mouth">
               <path d="${UPPER}" fill="#e0707f"/><path d="${LOWER}" fill="#ee8c96"/>
               <g clip-path="url(#mk-lipclip)"><g id="mk-paint"></g></g>
-              <path d="M322 592 C345 604 455 604 478 592" fill="none" stroke="#9b3a4a" stroke-width="3" stroke-linecap="round" opacity=".7"/>
-              <path d="M318 588 q-6 4 -6 12 M482 588 q6 4 6 12" fill="none" stroke="#c07a48" stroke-width="3" stroke-linecap="round" opacity=".6"/>
-              <ellipse cx="386" cy="622" rx="22" ry="6" fill="#fff" opacity=".5"/>
-              <g id="mk-gloss" opacity="0"><ellipse cx="372" cy="582" rx="14" ry="4" fill="#fff" opacity=".7"/><ellipse cx="432" cy="624" rx="14" ry="5" fill="#fff" opacity=".7"/><ellipse cx="420" cy="598" rx="20" ry="3" fill="#fff" opacity=".4"/></g>
+              <path d="${MOUTHLINE}" fill="none" stroke="#9b3a4a" stroke-width="2.5" stroke-linecap="round" opacity=".7"/>
+              <ellipse cx="389.4" cy="608.5" rx="17" ry="5" fill="#fff" opacity=".5"/>
+              <g id="mk-gloss" opacity="0"><ellipse cx="378.9" cy="570.2" rx="10.5" ry="2.6" fill="#fff" opacity=".7"/><ellipse cx="423.8" cy="611.2" rx="10.5" ry="4" fill="#fff" opacity=".7"/><ellipse cx="413.2" cy="584.8" rx="14.5" ry="2" fill="#fff" opacity=".4"/></g>
             </g>
-            <path d="M300 262 C240 300 212 380 206 440 Q190 520 215 580 Q240 640 205 700 Q170 760 205 820 Q230 890 195 960 L300 960 Q270 890 292 830 Q325 770 290 710 Q255 650 280 590 Q300 530 275 470 Q262 410 285 360 Q305 310 345 275Z" fill="#4a2a1c"/>
-            <path d="M500 262 C560 300 588 380 594 440 Q610 520 585 580 Q560 640 595 700 Q630 760 595 820 Q570 890 605 960 L500 960 Q530 890 508 830 Q475 770 510 710 Q545 650 520 590 Q500 530 525 470 Q538 410 515 360 Q495 310 455 275Z" fill="#4a2a1c"/><path d="M215 440 C205 300 290 222 400 222 C510 222 595 300 585 440 C570 350 520 298 440 288 C410 283 385 284 365 290 C290 300 232 350 215 440Z" fill="#4a2a1c"/>
-            <g fill="none" stroke="#c98a4b" stroke-linecap="round" opacity=".95"><path d="M330 270 C290 305 268 355 268 420 Q262 480 282 540 Q296 590 270 650" stroke-width="13"/><path d="M300 285 C270 325 252 380 252 440" stroke-width="7"/><path d="M468 284 C520 316 538 370 534 430" stroke-width="9"/><path d="M215 700 Q190 760 220 820" stroke-width="9"/><path d="M590 700 Q612 760 585 820" stroke-width="8"/></g>
-            <g fill="none" stroke="#6a3d28" stroke-linecap="round" opacity=".7"><path d="M360 252 C320 280 296 330 292 400" stroke-width="3"/><path d="M430 262 C480 300 510 350 515 420" stroke-width="3"/></g>
           </g></g>
-          <text id="mk-heart" x="400" y="560" text-anchor="middle" font-size="64" fill="#ff4fa3" opacity="0">♥</text>
+          <text id="mk-heart" x="400" y="610" text-anchor="middle" font-size="64" fill="#ff4fa3" opacity="0">♥</text>
           <rect id="mk-hit" width="800" height="960" fill="transparent" style="cursor:crosshair;touch-action:none"/>
         </svg>
       </div>
@@ -130,8 +112,10 @@ export function makeupScene(): SceneDef {
       /* a grid of points inside the lips, so we know how much of them is covered */
       const cells: [number, number][] = [];
       const pt = svg.createSVGPoint();
-      for (let x = 318; x <= 482; x += 4)
-        for (let y = 568; y <= 646; y += 4) {
+      const bb = upper.getBBox();
+      const bl = lower.getBBox();
+      for (let x = Math.floor(bb.x); x <= bb.x + bb.width; x += 3)
+        for (let y = Math.floor(bb.y); y <= bl.y + bl.height; y += 3) {
           pt.x = x;
           pt.y = y;
           if (upper.isPointInFill(pt) || lower.isPointInFill(pt)) cells.push([x, y]);
@@ -139,7 +123,7 @@ export function makeupScene(): SceneDef {
       const covered = new Set<number>();
       const mark = (x: number, y: number) => {
         cells.forEach(([cx, cy], i) => {
-          if (Math.hypot(cx - x, cy - y) < 10) covered.add(i);
+          if (Math.hypot(cx - x, cy - y) < 8) covered.add(i);
         });
       };
       const coverage = () => (cells.length ? covered.size / cells.length : 0);
@@ -173,7 +157,7 @@ export function makeupScene(): SceneDef {
         cur.setAttribute("stroke-linecap", "round");
         cur.setAttribute("stroke-linejoin", "round");
         if (kind === "lip") {
-          cur.setAttribute("stroke-width", "20");
+          cur.setAttribute("stroke-width", "15");
           cur.setAttribute("opacity", "0.96");
           paint.appendChild(cur);
         } else {

@@ -1203,10 +1203,10 @@ body.dark .wgt-all { background: rgba(40, 12, 24, 0.55); box-shadow: inset 0 0 0
 /* ---------- one tidy cluster on the left, the rest of the desktop left empty ---------- */
 body { --u: clamp(100px, min(10.4vw, 14.5vh), 150px); --pw: calc(var(--u) * 2 + 12px); --cl: 22px; --ct: 50px; --ix: calc(var(--cl) + var(--pw) + 26px); }
 #widgets { left: var(--cl); right: auto; top: var(--ct); --u: inherit; }
-.wgt-grid { display: grid; grid-template-columns: var(--pw) 192px auto; column-gap: 26px; }
+.wgt-grid { display: grid; grid-template-columns: var(--pw) auto; column-gap: 16px; }
 .wgt-grid .wgt-pair { flex-direction: column; }
 .wgt-sel { grid-column: 1; grid-row: 1; }
-.wgt-grid > .wgt.clk { grid-column: 3; grid-row: 1; align-self: start; justify-self: start; margin-top: 4px; }
+.wgt-grid > .wgt.clk { grid-column: 2; grid-row: 1; align-self: start; justify-self: start; margin-top: 4px; }
 @media (min-width: 760px) {
   #folders .fld { left: calc(var(--ix) + var(--c) * 96px); top: calc(var(--ct) + 4px + var(--r) * 96px); width: 92px; }
   #folders .fi { width: 60px; }
@@ -1667,7 +1667,7 @@ body.dark .ab-cats { color: #ff9ab9; }
   }
   body.dark #sticky { background-color: #2b2530; background-image: linear-gradient(90deg, transparent 19px, var(--margin) 19px, var(--margin) 20px, transparent 20px), repeating-linear-gradient(180deg, transparent 0 19px, var(--line) 19px 20px); background-position: 0 0, 0 22px; }
   body #sticky::before { width: 52px; height: 15px; margin-left: -26px; }
-  #notif { top: 336px; }
+  #notif { top: 272px; }
   #sticky header { height: 20px; }
   body #sticky header b { font-size: 21px; line-height: 20px; text-underline-offset: 4px; }
   #sticky header span { font-size: 12px; }
@@ -1737,4 +1737,9 @@ body.dark .ab-cats { color: #ff9ab9; }
 }
 @media (max-width: 759px) {
   #folders .fld.file .fi svg { width: 40px; height: auto; max-height: 52px; }
+}
+
+/* ---------- desktop: folders scattered under the title; notification sits on top of the to-do ---------- */
+@media (min-width: 760px) {
+  #folders .fld { left: calc(50% - 46px + var(--fx, 0px)); top: calc(60% + var(--fy, 0px)); }
 }

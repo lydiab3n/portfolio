@@ -1,0 +1,77 @@
+<!doctype html><meta charset="utf-8"><title>Lydia avatar</title>
+<style>
+body{margin:0;background:#fff}
+:root{--skin:#c98f66;--skin-d:#a8704c;--hair:#3a2210;--hl:#b27a45;--hl2:#d29c63;--pink:#ee4f8e}
+.container{position:relative;width:350px;height:350px;overflow:hidden;
+  background:radial-gradient(circle at 50% 30%,#ff8fba 0,#f2478a 70%,#e03a7c 100%)}
+/* hair behind: long waves with caramel highlights */
+.hair-back{position:absolute;width:64%;height:92%;left:18%;top:11%;
+  border-radius:50% 50% 30% 30% / 38% 38% 12% 12%;
+  background:
+    repeating-linear-gradient(100deg,transparent 0 26px,rgba(210,156,99,.55) 26px 31px,transparent 31px 52px),
+    linear-gradient(90deg,var(--hair) 0,#4a2d17 40%,var(--hair) 100%)}
+.hair-back::before,.hair-back::after{content:"";position:absolute;bottom:-2%;width:30%;height:34%;border-radius:50%;background:var(--hair)}
+.hair-back::before{left:-8%;box-shadow:0 -40px 0 -2px var(--hair)}
+.hair-back::after{right:-8%;box-shadow:0 -40px 0 -2px var(--hair)}
+/* shoulders */
+.shoulders{position:absolute;left:8%;width:84%;height:40%;bottom:-15%;border-radius:50% 50% 0 0;
+  background:linear-gradient(#fbf6ee,#efe7da);z-index:3}
+.neck{position:absolute;width:17%;height:26%;background:var(--skin);top:57%;left:41.5%;border-radius:30px;z-index:1}
+.neck::after{content:"";position:absolute;background:var(--skin-d);width:100%;height:35%;top:18%;border-radius:50%}
+/* long front strands that fall over the shoulders, with highlights */
+.strand{position:absolute;top:62%;height:40%;width:7.5%;border-radius:40% 40% 50% 50%/10% 10% 40% 40%;z-index:4;
+  background:linear-gradient(90deg,var(--hair) 0,var(--hl) 45%,var(--hair) 100%)}
+.strand.l{left:25%;transform:rotate(9deg)}
+.strand.r{right:25%;transform:rotate(-9deg)}
+.strand.l2{left:20%;width:6%;top:64%;height:38%;transform:rotate(13deg)}
+.strand.r2{right:20%;width:6%;top:64%;height:38%;transform:rotate(-13deg)}
+.head{position:absolute;width:36%;height:48%;border-radius:50%;background:var(--skin);left:32%;top:18%;z-index:2}
+.eye{position:absolute;width:22%;height:8%;border-radius:50%;background:transparent;border-top:5px solid #7d5238;transform:rotate(3deg);top:46%}
+.eye-left{left:18%}.eye-right{right:18%;transform:scaleX(-1) rotate(3deg)}
+.eye::before{content:"";position:absolute;width:53%;height:95%;border-radius:50%;background:#2b170a;top:-5%;left:24%}
+.eye::after{content:"";position:absolute;width:100%;height:100%;border-radius:50%;border-top:3px solid #000;top:-13%}
+.iris::after{content:"";position:absolute;width:14%;height:14%;border-radius:50%;background:#fff;left:50%;top:10%;z-index:2}
+.brow{position:absolute;width:26%;height:8%;border-radius:50%;border:3px solid;border-color:#3a2210 transparent transparent transparent}
+.brow-left{left:13%;top:39%}.brow-right{right:13%;top:39%}
+.nose{position:absolute;width:15%;height:5%;background:var(--skin-d);top:60%;left:42.5%;border-radius:50% 50% 50% 50%/0 0 100% 100%;opacity:.8}
+.ear{position:absolute;width:15%;height:22%;background:var(--skin);border-radius:55% 45% 0 100%/48% 21% 79% 52%;z-index:5}
+.left-ear{top:46%;left:-11%;transform:rotate(-18deg)}
+.right-ear{top:46%;right:-11%;transform:rotate(18deg) scaleX(-1)}
+.stud{position:absolute;width:26%;height:15%;border-radius:50%;background:#f5b916;top:80%;left:30%;box-shadow:0 0 0 1px #c98c0a}
+.blush{position:absolute;width:23%;height:10%;background:rgba(238,75,107,.38);top:60%;border-radius:50%;filter:blur(2px)}
+.blush.l{left:13%;transform:rotate(5deg)}.blush.r{right:13%;transform:rotate(-5deg)}
+/* fuller lips */
+.lips{position:absolute;left:33%;top:66%;width:34%;height:19%}
+.lips .up{position:absolute;left:0;top:0;width:100%;height:46%;background:linear-gradient(#c43a62,#d8527a);
+  border-radius:55% 55% 20% 20%/100% 100% 30% 30%;clip-path:polygon(0 100%,0 40%,22% 0,40% 22%,50% 12%,60% 22%,78% 0,100% 40%,100% 100%)}
+.lips .lo{position:absolute;left:3%;top:40%;width:94%;height:64%;background:linear-gradient(#e0587f,#cf3f6b);
+  border-radius:12% 12% 50% 50%/10% 10% 100% 100%}
+.lips .lo::after{content:"";position:absolute;left:24%;top:18%;width:42%;height:22%;border-radius:50%;background:rgba(255,255,255,.55);filter:blur(1px)}
+.lips .gap{position:absolute;left:6%;top:41%;width:88%;height:5%;background:#7a1f3a;border-radius:50%;z-index:2}
+/* hair on top, parted in the middle, with highlights */
+.hair-top{position:absolute;width:108%;height:95%;border-top:2.8rem solid var(--hair);border-radius:50%;left:-4%;top:-9%;z-index:3}
+.hair-top::after{content:"";position:absolute;width:1.5%;height:25%;border-radius:10px;background:var(--skin);left:48.5%;top:-14%}
+.hair-top::before{content:"";position:absolute;inset:-2.8rem 0 auto 0;height:1.4rem;top:-2.8rem}
+.hl{position:absolute;border-radius:50%;border-top:5px solid var(--hl2);z-index:4;opacity:.9}
+.hl.a{width:94%;height:80%;left:3%;top:-5%;-webkit-mask:linear-gradient(90deg,#000 8%,transparent 30%,transparent 62%,#000 88%)}
+.hl.b{width:84%;height:70%;left:8%;top:-1%;border-top-color:var(--hl);border-top-width:4px;-webkit-mask:linear-gradient(90deg,transparent 12%,#000 28%,#000 40%,transparent 52%,transparent 64%,#000 78%,transparent 92%)}
+</style>
+<div class="container" id="container">
+  <div class="hair-back"></div>
+  <div class="strand l2"></div><div class="strand r2"></div>
+  <div class="strand l"></div><div class="strand r"></div>
+  <div class="shoulders"></div>
+  <div class="neck"></div>
+  <div class="head">
+    <div class="left-ear ear"><div class="stud"></div></div>
+    <div class="right-ear ear"><div class="stud"></div></div>
+    <div class="brow-left brow"></div><div class="brow-right brow"></div>
+    <div class="eye-left eye"><div class="iris"></div></div>
+    <div class="eye-right eye"><div class="iris"></div></div>
+    <div class="nose"></div>
+    <div class="blush l"></div><div class="blush r"></div>
+    <div class="lips"><div class="up"></div><div class="lo"></div><div class="gap"></div></div>
+    <div class="hair-top"></div>
+    <div class="hl a"></div><div class="hl b"></div>
+  </div>
+</div>
