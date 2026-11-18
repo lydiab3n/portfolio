@@ -466,7 +466,7 @@ export const moreCases: CaseStudy[] = [
     kind: "Designathon · Public digital tools",
     blurb: "What if the government’s digital suite had no apps? In SuiteSpace, Tchap, Grist, Visio and the rest become objects on one shared canvas, and Cagette lets you carry them from one space to another.",
     facts: [
-      ["Context", "Internship at Inria (Ex-Situ), designathon co-organised with DINUM and ENSEMBLE"],
+      ["Context", "Internship at Inria (Ex-Situ), designathon co-organised with DINUM and the PEPR ENSEMBLE"],
       ["Led by", "Wendy Mackay, Michel Beaudouin-Lafon and Janin Koch"],
       ["My team", "Group 5, SuiteSpace: Lydia Benosmane, Emma-Jade De Moor, Victoria Myot"],
       ["Timeline", "Workshops in May 2026, designathon in June 2026"],
@@ -479,7 +479,7 @@ export const moreCases: CaseStudy[] = [
     ],
     heroStack: true,
     heroMedia: { src: "suite/figma.jpg", alt: "The SuiteSpace canvas in Figma: an instrument toolbar on the left, La Suite icons in a dock at the bottom, and the Cagette cart in the corner", caption: "The SuiteSpace prototype in Figma" },
-    embed: { src: "https://embed.figma.com/proto/QqMLKWPJKWYx8Jpt5kvuM0/la-suite-num%C3%A9rique?node-id=691-1270&embed-host=share", caption: "The Figma prototype, live: click around to try it" },
+    video2: { src: "suite/figma-video.mp4", poster: "suite/figma-video.jpg", caption: "The Figma prototype, recorded: adding people to a shared space, then creating the workspace" },
     video: { src: "suite/suitespace-video.mp4", poster: "suite/suitespace-video.jpg", caption: "SuiteSpace video prototype, made with paper: a team reorganises its schedule when a colleague calls in sick" },
     brief:
       "La Suite numérique is the French government’s digital workspace for public servants, created and run by DINUM, the interministerial digital directorate. Its website says more than 500,000 public servants use it every month across 15 ministries. It brings together Tchap for messages, Visio for video calls, Docs for writing, Grist for tables, Messagerie for email, Fichiers and FranceTransfert for files, and ProConnect to sign in to all of them. Each tool is a separate app, so one piece of work ends up spread across many windows, and moving information between them means copying, re-uploading and searching. The designathon asked a bold question: what if we stopped thinking in apps at all? We built on interaction substrates, a concept developed by Wendy Mackay and Michel Beaudouin-Lafon, where information becomes objects you can see, move and combine, and tools become instruments that act on those objects.",

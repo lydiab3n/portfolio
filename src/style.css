@@ -1667,7 +1667,7 @@ body.dark .ab-cats { color: #ff9ab9; }
   }
   body.dark #sticky { background-color: #2b2530; background-image: linear-gradient(90deg, transparent 19px, var(--margin) 19px, var(--margin) 20px, transparent 20px), repeating-linear-gradient(180deg, transparent 0 19px, var(--line) 19px 20px); background-position: 0 0, 0 22px; }
   body #sticky::before { width: 52px; height: 15px; margin-left: -26px; }
-  #notif { top: 272px; }
+  #notif { top: 72px; right: 40px; }
   #sticky header { height: 20px; }
   body #sticky header b { font-size: 21px; line-height: 20px; text-underline-offset: 4px; }
   #sticky header span { font-size: 12px; }
@@ -1743,3 +1743,11 @@ body.dark .ab-cats { color: #ff9ab9; }
 @media (min-width: 760px) {
   #folders .fld { left: calc(50% - 46px + var(--fx, 0px)); top: calc(60% + var(--fy, 0px)); }
 }
+
+/* names inside case studies that link to their own page */
+a.rich-a { color: inherit; text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--accent, #e0457b) 60%, transparent); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
+a.rich-a:hover { color: var(--accent, #e0457b); text-decoration-color: currentColor; }
+
+/* maximised window: the whole screen, above the menu bar and dock */
+#wins.has-max { z-index: 700; }
+.win.full { left: 0 !important; top: 0 !important; width: 100vw !important; height: 100vh !important; height: 100dvh !important; border-radius: 0; }

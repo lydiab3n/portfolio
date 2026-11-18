@@ -45,6 +45,8 @@ export interface CaseStudy {
   heroMedia?: Media | Media[];
   poster?: Media;
   embed?: { src: string; caption: string };
+  /** a second video, shown where the embed would be */
+  video2?: { src: string; poster: string; caption: string };
   /** show screenshot, then embed, then video, stacked at the top */
   heroStack?: boolean;
 }
@@ -552,6 +554,7 @@ if (lang === "fr") {
     }
     cap(c.poster, f.posterCaption);
     if (c.embed && f.embedCaption) c.embed.caption = f.embedCaption;
+    if (c.video2 && f.embedCaption) c.video2.caption = f.embedCaption;
     c.links?.forEach((l, i) => {
       const g = f.links?.[i];
       if (g) {

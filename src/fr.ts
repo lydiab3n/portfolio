@@ -725,7 +725,7 @@ export const frCases: Record<string, CaseFr> = {
     kind: "Designathon · Outils numériques publics",
     blurb: "Et si la suite numérique de l’État n’avait plus d’applications ? Dans SuiteSpace, Tchap, Grist, Visio et les autres deviennent des objets sur un seul canevas partagé, et Cagette permet de les emporter d’un espace à l’autre.",
     facts: [
-      ["Contexte", "Stage à l’Inria (Ex-Situ), designathon co-organisé avec la DINUM et ENSEMBLE"],
+      ["Contexte", "Stage à l’Inria (Ex-Situ), designathon co-organisé avec la DINUM et le PEPR ENSEMBLE"],
       ["Dirigé par", "Wendy Mackay, Michel Beaudouin-Lafon et Janin Koch"],
       ["Mon équipe", "Groupe 5, SuiteSpace : Lydia Benosmane, Emma-Jade De Moor, Victoria Myot"],
       ["Calendrier", "Ateliers en mai 2026, designathon en juin 2026"],
@@ -737,7 +737,7 @@ export const frCases: Record<string, CaseFr> = {
       { label: "Site de La Suite numérique", hint: "L’espace de travail numérique de l’État, par la DINUM" },
     ],
     heroCaption: "Le prototype SuiteSpace dans Figma",
-    embedCaption: "Le prototype Figma, en direct : cliquez pour l’essayer",
+    embedCaption: "Le prototype Figma, enregistré : ajouter des personnes à un espace partagé, puis créer l’espace de travail",
     videoCaption: "Prototype vidéo de SuiteSpace, fait en papier : une équipe réorganise son planning quand une collègue est malade",
     brief:
       "La Suite numérique est l’espace de travail numérique de l’État pour les agents publics, créé et opéré par la DINUM, la Direction interministérielle du numérique. Selon son site, plus de 500 000 agents l’utilisent chaque mois dans 15 ministères. Elle réunit Tchap pour les messages, Visio pour les appels, Docs pour écrire, Grist pour les tableaux, Messagerie pour les mails, Fichiers et FranceTransfert pour les fichiers, et ProConnect pour se connecter à tous. Chaque outil est une application séparée : un même travail se retrouve éparpillé dans plusieurs fenêtres, et faire passer une information de l’une à l’autre oblige à copier, re-téléverser et chercher. Le designathon posait une question audacieuse : et si on arrêtait de penser en applications ? Nous sommes partis des substrats d’interaction, un concept développé par Wendy Mackay et Michel Beaudouin-Lafon, où l’information devient des objets que l’on voit, déplace et combine, et où les outils deviennent des instruments qui agissent sur ces objets.",

@@ -13,7 +13,10 @@ const ART: Record<string, string> = {
 type Thumb = { kind: "art" | "img"; v: string; pos?: string } | null;
 
 /** A picture for a project: its own artwork if it has one, else its first image. */
+/* projects with a hand-made cover picture */
+const COVER: Record<string, string> = { "magic-map": "magicmap/cover.jpg", "suite-numerique": "suite/cover.jpg" };
 export function thumbFor(c: CaseStudy): Thumb {
+  if (COVER[c.id]) return { kind: "img", v: COVER[c.id] };
   if (ART[c.id]) return { kind: "art", v: ART[c.id] };
   const m: Media | undefined = Array.isArray(c.heroMedia) ? c.heroMedia[0] : c.heroMedia;
   if (c.video?.poster) return { kind: "img", v: c.video.poster };

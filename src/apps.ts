@@ -60,6 +60,44 @@ export function icon(id: string): string {
 export const folderSvg = `<img class="fi-l" src="folder-light.png" alt="" draggable="false" /><img class="fi-d" src="folder-dark.png" alt="" draggable="false" />`;
 
 const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+
+/* names and places that have a page of their own become links (first mention in each block) */
+const NAME_LINKS: [string, string][] = [
+  ["DINUM", "https://www.numerique.gouv.fr/numerique-etat/dinum/"],
+  ["PEPR ENSEMBLE", "https://www.pepr-ensemble.fr/en/"],
+  ["ENSEMBLE", "https://www.pepr-ensemble.fr/en/"],
+  ["PEPR", "https://www.pepr-ensemble.fr/en/"],
+  ["Ex-Situ", "https://ex-situ.lisn.upsaclay.fr/"],
+  ["Inria", "https://www.inria.fr/en"],
+  ["Paris-Saclay University", "https://www.universite-paris-saclay.fr/en"],
+  ["Université Paris-Saclay", "https://www.universite-paris-saclay.fr/en"],
+  ["Wendy Mackay", "https://ex-situ.lisn.upsaclay.fr/people/mackay/"],
+  ["Michel Beaudouin-Lafon", "https://ex-situ.lisn.upsaclay.fr/people/beaudouin-lafon/"],
+  ["Janin Koch", "https://ex-situ.lisn.upsaclay.fr/people/koch/"],
+  ["Tchap", "https://tchap.gouv.fr"],
+  ["Visio", "https://visio.numerique.gouv.fr"],
+  ["Docs", "https://docs.numerique.gouv.fr"],
+  ["Grist", "https://www.getgrist.com"],
+  ["ProConnect", "https://proconnect.gouv.fr"],
+  ["FranceTransfert", "https://francetransfert.numerique.gouv.fr"],
+  ["SecNumCloud", "https://www.ssi.gouv.fr/entreprise/qualification/secnumcloud/"],
+  ["Matrix", "https://matrix.org"],
+  ["LiveKit", "https://livekit.io"],
+  ["lasuite.numerique.gouv.fr", "https://lasuite.numerique.gouv.fr/"],
+];
+const NAME_RE = new RegExp(`(?<![\\w-])(${NAME_LINKS.map(([n]) => n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})(?![\\w-])`, "g");
+function rich(text: string, on = true): string {
+  const h = esc(text);
+  if (!on) return h;
+  const seen = new Set<string>();
+  return h.replace(NAME_RE, (m) => {
+    const k = m;
+    const hit = NAME_LINKS.find(([n]) => n === k);
+    if (!hit || seen.has(k)) return m;
+    seen.add(k);
+    return `<a class="rich-a" href="${hit[1]}" target="_blank" rel="noopener">${m}</a>`;
+  });
+}
 const slot = (label: string, cls = "") => `<div class="slot ${cls}"><span>${esc(label)}</span></div>`;
 
 /* ---------- About ---------- */
@@ -103,7 +141,7 @@ const tbl = (t: DataTable) =>
 
 /* little numbers for the "At a glance" card, all counted from the case study itself */
 function mediaCount(c: CaseStudy): number {
-  let n = (c.video ? 1 : 0) + (c.embed ? 1 : 0) + (c.poster ? 1 : 0);
+  let n = (c.video ? 1 : 0) + (c.embed ? 1 : 0) + (c.video2 ? 1 : 0) + (c.poster ? 1 : 0);
   const h = c.heroMedia;
   n += Array.isArray(h) ? h.length : h ? 1 : 0;
   for (const st of c.steps) n += (st.media?.length ?? 0) + (st.videos?.length ?? 0) + (st.externalVideos?.length ?? 0);
@@ -250,12 +288,13 @@ function wireDoit(root: HTMLElement, sc: HTMLElement, tick: () => void, calm: bo
 
 function caseHtml(c: CaseStudy): string {
   const facts = c.facts.map(([k, v]) => [k, clean(v)] as const).filter(([, v]) => v);
+  const suite = c.id === "suite-numerique";
   const steps = c.steps
     .map(
-      (s) => `<article class="step"><h3>${esc(s.title)}</h3>${s.doit ? `<p class="doit-tags" aria-label="DOIT">${s.doit.map((id) => { const d = DOIT_SEGS.find((x) => x.id === id)!; return `<button type="button" data-id="${id}" style="--c:${QUAD[d.quad].c}" title="${esc(QUAD[d.quad].q())}">${esc(doitLabel(id))}<small>${PHASE()[d.phase]}</small></button>`; }).join("")}</p>` : ""}${s.copy ? `<p>${esc(s.copy)}</p>` : ""}${s.bullets ? `<ul class="bul">${s.bullets.map((b) => `<li>${esc(b)}</li>`).join("")}</ul>` : ""}${s.table ? tbl(s.table) : ""}${s.media ? `<div class="gallery">${s.media.map(fig).join("")}</div>` : ""}${s.videos ? `<div class="gallery">${s.videos.map(videoFig).join("")}</div>` : ""}${s.externalVideos ? `<div class="gallery">${s.externalVideos.map(externalVideoFig).join("")}</div>` : ""}${s.slots.length ? `<div class="slots">${s.slots.map((x) => slot(x)).join("")}</div>` : ""}${s.note ? `<p class="callout">${esc(s.note)}</p>` : ""}</article>`
+      (s) => `<article class="step"><h3>${esc(s.title)}</h3>${s.doit ? `<p class="doit-tags" aria-label="DOIT">${s.doit.map((id) => { const d = DOIT_SEGS.find((x) => x.id === id)!; return `<button type="button" data-id="${id}" style="--c:${QUAD[d.quad].c}" title="${esc(QUAD[d.quad].q())}">${esc(doitLabel(id))}<small>${PHASE()[d.phase]}</small></button>`; }).join("")}</p>` : ""}${s.copy ? `<p>${rich(s.copy, suite)}</p>` : ""}${s.bullets ? `<ul class="bul">${s.bullets.map((b) => `<li>${rich(b, suite)}</li>`).join("")}</ul>` : ""}${s.table ? tbl(s.table) : ""}${s.media ? `<div class="gallery">${s.media.map(fig).join("")}</div>` : ""}${s.videos ? `<div class="gallery">${s.videos.map(videoFig).join("")}</div>` : ""}${s.externalVideos ? `<div class="gallery">${s.externalVideos.map(externalVideoFig).join("")}</div>` : ""}${s.slots.length ? `<div class="slots">${s.slots.map((x) => slot(x)).join("")}</div>` : ""}${s.note ? `<p class="callout">${rich(s.note, suite)}</p>` : ""}</article>`
     )
     .join("");
-  const decisions = c.decisions.map(([h, p]) => `<article class="decision"><h3>${esc(h)}</h3><p>${esc(p)}</p></article>`).join("");
+  const decisions = c.decisions.map(([h, p]) => `<article class="decision"><h3>${esc(h)}</h3><p>${rich(p, suite)}</p></article>`).join("");
   const outcome = c.outcome
     .map((o) => `<figure class="out">${o.media ? fig(o.media) : slot(o.slot, "tall")}<figcaption><b>${esc(o.title)}</b>${o.copy ? `<span>${esc(o.copy)}</span>` : ""}</figcaption></figure>`)
     .join("");
@@ -272,9 +311,10 @@ function caseHtml(c: CaseStudy): string {
         .join("")}</div></section>`
     : "";
   const videoHero = c.video ? `<figure class="video"><video controls playsinline preload="metadata" poster="${c.video.poster}"><source src="${c.video.src}" type="video/mp4" /></video><figcaption>${esc(c.video.caption)}</figcaption></figure>` : "";
+  const video2Hero = c.video2 ? `<figure class="video"><video controls playsinline preload="metadata" poster="${c.video2.poster}"><source src="${c.video2.src}" type="video/mp4" /></video><figcaption>${esc(c.video2.caption)}</figcaption></figure>` : "";
   const embedHero = c.embed ? `<figure class="embed"><iframe src="${c.embed.src}" title="${esc(c.embed.caption)}" loading="lazy" allowfullscreen></iframe><figcaption>${esc(c.embed.caption)}</figcaption></figure>` : "";
   const hero = c.heroStack
-    ? `<div class="hero-stack">${c.heroMedia && !Array.isArray(c.heroMedia) ? fig(c.heroMedia) : ""}${embedHero}${videoHero}</div>`
+    ? `<div class="hero-stack">${c.heroMedia && !Array.isArray(c.heroMedia) ? fig(c.heroMedia) : ""}${embedHero}${video2Hero}${videoHero}</div>`
     : c.video
     ? `<figure class="video"><video controls playsinline preload="metadata" poster="${c.video.poster}"><source src="${c.video.src}" type="video/mp4" /></video><figcaption>${esc(c.video.caption)}</figcaption></figure>`
     : c.embed ? `<figure class="embed"><iframe src="${c.embed.src}" title="${esc(c.embed.caption)}" loading="lazy" allowfullscreen></iframe><figcaption>${esc(c.embed.caption)}</figcaption></figure>` : c.poster ? `<div class="poster-full">${fig(c.poster)}</div>` : Array.isArray(c.heroMedia) ? `<div class="gallery">${c.heroMedia.map(fig).join("")}</div>` : c.heroMedia ? fig(c.heroMedia) : slot(c.hero, "hero");
@@ -285,8 +325,8 @@ function caseHtml(c: CaseStudy): string {
     ${c.links ? `<div class="doc-links">${c.links.map((l) => `<a href="${l.href}" target="_blank" rel="noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l5 5v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/></svg><span><b>${esc(l.label)}</b><small>${esc(l.hint)}</small></span></a>`).join("")}</div>` : ""}
     <div class="glance"><p class="glance-h">${t("At a glance", "En un coup d’œil")}</p>
       <div class="glance-stats">${stats(c)}</div>
-      <dl class="facts">${facts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl></div>
-    <section data-sec><h2 class="group-h">${t("The brief", "Le brief")}</h2><p class="prose-p">${esc(c.brief)}</p></section>
+      <dl class="facts">${facts.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${rich(v, suite)}</dd></div>`).join("")}</dl></div>
+    <section data-sec><h2 class="group-h">${t("The brief", "Le brief")}</h2><p class="prose-p">${rich(c.brief, suite)}</p></section>
     ${doitHtml(c)}
     <section data-sec><h2 class="group-h">${t("Process", "Processus")}</h2><div class="process">${steps}</div></section>
     ${c.principles ? `<section data-sec><h2 class="group-h">${t("Principles in the design", "Les principes dans la conception")}</h2><ul class="bul">${c.principles.intro.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>${tbl(c.principles.table)}</section>` : ""}
