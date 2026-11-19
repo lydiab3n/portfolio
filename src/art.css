@@ -1,0 +1,134 @@
+/* ===== Art: a gallery you walk through sideways ===== */
+.gal { --ceil: 56px; --floor: 90px; --H: 520px; --wall: #f1ede6; position: relative; flex: 1; min-width: 0; height: 100%; overflow: hidden; color: #26221e; font-family: var(--font); background: #1d1a1d; }
+.gal-hall { position: absolute; inset: 0; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scrollbar-width: none; cursor: grab; outline: none; }
+.gal-hall::-webkit-scrollbar { display: none; }
+.gal-hall.drag { cursor: grabbing; scroll-snap-type: none; }
+.gal-hall.drag * { pointer-events: none; }
+.gal-track { position: relative; height: 100%; width: max-content; min-width: 100%; padding: var(--ceil) 0 var(--floor); background: linear-gradient(180deg, #cfc8bb 0, #e6e1d7 4%, var(--wall) 34%, #ebe6dc 100%); }
+/* the ceiling and the track the lamps hang from */
+.gal-track::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: var(--ceil); background: linear-gradient(180deg, #121014, #26212a); box-shadow: 0 8px 18px -4px rgba(20, 12, 8, 0.45); z-index: 3; pointer-events: none; }
+.gal-track::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: var(--floor); background:
+  linear-gradient(180deg, rgba(0, 0, 0, 0.28), transparent 22%),
+  repeating-linear-gradient(90deg, rgba(60, 30, 10, 0.16) 0 1px, transparent 1px 150px),
+  repeating-linear-gradient(0deg, rgba(60, 30, 10, 0.1) 0 1px, transparent 1px 30px),
+  linear-gradient(180deg, #c49a68, #a67b49); pointer-events: none; z-index: 2; }
+.gal-wall { position: relative; display: flex; align-items: center; gap: clamp(56px, 7vw, 110px); height: var(--H); padding: 0 clamp(40px, 8vw, 130px) 0 clamp(36px, 6vw, 90px); }
+.gal-wall::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 13px; background: linear-gradient(180deg, #fbf9f4, #ece7dd); box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.09), 0 3px 6px rgba(40, 20, 8, 0.35); pointer-events: none; }
+
+/* lamps and their light */
+.gal-lamp { position: absolute; top: -16px; left: 50%; width: 30px; height: 20px; margin-left: -15px; border-radius: 4px 4px 12px 12px; background: linear-gradient(180deg, #2a252c, #0e0c10); z-index: 4; box-shadow: 0 6px 10px -4px rgba(0, 0, 0, 0.5); pointer-events: none; }
+.gal-lamp::before { content: ""; position: absolute; left: 13px; top: -14px; width: 4px; height: 14px; background: #0e0c10; }
+.gal-lamp::after { content: ""; position: absolute; left: 6px; bottom: -2px; width: 18px; height: 5px; border-radius: 50%; background: #fff6d8; filter: blur(1px); box-shadow: 0 0 10px 3px rgba(255, 240, 190, 0.8); }
+.gal-beam { position: absolute; top: 4px; left: 50%; width: 150%; height: 80%; transform: translateX(-50%); clip-path: polygon(47% 0, 53% 0, 100% 100%, 0 100%); background: linear-gradient(180deg, rgba(255, 245, 212, 0.75), rgba(255, 245, 212, 0) 92%); filter: blur(12px); opacity: 0.7; pointer-events: none; transition: opacity 0.4s; z-index: 0; }
+.gal-beam.wide { width: 180%; }
+.gal-work:hover .gal-beam, .gal-vitrine:hover .gal-beam { opacity: 1; }
+
+/* a painting, framed, with its label */
+.gal-work { position: relative; flex: none; height: 100%; margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; scroll-snap-align: center; }
+.gal-work::before { content: ""; position: absolute; inset: -4% -34% 8%; background: radial-gradient(ellipse at 50% 38%, rgba(255, 251, 238, 0.85), transparent 62%); pointer-events: none; z-index: 0; }
+.gal-frame { position: relative; z-index: 1; display: block; cursor: zoom-in; transition: transform 0.4s cubic-bezier(.2, .9, .2, 1), box-shadow 0.4s; }
+.gal-frame img { display: block; height: auto; width: auto; max-height: calc(var(--H) * var(--k)); max-width: min(520px, 62vw); box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25), inset 0 0 12px rgba(0, 0, 0, 0.2); }
+.gal-frame:hover, .gal-frame:focus-visible { transform: translateY(-5px) scale(1.012); }
+.gal-frame:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
+.f-black { background: #f7f3ea; border: 9px solid #17151a; padding: 16px; box-shadow: 0 24px 32px -16px rgba(30, 18, 8, 0.65), 0 3px 6px rgba(30, 18, 8, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.1); }
+.f-oak { background: #f4efe5; border: 11px solid transparent; border-image: linear-gradient(135deg, #d9ae73, #a67744 50%, #d2a566) 1; padding: 14px; box-shadow: 0 24px 32px -16px rgba(30, 18, 8, 0.65), 0 3px 6px rgba(30, 18, 8, 0.3); }
+.f-gold { background: #fbf8f1; border: 8px solid transparent; border-image: linear-gradient(135deg, #f2d98e, #b8892d 45%, #ecca70) 1; padding: 22px; box-shadow: 0 24px 32px -16px rgba(30, 18, 8, 0.65), 0 3px 6px rgba(30, 18, 8, 0.3); }
+.f-float { background: #fff; padding: 4px; box-shadow: 0 28px 36px -18px rgba(30, 18, 8, 0.7), 0 3px 8px rgba(30, 18, 8, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.06); }
+.f-float img { box-shadow: none; }
+
+.gal-card { position: relative; z-index: 1; display: grid; grid-template-columns: auto 1fr; column-gap: 9px; align-items: baseline; width: max-content; max-width: min(220px, 100%); padding: 9px 13px 10px 11px; background: #fdfcf9; border-radius: 2px; box-shadow: 0 4px 10px -6px rgba(40, 24, 10, 0.5), 0 0 0 0.5px rgba(0, 0, 0, 0.09); text-align: left; font-size: 11.5px; line-height: 1.35; color: #3a342e; }
+.gal-card i { grid-row: span 3; font: 500 10.5px/1.5 ui-monospace, "SF Mono", Menlo, monospace; color: rgba(40, 30, 20, 0.45); font-style: normal; }
+.gal-card b { font-size: 13px; font-weight: 650; color: #1d1a17; letter-spacing: -0.005em; }
+.gal-card span { font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(40, 30, 20, 0.5); }
+.gal-card em { font-style: italic; color: rgba(40, 30, 20, 0.72); margin-top: 2px; }
+.gal-card.slim { grid-template-columns: 1fr; padding: 6px 11px; }
+
+/* wall texts */
+.gal-intro, .gal-text { flex: none; width: min(400px, 78vw); position: relative; z-index: 1; }
+.gal-text { width: min(340px, 74vw); }
+.gal-intro small, .gal-text small { display: block; margin-bottom: 12px; font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); }
+.gal-intro h2 { margin: 0; font: 400 clamp(46px, 5.4vw, 68px)/0.98 var(--serif); letter-spacing: -0.03em; color: #1d1a17; }
+.gal-text h3 { margin: 0 0 10px; font: 400 clamp(28px, 3vw, 36px)/1.04 var(--serif); letter-spacing: -0.02em; color: #1d1a17; }
+.gal-intro p, .gal-text p { margin: 12px 0 0; font-size: 14px; line-height: 1.55; color: rgba(40, 30, 22, 0.78); }
+.gal-legend { font-size: 11.5px !important; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(40, 30, 22, 0.5) !important; }
+.gal-hint { display: flex; align-items: center; gap: 10px; font-size: 12.5px !important; color: var(--accent) !important; font-weight: 600; }
+.gal-hint svg { width: 42px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; animation: galNudge 1.8s ease-in-out infinite; }
+@keyframes galNudge { 50% { transform: translateX(8px); } }
+
+/* the felt book in its glass case */
+.gal-vitrine { position: relative; flex: none; align-self: stretch; margin: 0; width: clamp(290px, 34vw, 400px); display: flex; flex-direction: column; justify-content: flex-end; align-items: center; scroll-snap-align: center; }
+.gal-vitrine::before { content: ""; position: absolute; inset: 0 -20% 14%; background: radial-gradient(ellipse at 50% 40%, rgba(255, 251, 238, 0.8), transparent 62%); pointer-events: none; }
+.gal-case { position: relative; z-index: 1; width: 86%; height: calc(var(--H) * 0.52); border: 1.5px solid rgba(255, 255, 255, 0.9); border-bottom: 0; background: linear-gradient(180deg, rgba(220, 232, 236, 0.35), rgba(255, 255, 255, 0.18)); box-shadow: 0 0 0 1px rgba(80, 100, 110, 0.25), inset 0 0 30px rgba(255, 255, 255, 0.4); }
+.gal-leaves { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; gap: 12px; padding: 0 14px 16px; }
+.gal-leaf { position: relative; display: block; flex: none; transition: transform 0.4s cubic-bezier(.2, .9, .2, 1); cursor: zoom-in; }
+.gal-leaf img { display: block; height: calc(var(--H) * 0.32); width: auto; border: 5px solid #fff; box-shadow: 0 14px 18px -10px rgba(40, 24, 10, 0.6), 0 0 0 1px rgba(0, 0, 0, 0.08); }
+.gal-leaf b { position: absolute; width: 1px; height: 1px; overflow: hidden; }
+.gal-leaf.l0 { transform: rotate(-5deg) translateY(2px); }
+.gal-leaf.l1 { transform: translateY(-8px); }
+.gal-leaf.l2 { transform: rotate(4deg) translateY(2px); }
+.gal-leaf:hover { transform: translateY(-12px) rotate(0); z-index: 2; }
+.gal-glass { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(115deg, rgba(255, 255, 255, 0.5) 0 12%, transparent 12% 20%, rgba(255, 255, 255, 0.22) 20% 26%, transparent 26%); }
+.gal-plinth { position: relative; z-index: 1; width: 100%; height: calc(var(--H) * 0.2); display: grid; place-items: center; background: linear-gradient(180deg, #fbfaf7, #e8e3d9); box-shadow: 0 14px 24px -14px rgba(30, 18, 8, 0.55), inset 0 1px 0 #fff; }
+
+/* films on screens */
+.gal-screens { flex: none; height: 100%; display: flex; align-items: center; gap: 30px; }
+.gal-screen { position: relative; margin: 0; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; scroll-snap-align: center; }
+.gal-reel { position: relative; z-index: 1; display: block; height: calc(var(--H) * 0.54); aspect-ratio: 9 / 16; padding: 7px; border-radius: 12px; background: #0d0c0e; box-shadow: 0 24px 30px -16px rgba(30, 18, 8, 0.7), 0 3px 6px rgba(30, 18, 8, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.12); cursor: pointer; transition: transform 0.4s cubic-bezier(.2, .9, .2, 1); }
+.gal-reel:hover, .gal-reel:focus-visible { transform: translateY(-5px); }
+.gal-reel:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+.gal-reel img, .gal-reel video { position: absolute; inset: 7px; width: calc(100% - 14px); height: calc(100% - 14px); object-fit: cover; border-radius: 6px; }
+.gal-reel video { opacity: 0; transition: opacity 0.3s; }
+.gal-reel.live video { opacity: 1; }
+.gal-reel svg { position: absolute; left: 50%; top: 50%; width: 34px; height: 34px; margin: -17px 0 0 -17px; fill: #fff; filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.6)); transition: opacity 0.25s; }
+.gal-reel.live svg { opacity: 0; }
+.gal-reel em { position: absolute; right: 12px; bottom: 12px; padding: 1px 7px; border-radius: 99px; background: rgba(0, 0, 0, 0.55); color: #fff; font: 500 10.5px/1.6 var(--font); font-style: normal; }
+.gal-reel em:empty { display: none; }
+
+.gal-end { flex: none; width: min(300px, 70vw); text-align: center; position: relative; z-index: 1; }
+.gal-end h3 { margin: 0 0 14px; font: 400 34px/1.05 var(--serif); letter-spacing: -0.02em; color: #1d1a17; }
+.gal-again { padding: 10px 20px; border-radius: 99px; background: #1d1a17; color: #fff; font: 600 13px var(--font); transition: transform 0.2s; }
+.gal-again:hover { transform: translateY(-2px); }
+
+/* walking controls, standing on the floor */
+.gal-nav { position: absolute; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 14px); transform: translateX(-50%); z-index: 6; display: flex; align-items: center; gap: 8px; padding: 6px; border-radius: 99px; background: rgba(255, 255, 255, 0.78); backdrop-filter: blur(14px) saturate(1.5); -webkit-backdrop-filter: blur(14px) saturate(1.5); box-shadow: 0 10px 22px -10px rgba(30, 14, 6, 0.6), inset 0 0 0 0.5px rgba(255, 255, 255, 0.8); }
+.gal-step { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-size: 22px; line-height: 1; color: #1d1a17; background: rgba(0, 0, 0, 0.06); transition: background 0.2s, transform 0.2s; }
+.gal-step:hover { background: rgba(0, 0, 0, 0.12); transform: scale(1.06); }
+.gal-jump { display: flex; gap: 2px; }
+.gal-jump button { padding: 7px 12px; border-radius: 99px; font: 600 12.5px var(--font); color: #3a342e; transition: background 0.2s; }
+.gal-jump button:hover { background: rgba(0, 0, 0, 0.07); }
+.gal-prog { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(0, 0, 0, 0.18); z-index: 7; pointer-events: none; }
+.gal-prog i { display: block; height: 100%; background: var(--accent); transform-origin: 0 50%; transform: scaleX(0); }
+
+/* looking closely: one piece, alone, under a spotlight */
+.gal-view { position: absolute; inset: 0; z-index: 30; display: grid; grid-template-rows: minmax(0, 1fr) auto; grid-template-columns: minmax(0, 1fr); justify-items: center; align-items: center; gap: 14px; padding: 60px 72px 22px; overflow: hidden; background: radial-gradient(ellipse 60% 70% at 50% 28%, rgba(96, 80, 70, 0.96), rgba(14, 11, 13, 0.98) 72%); animation: galIn 0.25s ease both; }
+.gal-view.out { opacity: 0; transition: opacity 0.2s; }
+@keyframes galIn { from { opacity: 0; } }
+.gal-stage { position: relative; display: flex; align-items: center; justify-content: center; min-height: 0; min-width: 0; width: 100%; height: 100%; overflow: hidden; }
+.gal-stage img { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; background: #f6f2ea; padding: 14px; box-shadow: 0 40px 70px -24px #000, 0 0 0 1px rgba(255, 255, 255, 0.08); }
+.gal-stage video { display: block; max-width: 100%; max-height: 100%; border-radius: 12px; background: #000; box-shadow: 0 40px 70px -24px #000; }
+.gal-label { margin: 0; display: grid; justify-items: center; gap: 2px; padding: 9px 18px; background: #fdfcf9; border-radius: 2px; color: #3a342e; font-size: 12.5px; text-align: center; box-shadow: 0 10px 20px -10px #000; }
+.gal-label b { font-size: 14px; color: #1d1a17; }
+.gal-label i { font-style: normal; font-size: 11px; color: rgba(40, 30, 20, 0.5); }
+.gal-x, .gal-n { position: absolute; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(255, 255, 255, 0.14); color: #fff; font-size: 24px; line-height: 1; backdrop-filter: blur(8px); transition: background 0.2s, transform 0.2s; }
+.gal-x { top: 14px; right: 14px; }
+.gal-n { top: 50%; margin-top: -20px; right: 16px; }
+.gal-n.prev { right: auto; left: 16px; }
+.gal-x:hover, .gal-n:hover { background: rgba(255, 255, 255, 0.28); transform: scale(1.06); }
+
+@media (max-width: 759px) {
+  .gal-view { padding: 56px 12px 16px; }
+  .gal-n { display: none; }
+  .gal-jump button { padding: 7px 9px; font-size: 12px; }
+  .gal-card { max-width: 170px; }
+}
+@media (prefers-reduced-motion: reduce) { .gal-hint svg, .gal-view { animation: none; } .gal-frame, .gal-reel, .gal-leaf { transition: none; } }
+
+/* on the phone the gallery sits under the iOS bar */
+body.ios .gal { --ceil: calc(54px + env(safe-area-inset-top, 0px)); }
+body.ios .gal-hall { cursor: auto; }
+body.ios .gal-jump button { white-space: nowrap; }
+
+/* one big film */
+.gal-screens .gal-reel { height: calc(var(--H) * 0.66); }
+
+.gal-screens { padding-left: 4px; }
